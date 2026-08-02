@@ -5,7 +5,7 @@ const SEO = ({ title, description, image, url, type = 'website' }) => {
   const siteName = 'Sancart';
   const defaultTitle = 'Sancart - Premium E-commerce Trending Catalog';
   const defaultDescription = 'Explore sancart trending and hot dropshipping items with premium quality, secure payments, and fast shipping.';
-  const defaultImage = '/images/sancart-w-full.png';
+  const defaultImage = '/images/sancart-w-full.webp';
   
   // Use production domain as fallback
   const baseUrl = import.meta.env.VITE_FRONTEND_URL || 'https://sancart.in';

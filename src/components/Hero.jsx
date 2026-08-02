@@ -52,7 +52,7 @@ const Hero = () => {
             <div className="relative p-3 bg-white/70 backdrop-blur-md rounded-[2rem] sm:rounded-[2.5rem] border border-white/50 shadow-2xl hover:shadow-3xl transition-shadow duration-500 max-w-[280px] sm:max-w-md w-full">
               <div className="overflow-hidden rounded-[1.4rem] sm:rounded-[1.8rem] bg-gray-100 aspect-[4/5] shadow-inner">
                 <img
-                  src="/images/main-bg.jpeg"
+                  src="/images/main-bg.webp"
                   alt="Trending showcase"
                   className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
                   onError={(e) => {

@@ -21,7 +21,7 @@ const SmallBanner = () => {
       <div
         className="relative flex flex-col justify-end items-start w-full md:w-1/2 h-[350px] md:h-[45vh] p-8 rounded-3xl bg-cover bg-center overflow-hidden group shadow-lg hover:shadow-2xl transition-all duration-300"
         style={{
-          backgroundImage: "linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.2)), url('/images/small-banner-1.png')",
+          backgroundImage: "linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.2)), url('/images/small-banner-1.webp')",
         }}
       >
         <div className="relative z-10 max-w-md">
@@ -45,7 +45,7 @@ const SmallBanner = () => {
       <div
         className="relative flex flex-col justify-end items-start w-full md:w-1/2 h-[350px] md:h-[45vh] p-8 rounded-3xl bg-cover bg-center overflow-hidden group shadow-lg hover:shadow-2xl transition-all duration-300"
         style={{
-          backgroundImage: "linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.2)), url('/images/small-banner-2.png')",
+          backgroundImage: "linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.2)), url('/images/small-banner-2.webp')",
         }}
       >
         <div className="relative z-10 max-w-md">

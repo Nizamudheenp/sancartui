@@ -14,7 +14,7 @@ const Banner = () => {
       className="relative flex flex-col items-center justify-center text-center w-full h-[60vh] px-6 bg-cover bg-center overflow-hidden"
       style={{
         /* Fallback gradient if image doesn't exist yet */
-        backgroundImage: "linear-gradient(to bottom, rgba(30, 59, 240, 0.1), rgba(255, 122, 24, 0.15)), url('/images/banner-main.png')",
+        backgroundImage: "linear-gradient(to bottom, rgba(30, 59, 240, 0.1), rgba(255, 122, 24, 0.15)), url('/images/banner-main.webp')",
       }}
     >
       <div className="absolute inset-0 bg-black/35 backdrop-blur-[2px]" />

@@ -53,7 +53,7 @@ const Header = () => {
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-lg border-b border-gray-100 shadow-sm transition-all duration-300">
         <div className="max-w-[1200px] mx-auto px-4 md:px-8 flex items-center justify-between h-14 md:h-20">
           <Link to="/" className="flex items-center gap-2">
-            <img src="/images/sancart-w-full.png" alt="sancart" className="h-7 md:h-12 w-auto object-contain" />
+            <img src="/images/sancart-w-full.webp" alt="sancart" className="h-7 md:h-12 w-auto object-contain" />
           </Link>
  
           <nav className="hidden md:flex items-center gap-8">
@@ -115,7 +115,7 @@ const Header = () => {
         <aside className={`absolute right-0 top-0 bottom-0 w-80 bg-white p-6 shadow-2xl flex flex-col justify-between transform transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
           <div>
             <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
-              <img src="/images/sancart-w-full.png" alt="sancart" className="h-10 w-auto object-contain" />
+              <img src="/images/sancart-w-full.webp" alt="sancart" className="h-10 w-auto object-contain" />
               <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-gray-500 hover:bg-gray-100 rounded-xl">
                 <BsXLg className="text-xl" />
               </button>

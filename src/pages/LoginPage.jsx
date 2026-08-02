@@ -126,7 +126,7 @@ function LoginPage() {
         <div className="text-center mb-8">
           <Link to="/" className="inline-block mb-4">
             <img
-              src="/images/sancart-w-full.png"
+              src="/images/sancart-w-full.webp"
               alt="sancart"
               className="h-10 mx-auto object-contain"
             />
