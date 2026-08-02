@@ -51,31 +51,31 @@ const Header = () => {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-lg border-b border-gray-100 shadow-sm transition-all duration-300">
-        <div className="max-w-[1200px] mx-auto px-6 md:px-8 flex items-center justify-between h-20">
+        <div className="max-w-[1200px] mx-auto px-4 md:px-8 flex items-center justify-between h-14 md:h-20">
           <Link to="/" className="flex items-center gap-2">
-            <img src="/images/sancart-w-full.png" alt="sancart" className="h-10 md:h-12 w-auto object-contain" />
+            <img src="/images/sancart-w-full.png" alt="sancart" className="h-7 md:h-12 w-auto object-contain" />
           </Link>
-
+ 
           <nav className="hidden md:flex items-center gap-8">
             <Link to="/" className="text-sm font-semibold text-gray-700 hover:text-primary-500 transition-colors">Home</Link>
             <Link to="/shop" className="text-sm font-semibold text-gray-700 hover:text-primary-500 transition-colors">Shop</Link>
             <Link to="/about" className="text-sm font-semibold text-gray-700 hover:text-primary-500 transition-colors">About</Link>
             <Link to="/contact" className="text-sm font-semibold text-gray-700 hover:text-primary-500 transition-colors">Contact</Link>
           </nav>
-
-          <div className="flex items-center gap-4">
-            <Link to="/cart" className="relative p-2 text-gray-700 hover:text-primary-500 transition-colors">
-              <BsCart2 className="text-2xl" />
+ 
+          <div className="flex items-center gap-3 md:gap-4">
+            <Link to="/cart" className="relative p-1.5 md:p-2 text-gray-700 hover:text-primary-500 transition-colors">
+              <BsCart2 className="text-xl md:text-2xl" />
             </Link>
-
+ 
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={handleUserIconClick}
-                className="flex items-center justify-center p-2 rounded-full border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
+                className="flex items-center justify-center p-1.5 md:p-2 rounded-full border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
               >
-                <BsPersonFill className="text-xl" />
+                <BsPersonFill className="text-base md:text-xl" />
               </button>
-
+ 
               <div className={`absolute right-0 mt-3 w-56 bg-white border border-gray-100 rounded-2xl shadow-xl p-4 transform transition-all duration-200 origin-top-right ${showUserDropdown ? 'opacity-100 scale-100 visible' : 'opacity-0 scale-95 invisible'}`}>
                 {!isLoggedIn ? (
                   <div className="flex flex-col gap-3">
@@ -88,22 +88,22 @@ const Header = () => {
                       {userInfo?.name || 'User'}
                     </p>
                     <Link to="/myorders" className="text-sm text-gray-600 hover:text-primary-500 py-1.5 transition-colors">My Orders</Link>
-
+ 
                     {userInfo?.isAdmin && (
                       <>
                         <Link to="/admin/dashboard" className="text-sm text-gray-600 hover:text-primary-500 py-1.5 transition-colors">Admin Dashboard</Link>
                         <Link to="/admin/orders" className="text-sm text-gray-600 hover:text-primary-500 py-1.5 transition-colors">Manage Orders</Link>
                       </>
                     )}
-
+ 
                     <button onClick={handleLogout} className="w-full mt-2 py-2 text-sm font-bold rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors">Logout</button>
                   </div>
                 )}
               </div>
             </div>
-
-            <button className="md:hidden p-2 text-gray-700 hover:bg-gray-100 rounded-xl" onClick={() => setIsMobileMenuOpen(true)}>
-              <BsList className="text-2xl" />
+ 
+            <button className="md:hidden p-1.5 text-gray-700 hover:bg-gray-100 rounded-xl" onClick={() => setIsMobileMenuOpen(true)}>
+              <BsList className="text-xl md:text-2xl" />
             </button>
           </div>
         </div>

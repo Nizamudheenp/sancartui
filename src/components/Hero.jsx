@@ -6,7 +6,7 @@ const Hero = () => {
   const handleClick = () => navigate("/shop");
 
   return (
-    <section className="relative min-h-[90vh] bg-gradient-to-br from-slate-50 via-indigo-50/30 to-amber-50/20 flex items-center pt-18 pb-16 overflow-hidden">
+    <section className="relative min-h-[90vh] bg-gradient-to-br from-slate-50 via-indigo-50/30 to-amber-50/20 flex items-center pt-20 md:pt-28 pb-16 overflow-hidden">
       {/* Decorative Blur Spheres */}
       <div className="absolute top-1/4 -left-10 w-96 h-96 bg-primary-200/20 rounded-full blur-3xl -z-10 animate-pulse" />
       <div className="absolute bottom-1/4 -right-10 w-96 h-96 bg-accent-100/30 rounded-full blur-3xl -z-10" />

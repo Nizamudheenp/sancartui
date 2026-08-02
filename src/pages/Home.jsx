@@ -12,7 +12,7 @@ import SEO from '../components/SEO'
 
 function Home() {
   return (
-    <div className="pt-20">
+    <div>
       <SEO />
       <Hero />
       <TrustBadges />
