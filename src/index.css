@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-blue: #1e3bf0;
+  --brand-orange: #ff7a18;
+}
+
+html, body, #root {
+  height: 100%;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+}

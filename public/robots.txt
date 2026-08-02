@@ -1,0 +1,18 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Allow: /shop
+Allow: /about
+Allow: /contact
+Allow: /product/
+
+# Block crawling on admin panels and private checkout flows
+Disallow: /admin/
+Disallow: /cart
+Disallow: /checkout
+Disallow: /payment
+Disallow: /myorders
+Disallow: /login
+Disallow: /register
+
+Sitemap: https://sancart.in/sitemap.xml
