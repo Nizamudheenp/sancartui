@@ -16,7 +16,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-slate-50 text-slate-600 py-16 px-4 md:px-8 border-t border-slate-100">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-10">
         <div className="flex flex-col items-start text-start">
           <img
             src="/images/sancart_logo.webp"
@@ -78,21 +78,16 @@ const Footer = () => {
             <li><Link to="/coming-soon" className="hover:text-blue-600 hover:underline underline-offset-4 transition">Help</Link></li>
           </ul>
         </div>
-
-        <div className="text-start">
-          <h4 className="text-xs font-bold uppercase tracking-wider mb-4 text-slate-900">Get Our App</h4>
-          <p className="text-sm mb-3 text-slate-500">Download from</p>
-          <div className="flex items-center gap-3 text-3xl text-slate-500 mb-5">
-            <FaAppStoreIos className="hover:text-slate-900 transition cursor-pointer" />
-            <FaGooglePlay className="hover:text-slate-900 transition cursor-pointer text-[26px]" />
-          </div>
-          <p className="text-xs font-bold uppercase tracking-wider mb-2 text-slate-900">Secured Payment</p>
-          <FaStripe className="text-4xl text-slate-700 hover:text-slate-900 transition cursor-pointer" />
-        </div>
       </div>
 
-      <div className="text-center mt-12 text-sm border-t border-slate-200/60 pt-6 text-slate-400">
-        © {currentYear} <span className="font-semibold text-[#1b36e3]">sancart</span> — Premium Shopping Experience. All rights reserved.
+      <div className="max-w-7xl mx-auto mt-12 border-t border-slate-200/60 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-400">
+        <p className="text-center sm:text-left">
+          © {currentYear} <span className="font-semibold text-[#1b36e3]">sancart</span> — Premium Shopping Experience. All rights reserved.
+        </p>
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Secured via</span>
+          <FaStripe className="text-4xl text-slate-500 hover:text-slate-800 transition cursor-pointer" />
+        </div>
       </div>
     </footer>
   );

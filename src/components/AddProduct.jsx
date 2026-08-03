@@ -146,8 +146,8 @@ const AddProduct = () => {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-3 mt-2 rounded-lg font-semibold text-white transition-colors ${
-            loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'
+          className={`w-full py-3 mt-2 rounded-lg font-semibold text-white transition-all ${
+            loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-brand-gradient hover:shadow-md'
           }`}
         >
           {loading ? 'Adding...' : 'Add Product'}

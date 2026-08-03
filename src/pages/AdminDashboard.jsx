@@ -115,7 +115,7 @@ const AdminDashboard = () => {
           </div>
           <button
             onClick={() => navigate('/admin/add-product')}
-            className="flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-primary-500 to-indigo-600 hover:from-primary-600 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-primary-500/10 hover:shadow-xl transition-all duration-300 active:scale-95 text-sm"
+            className="flex items-center justify-center gap-2 px-6 py-3.5 bg-brand-gradient text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 text-sm"
           >
             <FiPlus size={18} /> Add New Product
           </button>

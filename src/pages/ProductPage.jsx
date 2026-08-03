@@ -258,7 +258,7 @@ const ProductDetails = () => {
                 </div>
                 <button
                   type="submit"
-                  className="bg-primary-500 hover:bg-primary-600 text-white font-bold px-8 py-3 rounded-full shadow-md transition active:scale-95"
+                  className="bg-brand-gradient text-white font-bold px-8 py-3 rounded-full shadow-md transition active:scale-95"
                 >
                   Submit Review
                 </button>
