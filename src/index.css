@@ -11,3 +11,16 @@ html, body, #root {
   height: 100%;
   font-family:Georgia, 'Times New Roman', Times, serif;
 }
+
+@layer utilities {
+  .bg-brand-gradient {
+    background: linear-gradient(135deg, #1b36e3 0%, #60b2ff 100%);
+  }
+  .text-brand-gradient {
+    background: linear-gradient(135deg, #1b36e3 0%, #60b2ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+}

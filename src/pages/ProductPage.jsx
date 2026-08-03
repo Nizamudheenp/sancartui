@@ -227,7 +227,7 @@ const ProductDetails = () => {
           <div className="pt-2 pb-6 lg:pb-0">
             <button
               onClick={handleAddToCart}
-              className="px-10 py-4 font-bold rounded-full text-white shadow-xl bg-gradient-to-r from-primary-500 to-yellow-400 hover:scale-[1.03] active:scale-[0.98] transform transition-all duration-200"
+              className="px-10 py-4 font-bold rounded-full text-white shadow-xl bg-brand-gradient hover:scale-[1.03] active:scale-[0.98] transform transition-all duration-200"
             >
               Add to Cart
             </button>

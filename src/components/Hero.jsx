@@ -24,7 +24,7 @@ const Hero = () => {
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-gray-900 leading-tight tracking-tight">
               Curated Finds <br />
               For Your Modern <br />
-              <span className="bg-gradient-to-r from-primary-500 to-yellow-400 bg-clip-text text-transparent">Lifestyle</span>
+              <span className="text-brand-gradient">Lifestyle</span>
             </h1>
 
             <p className="mt-6 text-base sm:text-lg text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
@@ -34,7 +34,7 @@ const Hero = () => {
             <div className="mt-8 flex flex-wrap gap-4 justify-center lg:justify-start">
               <button
                 onClick={handleClick}
-                className="px-8 py-4 font-bold rounded-full text-white shadow-xl bg-gradient-to-r from-primary-500 to-yellow-400 hover:scale-[1.03] active:scale-[0.98] transform transition-all duration-200"
+                className="px-8 py-4 font-bold rounded-full text-white shadow-xl bg-brand-gradient hover:scale-[1.03] active:scale-[0.98] transform transition-all duration-200"
               >
                 Shop Collection
               </button>

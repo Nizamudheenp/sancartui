@@ -118,7 +118,7 @@ const CartPage = () => {
           <p className="text-sm text-gray-500 mb-6">Looks like you haven't added anything to your cart yet.</p>
           <button
             onClick={() => navigate("/shop")}
-            className="px-6 py-2.5 text-xs font-bold rounded-full text-white bg-gradient-to-r from-primary-500 to-yellow-400 hover:shadow-md transition active:scale-95"
+            className="px-6 py-2.5 text-xs font-bold rounded-full text-white bg-brand-gradient hover:shadow-md transition active:scale-95"
           >
             Start Shopping
           </button>
@@ -217,7 +217,7 @@ const CartPage = () => {
 
             <button
               onClick={handleCheckout}
-              className="w-full bg-gradient-to-r from-primary-500 to-yellow-400 text-white font-bold py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] transform transition-all duration-200"
+              className="w-full bg-brand-gradient text-white font-bold py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] transform transition-all duration-200"
             >
               Proceed to Checkout
             </button>

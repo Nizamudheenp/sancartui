@@ -91,7 +91,7 @@ const ProductCard = ({ product, onClick }) => {
 
         <button
           onClick={handleAddToCart}
-          className="w-full mt-3.5 flex items-center justify-center gap-2 py-3 text-xs font-bold rounded-xl text-white bg-gradient-to-r from-primary-500 to-yellow-400 hover:shadow-md active:scale-95 transition-all duration-200"
+          className="w-full mt-3.5 flex items-center justify-center gap-2 py-3 text-xs font-bold rounded-xl text-white bg-brand-gradient hover:shadow-md active:scale-95 transition-all duration-200"
         >
           <FiShoppingCart className="text-sm" />
           <span>Add to Cart</span>

@@ -34,7 +34,7 @@ const Banner = () => {
 
         <button
           onClick={handleClick}
-          className="mt-8 inline-flex items-center justify-center px-10 py-4 font-bold rounded-full text-white shadow-xl bg-gradient-to-r from-primary-500 to-yellow-400 hover:scale-[1.03] active:scale-[0.98] transform transition-all duration-200"
+          className="mt-8 inline-flex items-center justify-center px-10 py-4 font-bold rounded-full text-white shadow-xl bg-brand-gradient hover:scale-[1.03] active:scale-[0.98] transform transition-all duration-200"
         >
           Shop Hot Deals
         </button>

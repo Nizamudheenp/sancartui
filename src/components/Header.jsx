@@ -80,7 +80,7 @@ const Header = () => {
                 {!isLoggedIn ? (
                   <div className="flex flex-col gap-3">
                     <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Account</p>
-                    <Link to="/login" className="w-full text-center py-2.5 text-sm font-bold rounded-full bg-gradient-to-r from-primary-500 to-yellow-400 text-white shadow-md hover:shadow-lg transition-shadow">Sign in</Link>
+                    <Link to="/login" className="w-full text-center py-2.5 text-sm font-bold rounded-full bg-brand-gradient text-white shadow-md hover:shadow-lg transition-shadow">Sign in</Link>
                   </div>
                 ) : (
                   <div className="flex flex-col gap-2">
@@ -134,7 +134,7 @@ const Header = () => {
 
           <div className="border-t border-gray-100 pt-6">
             {!isLoggedIn ? (
-              <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="block w-full text-center py-3 rounded-full bg-gradient-to-r from-primary-500 to-yellow-400 text-white font-bold shadow-md">Sign in</Link>
+              <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="block w-full text-center py-3 rounded-full bg-brand-gradient text-white font-bold shadow-md">Sign in</Link>
             ) : (
               <div className="flex flex-col gap-3">
                 <p className="text-sm font-semibold text-gray-500">Signed in as <span className="text-gray-900 font-bold">{userInfo?.name}</span></p>
