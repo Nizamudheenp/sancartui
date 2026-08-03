@@ -48,7 +48,7 @@ const ProductCard = ({ product, onClick }) => {
   return (
     <motion.div
       onClick={onClick}
-      className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] border border-gray-100 bg-white p-4 shadow-sm hover:shadow-[0_15px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+      className="group relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-[2rem] border border-gray-100 bg-white p-3 sm:p-4 shadow-sm hover:shadow-[0_15px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.5 }}
@@ -56,7 +56,7 @@ const ProductCard = ({ product, onClick }) => {
     >
       <div>
         {/* Constrained Height Image Container */}
-        <div className="relative overflow-hidden h-48 w-full bg-slate-50/70 rounded-2xl p-4 flex items-center justify-center transition-colors duration-300 group-hover:bg-slate-50">
+        <div className="relative overflow-hidden h-32 sm:h-48 w-full bg-slate-50/70 rounded-xl sm:rounded-2xl p-2 sm:p-4 flex items-center justify-center transition-colors duration-300 group-hover:bg-slate-50">
           <img
             src={product.images?.[0] || '/placeholder.svg'}
             alt={product.name}
@@ -66,34 +66,34 @@ const ProductCard = ({ product, onClick }) => {
             }}
           />
           {product.brand && (
-            <span className="absolute top-3 left-3 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-primary-600 bg-white/95 rounded-md shadow-sm border border-gray-100/50">
+            <span className="absolute top-2 left-2 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider text-[#1b36e3] bg-white/95 rounded shadow-sm border border-gray-100/50">
               {product.brand}
             </span>
           )}
         </div>
 
         {/* Text details */}
-        <div className="px-1 pt-4 pb-1 text-start">
-          <h5 className="text-gray-900 font-extrabold text-sm leading-snug group-hover:text-primary-500 transition-colors truncate">
+        <div className="px-0.5 pt-3 sm:pt-4 pb-1 text-start">
+          <h5 className="text-gray-900 font-extrabold text-xs sm:text-sm leading-snug group-hover:text-[#1b36e3] transition-colors truncate">
             {product.name}
           </h5>
-          <div className="flex items-center gap-1.5 mt-1.5">
-            <div className="flex text-xs">{renderStars()}</div>
-            <span className="text-gray-400 text-[10px] font-bold">({product.numReviews || 0})</span>
+          <div className="flex items-center gap-1 mt-1 sm:mt-1.5 flex-wrap">
+            <div className="flex text-[10px] sm:text-xs">{renderStars()}</div>
+            <span className="text-gray-400 text-[9px] sm:text-[10px] font-bold">({product.numReviews || 0})</span>
           </div>
         </div>
       </div>
 
       {/* Card bottom section with Add To Cart button as a block */}
-      <div className="px-1 pt-3 border-t border-gray-50 mt-4 flex flex-col text-start">
-        <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">Price</span>
-        <h4 className="text-lg font-black text-gray-950 leading-none mt-1">₹{product.price}</h4>
+      <div className="px-0.5 pt-2 sm:pt-3 border-t border-gray-50 mt-3 sm:mt-4 flex flex-col text-start">
+        <span className="text-[8px] font-bold text-gray-400 uppercase tracking-wider block">Price</span>
+        <h4 className="text-base sm:text-lg font-black text-gray-950 leading-none mt-0.5 sm:mt-1">₹{product.price}</h4>
 
         <button
           onClick={handleAddToCart}
-          className="w-full mt-3.5 flex items-center justify-center gap-2 py-3 text-xs font-bold rounded-xl text-white bg-brand-gradient hover:shadow-md active:scale-95 transition-all duration-200"
+          className="w-full mt-2.5 flex items-center justify-center gap-1.5 py-2 sm:py-3 text-[10px] sm:text-xs font-bold rounded-lg sm:rounded-xl text-white bg-brand-gradient hover:shadow-md active:scale-95 transition-all duration-200"
         >
-          <FiShoppingCart className="text-sm" />
+          <FiShoppingCart className="text-xs sm:text-sm" />
           <span>Add to Cart</span>
         </button>
       </div>
@@ -151,7 +151,7 @@ const ProductCollection = ({ title, tag, category, search, limit }) => {
       </div>
 
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}

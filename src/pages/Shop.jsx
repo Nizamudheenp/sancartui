@@ -66,7 +66,7 @@ const ProductCard = ({ product, onClick }) => {
   return (
     <motion.div
       onClick={onClick}
-      className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] border border-gray-100 bg-white p-4 shadow-sm hover:shadow-[0_15px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+      className="group relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-[2rem] border border-gray-100 bg-white p-3 sm:p-4 shadow-sm hover:shadow-[0_15px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.5 }}
@@ -74,7 +74,7 @@ const ProductCard = ({ product, onClick }) => {
     >
       <div>
         {/* Constrained Height Image Container */}
-        <div className="relative overflow-hidden h-48 w-full bg-slate-50/70 rounded-2xl p-4 flex items-center justify-center transition-colors duration-300 group-hover:bg-slate-50">
+        <div className="relative overflow-hidden h-32 sm:h-48 w-full bg-slate-50/70 rounded-xl sm:rounded-2xl p-2 sm:p-4 flex items-center justify-center transition-colors duration-300 group-hover:bg-slate-50">
           <img
             src={product.images?.[0] || '/placeholder.svg'}
             alt={product.name}
@@ -84,34 +84,34 @@ const ProductCard = ({ product, onClick }) => {
             }}
           />
           {product.brand && (
-            <span className="absolute top-3 left-3 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-primary-600 bg-white/95 rounded-md shadow-sm border border-gray-100/50">
+            <span className="absolute top-2 left-2 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider text-[#1b36e3] bg-white/95 rounded shadow-sm border border-gray-100/50">
               {product.brand}
             </span>
           )}
         </div>
 
         {/* Text details */}
-        <div className="px-1 pt-4 pb-1 text-start">
-          <h5 className="text-gray-900 font-extrabold text-sm leading-snug group-hover:text-primary-500 transition-colors truncate">
+        <div className="px-0.5 pt-3 sm:pt-4 pb-1 text-start">
+          <h5 className="text-gray-900 font-extrabold text-xs sm:text-sm leading-snug group-hover:text-[#1b36e3] transition-colors truncate">
             {product.name}
           </h5>
-          <div className="flex items-center gap-1.5 mt-1.5">
-            <div className="flex text-xs">{renderStars()}</div>
-            <span className="text-gray-400 text-[10px] font-bold">({product.numReviews || 0})</span>
+          <div className="flex items-center gap-1 mt-1 sm:mt-1.5 flex-wrap">
+            <div className="flex text-[10px] sm:text-xs">{renderStars()}</div>
+            <span className="text-gray-400 text-[9px] sm:text-[10px] font-bold">({product.numReviews || 0})</span>
           </div>
         </div>
       </div>
 
       {/* Card bottom section with Add To Cart button as a block */}
-      <div className="px-1 pt-3 border-t border-gray-50 mt-4 flex flex-col text-start">
-        <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">Price</span>
-        <h4 className="text-lg font-black text-gray-950 leading-none mt-1">₹{product.price}</h4>
+      <div className="px-0.5 pt-2 sm:pt-3 border-t border-gray-50 mt-3 sm:mt-4 flex flex-col text-start">
+        <span className="text-[8px] font-bold text-gray-400 uppercase tracking-wider block">Price</span>
+        <h4 className="text-base sm:text-lg font-black text-gray-950 leading-none mt-0.5 sm:mt-1">₹{product.price}</h4>
 
         <button
           onClick={handleAddToCart}
-          className="w-full mt-3.5 flex items-center justify-center gap-2 py-3 text-xs font-bold rounded-xl text-white bg-brand-gradient hover:shadow-md active:scale-95 transition-all duration-200"
+          className="w-full mt-2.5 flex items-center justify-center gap-1.5 py-2 sm:py-3 text-[10px] sm:text-xs font-bold rounded-lg sm:rounded-xl text-white bg-brand-gradient hover:shadow-md active:scale-95 transition-all duration-200"
         >
-          <FiShoppingCart className="text-sm" />
+          <FiShoppingCart className="text-xs sm:text-sm" />
           <span>Add to Cart</span>
         </button>
       </div>
@@ -202,7 +202,7 @@ const Shop = () => {
 
       {/* Header Info */}
       <div className="max-w-xl text-start mb-8">
-        <h2 className="text-3xl md:text-5xl font-black text-gray-950 tracking-tight">
+        <h2 className="text-2xl md:text-4xl font-black text-gray-950 tracking-tight">
           Trending Shop
         </h2>
         <p className="text-gray-500 mt-2 text-sm md:text-base">
@@ -211,8 +211,9 @@ const Shop = () => {
       </div>
 
       {/* Advanced Control Row */}
-      <div className="bg-white border border-gray-100 rounded-3xl p-6 mb-10 shadow-sm flex flex-col gap-6">
-        {/* Row 1: Search and Sorting */}
+      <div className="bg-white border border-gray-100 rounded-3xl p-4 md:p-6 mb-10 shadow-sm flex flex-col gap-4 md:gap-6">
+        
+        {/* Row 1: Search and Desktop Sorting */}
         <div className="flex flex-col lg:flex-row gap-4 justify-between items-stretch lg:items-center">
           <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-lg flex items-center">
             <input
@@ -220,25 +221,26 @@ const Shop = () => {
               placeholder="Search products by name..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full pl-11 pr-24 py-3.5 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 focus:outline-none transition-all text-sm text-gray-800 placeholder-gray-400"
+              className="w-full pl-11 pr-24 py-3.5 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-[#1b36e3]/20 focus:border-[#1b36e3] focus:outline-none transition-all text-sm text-gray-800 placeholder-gray-400"
             />
             <FiSearch className="absolute left-4 text-gray-400 text-lg" />
             <button
               type="submit"
-              className="absolute right-2 px-4 py-2 text-xs font-bold text-white bg-primary-500 rounded-xl hover:bg-primary-600 transition-colors"
+              className="absolute right-2 px-4 py-2 text-xs font-bold text-white bg-brand-gradient rounded-xl transition-all"
             >
               Search
             </button>
           </form>
 
-          <div className="flex items-center gap-3">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wide flex items-center gap-1.5">
+          {/* Desktop Only Sort By */}
+          <div className="hidden lg:flex items-center gap-3">
+            <span className="text-xs font-bold text-gray-400 uppercase tracking-wide flex items-center gap-1.5 whitespace-nowrap">
               <FiSliders /> Sort By:
             </span>
             <select
               value={sortFilter}
               onChange={(e) => updateParam("sort", e.target.value)}
-              className="border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+              className="border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#1b36e3]/20"
             >
               {SORTS.map((s) => (
                 <option key={s.value} value={s.value}>{s.label}</option>
@@ -247,31 +249,71 @@ const Shop = () => {
           </div>
         </div>
 
-        {/* Row 2: Category Filter Tabs */}
-        <div className="border-t border-gray-50 pt-4 flex flex-wrap gap-2 items-center">
-          <span className="text-xs font-bold text-gray-400 uppercase tracking-wide mr-2">Categories:</span>
-          {CATEGORIES.map((c) => (
-            <button
-              key={c.value}
-              onClick={() => updateParam("category", c.value)}
-              className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${
-                categoryFilter === c.value
-                  ? "bg-primary-500 text-white shadow-md"
-                  : "bg-gray-50 hover:bg-gray-100 text-gray-600"
-              }`}
+        {/* Mobile/Tablet Only: Category and Sort Dropdowns side-by-side */}
+        <div className="flex lg:hidden gap-3 w-full border-t border-gray-50 pt-4">
+          <div className="flex-1">
+            <select
+              value={categoryFilter}
+              onChange={(e) => updateParam("category", e.target.value)}
+              className="w-full border border-gray-200 rounded-xl px-3 py-3 text-xs font-semibold text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#1b36e3]/20"
             >
-              {c.label}
-            </button>
-          ))}
+              {CATEGORIES.map((c) => (
+                <option key={c.value} value={c.value}>{c.value === 'all' ? 'All Categories' : c.label}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex-1">
+            <select
+              value={sortFilter}
+              onChange={(e) => updateParam("sort", e.target.value)}
+              className="w-full border border-gray-200 rounded-xl px-3 py-3 text-xs font-semibold text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#1b36e3]/20"
+            >
+              {SORTS.map((s) => (
+                <option key={s.value} value={s.value}>{s.label}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Desktop Only: Categories Tabs and Clear Filters */}
+        <div className="hidden lg:flex border-t border-gray-50 pt-4 flex-row gap-4 items-center justify-between">
+          <div className="flex flex-wrap gap-2 items-center">
+            <span className="text-xs font-bold text-gray-400 uppercase tracking-wide mr-2">Categories:</span>
+            {CATEGORIES.map((c) => (
+              <button
+                key={c.value}
+                onClick={() => updateParam("category", c.value)}
+                className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${
+                  categoryFilter === c.value
+                    ? "bg-brand-gradient text-white shadow-md"
+                    : "bg-gray-50 hover:bg-gray-100 text-gray-600"
+                }`}
+              >
+                {c.label}
+              </button>
+            ))}
+          </div>
+
           {(categoryFilter !== "all" || searchFilter !== "") && (
             <button
               onClick={handleClearFilters}
-              className="px-4 py-2 text-xs font-bold text-red-500 hover:text-red-600 bg-red-50 rounded-xl transition-all ml-auto"
+              className="px-4 py-2 text-xs font-bold text-red-500 hover:text-red-600 bg-red-50 rounded-xl transition-all text-center"
             >
               Clear Filters
             </button>
           )}
         </div>
+
+        {/* Mobile/Tablet Only: Clear Filters button (if active) */}
+        {(categoryFilter !== "all" || searchFilter !== "") && (
+          <button
+            onClick={handleClearFilters}
+            className="lg:hidden w-full bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold py-3 rounded-xl transition-colors text-center"
+          >
+            Clear Filters
+          </button>
+        )}
       </div>
 
       {/* Product Display and Pagination */}
@@ -293,7 +335,7 @@ const Shop = () => {
       ) : (
         <div>
           {/* Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
             {products.map((product) => (
               <ProductCard
                 key={product.id}
