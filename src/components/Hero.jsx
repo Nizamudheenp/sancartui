@@ -11,7 +11,7 @@ const Hero = () => {
       <div className="absolute top-1/4 -left-10 w-96 h-96 bg-primary-200/20 rounded-full blur-3xl -z-10 animate-pulse" />
       <div className="absolute bottom-1/4 -right-10 w-96 h-96 bg-accent-100/30 rounded-full blur-3xl -z-10" />
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 w-full z-10">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
           {/* Left Column: Premium Text Copy */}
@@ -21,26 +21,26 @@ const Hero = () => {
               Hot Trending Now
             </span>
 
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-gray-900 leading-tight tracking-tight">
+            <h1 className="text-3xl sm:text-6xl lg:text-7xl font-black text-gray-900 leading-tight tracking-tight">
               Curated Finds <br />
               For Your Modern <br />
               <span className="text-brand-gradient">Lifestyle</span>
             </h1>
 
-            <p className="mt-6 text-base sm:text-lg text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
+            <p className="mt-6 text-sm sm:text-lg text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
               Discover handpicked viral accessories, daily essentials, and smart novelties designed to elevate your style. Direct shipping, certified quality.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-4 justify-center lg:justify-start">
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start w-full sm:w-auto max-w-xs sm:max-w-none">
               <button
                 onClick={handleClick}
-                className="px-8 py-4 font-bold rounded-full text-white shadow-xl bg-brand-gradient hover:scale-[1.03] active:scale-[0.98] transform transition-all duration-200"
+                className="w-full sm:w-auto px-8 py-4 font-bold rounded-full text-white shadow-xl bg-brand-gradient hover:scale-[1.03] active:scale-[0.98] transform transition-all duration-200"
               >
                 Shop Collection
               </button>
               <button
                 onClick={() => navigate("/about")}
-                className="px-8 py-4 font-semibold rounded-full text-gray-700 bg-white border border-gray-200/80 shadow-sm hover:bg-gray-50 active:scale-[0.98] transition-all duration-200"
+                className="w-full sm:w-auto px-8 py-4 font-semibold rounded-full text-gray-700 bg-white border border-gray-200/80 shadow-sm hover:bg-gray-50 active:scale-[0.98] transition-all duration-200"
               >
                 Learn More
               </button>
@@ -48,8 +48,8 @@ const Hero = () => {
           </div>
 
           {/* Right Column: Padded Showcase Image Card */}
-          <div className="lg:col-span-5 flex justify-center items-center mt-6 lg:mt-0">
-            <div className="relative p-3 bg-white/70 backdrop-blur-md rounded-[2rem] sm:rounded-[2.5rem] border border-white/50 shadow-2xl hover:shadow-3xl transition-shadow duration-500 max-w-[280px] sm:max-w-md w-full">
+          <div className="lg:col-span-5 flex justify-center items-center mt-10 lg:mt-0">
+            <div className="relative p-3 bg-white/70 backdrop-blur-md rounded-[2rem] sm:rounded-[2.5rem] border border-white/50 shadow-2xl hover:shadow-3xl transition-shadow duration-500 max-w-[300px] sm:max-w-md w-full">
               <div className="overflow-hidden rounded-[1.4rem] sm:rounded-[1.8rem] bg-gray-100 aspect-[4/5] shadow-inner">
                 <img
                   src="/images/main-bg.webp"

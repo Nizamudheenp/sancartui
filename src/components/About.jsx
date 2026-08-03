@@ -28,20 +28,17 @@ const About = () => {
   return (
     <section className="max-w-7xl mx-auto px-6 py-24 mt-10">
       
-      {/* Brand Header Banner */}
-      <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-primary-600 via-primary-500 to-yellow-400 p-12 md:p-20 text-center shadow-xl mb-16 text-white">
-        <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px]" />
-        <div className="relative z-10 max-w-2xl mx-auto">
-          <span className="inline-block px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary-600 bg-white rounded-full mb-6">
-            About sancart
-          </span>
-          <h1 className="text-4xl md:text-6xl font-black leading-none mb-6">
-            Redefining Your Shopping Experience
-          </h1>
-          <p className="text-gray-100 text-lg leading-relaxed">
-            Founded in 2026, sancart was born out of a simple idea: to make online shopping easier, faster, and more enjoyable by providing handpicked trending lifestyle accessories.
-          </p>
-        </div>
+      {/* Brand Header Section */}
+      <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <span className="inline-block px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-[#1b36e3] bg-blue-50 rounded-xl">
+          About Sancart
+        </span>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-950 leading-tight">
+          Redefining Your <span className="text-brand-gradient">Shopping Experience</span>
+        </h1>
+        <p className="text-gray-500 text-sm md:text-base leading-relaxed max-w-xl mx-auto">
+          Founded in 2026, sancart was born out of a simple idea: to make online shopping easier, faster, and more enjoyable by providing handpicked trending lifestyle accessories.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">

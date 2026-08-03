@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import AdminRoute from './components/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
 import { Toaster } from 'react-hot-toast';
+import ScrollToTop from './components/ScrollToTop';
 
 
 // Lazy Load Page Components
@@ -41,6 +42,7 @@ function App() {
   const shouldShowFooter = ['/', '/about', '/contact', '/shop'].includes(location.pathname);
   return (
     <>
+      <ScrollToTop />
       <Header />
 
       <Suspense fallback={<PageLoader />}>
