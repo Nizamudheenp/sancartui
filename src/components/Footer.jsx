@@ -3,11 +3,8 @@ import { Link } from "react-router-dom";
 import {
   FaFacebook,
   FaWhatsapp,
-  FaTwitter,
-  FaYoutube,
-  FaPinterest,
-  FaAppStoreIos,
-  FaGooglePlay,
+  FaInstagram,
+  FaEnvelope,
   FaStripe,
 } from "react-icons/fa";
 
@@ -38,20 +35,17 @@ const Footer = () => {
               Follow Us
             </h4>
             <div className="flex gap-2.5">
-              <a href="#" className="w-9 h-9 rounded-xl bg-white border border-slate-200/60 hover:bg-blue-600 hover:text-white flex items-center justify-center text-slate-500 hover:scale-105 hover:border-transparent transition-all duration-300">
+              <a href="https://www.facebook.com/profile.php?id=61588835427230" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-xl bg-white border border-slate-200/60 hover:bg-blue-600 hover:text-white flex items-center justify-center text-slate-500 hover:scale-105 hover:border-transparent transition-all duration-300">
                 <FaFacebook className="text-sm" />
               </a>
-              <a href="#" className="w-9 h-9 rounded-xl bg-white border border-slate-200/60 hover:bg-green-600 hover:text-white flex items-center justify-center text-slate-500 hover:scale-105 hover:border-transparent transition-all duration-300">
+              <a href="https://wa.me/916235320612" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-xl bg-white border border-slate-200/60 hover:bg-green-600 hover:text-white flex items-center justify-center text-slate-500 hover:scale-105 hover:border-transparent transition-all duration-300">
                 <FaWhatsapp className="text-sm" />
               </a>
-              <a href="#" className="w-9 h-9 rounded-xl bg-white border border-slate-200/60 hover:bg-sky-500 hover:text-white flex items-center justify-center text-slate-500 hover:scale-105 hover:border-transparent transition-all duration-300">
-                <FaTwitter className="text-sm" />
+              <a href="https://www.instagram.com/san__cart/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-xl bg-white border border-slate-200/60 hover:bg-pink-600 hover:text-white flex items-center justify-center text-slate-500 hover:scale-105 hover:border-transparent transition-all duration-300">
+                <FaInstagram className="text-sm" />
               </a>
-              <a href="#" className="w-9 h-9 rounded-xl bg-white border border-slate-200/60 hover:bg-red-600 hover:text-white flex items-center justify-center text-slate-500 hover:scale-105 hover:border-transparent transition-all duration-300">
-                <FaYoutube className="text-sm" />
-              </a>
-              <a href="#" className="w-9 h-9 rounded-xl bg-white border border-slate-200/60 hover:bg-red-500 hover:text-white flex items-center justify-center text-slate-500 hover:scale-105 hover:border-transparent transition-all duration-300">
-                <FaPinterest className="text-sm" />
+              <a href="mailto:sancartofficial@gmail.com" className="w-9 h-9 rounded-xl bg-white border border-slate-200/60 hover:bg-red-500 hover:text-white flex items-center justify-center text-slate-500 hover:scale-105 hover:border-transparent transition-all duration-300">
+                <FaEnvelope className="text-sm" />
               </a>
             </div>
           </div>

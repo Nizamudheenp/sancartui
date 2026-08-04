@@ -54,7 +54,7 @@ const Hero = () => {
                 <img
                   src="/images/main-bg.webp"
                   alt="Trending showcase"
-                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-cover transform scale-125 hover:scale-150 transition-transform duration-700"
                   onError={(e) => {
                     e.target.src = "/placeholder.jpg";
                   }}
