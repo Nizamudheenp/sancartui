@@ -28,6 +28,9 @@ const Contact = lazy(() => import('./pages/Contact'));
 const About = lazy(() => import('./components/About'));
 const ComingSoon = lazy(() => import('./pages/ComingSoon'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const TermsConditions = lazy(() => import('./pages/TermsConditions'));
+const Help = lazy(() => import('./pages/Help'));
 
 
 const PageLoader = () => (
@@ -39,7 +42,7 @@ const PageLoader = () => (
 function App() {
 
   const location = useLocation();
-  const shouldShowFooter = ['/', '/about', '/contact', '/shop'].includes(location.pathname);
+  const shouldShowFooter = ['/', '/about', '/contact', '/shop', '/privacy', '/terms', '/help', '/myorders'].includes(location.pathname);
   return (
     <>
       <ScrollToTop />
@@ -64,6 +67,9 @@ function App() {
           } />
           <Route path='/about' element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsConditions />} />
+          <Route path="/help" element={<Help />} />
 
           <Route
             path="/admin/dashboard"

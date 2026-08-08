@@ -56,8 +56,8 @@ const Footer = () => {
           <ul className="flex flex-col gap-2.5 text-sm text-slate-500">
             <li><Link to="/about" className="hover:text-blue-600 hover:underline underline-offset-4 transition">About Us</Link></li>
             <li><Link to="/coming-soon" className="hover:text-blue-600 hover:underline underline-offset-4 transition">Delivery Information</Link></li>
-            <li><Link to="/coming-soon" className="hover:text-blue-600 hover:underline underline-offset-4 transition">Privacy Policy</Link></li>
-            <li><Link to="/coming-soon" className="hover:text-blue-600 hover:underline underline-offset-4 transition">Terms & Conditions</Link></li>
+            <li><Link to="/privacy" className="hover:text-blue-600 hover:underline underline-offset-4 transition">Privacy Policy</Link></li>
+            <li><Link to="/terms" className="hover:text-blue-600 hover:underline underline-offset-4 transition">Terms & Conditions</Link></li>
             <li><Link to="/contact" className="hover:text-blue-600 hover:underline underline-offset-4 transition">Contact Us</Link></li>
           </ul>
         </div>
@@ -65,11 +65,11 @@ const Footer = () => {
         <div className="text-start">
           <h4 className="text-xs font-bold uppercase tracking-wider mb-4 text-slate-900">Account</h4>
           <ul className="flex flex-col gap-2.5 text-sm text-slate-500">
-            <li><Link to="/coming-soon" className="hover:text-blue-600 hover:underline underline-offset-4 transition">My Account</Link></li>
+            <li><Link to="/myorders" className="hover:text-blue-600 hover:underline underline-offset-4 transition">My Account</Link></li>
             <li><Link to="/login" className="hover:text-blue-600 hover:underline underline-offset-4 transition">Sign In</Link></li>
             <li><Link to="/cart" className="hover:text-blue-600 hover:underline underline-offset-4 transition">View Cart</Link></li>
             <li><Link to="/coming-soon" className="hover:text-blue-600 hover:underline underline-offset-4 transition">Track My Order</Link></li>
-            <li><Link to="/coming-soon" className="hover:text-blue-600 hover:underline underline-offset-4 transition">Help</Link></li>
+            <li><Link to="/help" className="hover:text-blue-600 hover:underline underline-offset-4 transition">Help</Link></li>
           </ul>
         </div>
       </div>
