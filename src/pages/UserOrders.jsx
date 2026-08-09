@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { showToast } from "../utils/toast";
 import {
   FiShoppingBag,
   FiClock,
@@ -13,11 +14,110 @@ import {
   FiPackage,
   FiCreditCard,
   FiArrowRight,
+  FiChevronDown,
+  FiChevronUp,
 } from "react-icons/fi";
+
+const OrderTrackerTimeline = ({ order }) => {
+  const steps = [
+    { label: "Placed", desc: "Processing order details", statusKey: "processing" },
+    { label: "Paid", desc: "Payment verified successfully", statusKey: "paid" },
+    { label: "Shipped", desc: "Package picked up by carrier", statusKey: "shipped" },
+    { label: "Delivered", desc: "Delivered successfully", statusKey: "delivered" },
+  ];
+
+  const getStepIndex = (status) => {
+    const s = status?.toLowerCase();
+    if (s === "pending" || s === "processing") return 0;
+    if (s === "paid" || s === "succeeded") return 1;
+    if (s === "shipped") return 2;
+    if (s === "delivered") return 3;
+    return -1; // Cancelled or other
+  };
+
+  const activeIdx = getStepIndex(order.status);
+  const isCancelled = order.status?.toLowerCase() === "cancelled";
+  const isRefunded = order.status?.toLowerCase() === "refunded";
+
+  if (isCancelled) {
+    return (
+      <div className="bg-red-50/50 border border-red-100 rounded-2xl p-4 flex flex-col gap-2 mt-2 text-start">
+        <div className="flex items-center gap-3">
+          <FiAlertCircle className="text-red-500 text-xl flex-shrink-0" />
+          <div>
+            <p className="text-xs font-bold text-red-800">Order Cancelled</p>
+            <p className="text-[10px] text-red-500 mt-0.5">This order has been cancelled.</p>
+          </div>
+        </div>
+        <div className="mt-1 pt-2 border-t border-red-100/50 text-[10px] text-red-750 font-medium bg-red-50/40 p-2 rounded-lg leading-relaxed">
+          <strong>Refund Initiated:</strong> A refund of ₹{order.totalAmount} is being processed to your original payment method. Typically, refunds reflect within 5-7 business days.
+        </div>
+      </div>
+    );
+  }
+
+  if (isRefunded) {
+    return (
+      <div className="bg-purple-50/50 border border-purple-100 rounded-2xl p-4 flex items-center gap-3 mt-2">
+        <FiAlertCircle className="text-purple-500 text-xl flex-shrink-0" />
+        <div className="text-start">
+          <p className="text-xs font-bold text-purple-800">Order Refunded</p>
+          <p className="text-[10px] text-purple-500 mt-0.5">A refund has been successfully processed for this order.</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-5 pt-2 pb-1 relative mt-2">
+      {steps.map((step, idx) => {
+        const isCompleted = idx < activeIdx;
+        const isActive = idx === activeIdx;
+
+        return (
+          <div key={idx} className="flex gap-4 items-start relative">
+            {/* Step Line */}
+            {idx < steps.length - 1 && (
+              <div 
+                className={`absolute left-[13px] top-[26px] bottom-[-22px] w-[2px] z-0 ${
+                  idx < activeIdx ? "bg-[#1b36e3]" : "bg-slate-200"
+                }`}
+              />
+            )}
+
+            {/* Icon bubble */}
+            <div 
+              className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold z-10 transition-all ${
+                isCompleted 
+                  ? "bg-brand-gradient text-white shadow-md shadow-blue-500/10" 
+                  : isActive
+                  ? "bg-[#1b36e3] text-white animate-pulse"
+                  : "bg-slate-100 text-slate-400 border border-slate-200"
+              }`}
+            >
+              {isCompleted ? "✓" : idx + 1}
+            </div>
+
+            {/* Label and description */}
+            <div className="text-start flex-1 min-w-0">
+              <h5 className={`text-xs font-bold ${isActive ? "text-[#1b36e3]" : isCompleted ? "text-slate-800" : "text-slate-400"}`}>
+                {step.label}
+              </h5>
+              <p className={`text-[10px] ${isActive ? "text-slate-600 font-semibold" : "text-slate-400"} mt-0.5 truncate`}>
+                {step.desc}
+              </p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 const UserOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [expandedOrderId, setExpandedOrderId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,11 +138,29 @@ const UserOrders = () => {
     fetchOrders();
   }, []);
 
+  const handleCancelOrder = async (orderId) => {
+    if (!window.confirm("Are you sure you want to cancel this order?")) return;
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/api/orders/cancelorder/${orderId}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      // Update local state
+      setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: "cancelled" } : o));
+      showToast("success", "Order cancelled successfully!");
+    } catch (err) {
+      console.error(err);
+      showToast("error", err.response?.data?.message || "Failed to cancel order");
+    }
+  };
+
   // Compute stats
   const totalOrdersCount = orders.length;
   const totalSpent = orders.reduce((sum, order) => sum + (order.totalAmount || 0), 0);
   const activeOrdersCount = orders.filter(
-    (order) => order.status !== "Delivered" && order.status !== "Cancelled"
+    (order) => order.status !== "Delivered" && order.status !== "Cancelled" && order.status !== "Refunded"
   ).length;
 
   const getStatusBadge = (status) => {
@@ -69,10 +187,20 @@ const UserOrders = () => {
           bg: "bg-indigo-50 text-indigo-700 border-indigo-100",
           icon: <FiCheckCircle className="text-indigo-500" />,
         };
+      case "cancelled":
+        return {
+          bg: "bg-red-50 text-red-700 border-red-100",
+          icon: <FiAlertCircle className="text-red-500" />,
+        };
+      case "refunded":
+        return {
+          bg: "bg-purple-50 text-purple-700 border-purple-100",
+          icon: <FiAlertCircle className="text-purple-500" />,
+        };
       default:
         return {
-          bg: "bg-rose-50 text-rose-700 border-rose-100",
-          icon: <FiAlertCircle className="text-rose-500" />,
+          bg: "bg-gray-50 text-gray-700 border-gray-100",
+          icon: <FiAlertCircle className="text-gray-500" />,
         };
     }
   };
@@ -276,12 +404,45 @@ const UserOrders = () => {
                       </div>
                     </div>
 
-                    {/* Shipping Address Section */}
-                    <div className="pt-4 border-t border-gray-50 flex items-start gap-2 text-xs text-gray-500">
-                      <FiMapPin className="text-gray-400 mt-0.5 flex-shrink-0" />
-                      <p className="line-clamp-2 leading-relaxed">
-                        {order.shippingAddress || "No shipping address provided."}
-                      </p>
+                    {/* Shipping Address Section & Collapsible Tracking */}
+                    <div className="pt-4 border-t border-gray-50 flex flex-col gap-3">
+                      <div className="flex items-start gap-2 text-xs text-gray-500">
+                        <FiMapPin className="text-gray-400 mt-0.5 flex-shrink-0" />
+                        <p className="line-clamp-2 leading-relaxed">
+                          {order.shippingAddress || "No shipping address provided."}
+                        </p>
+                      </div>
+
+                      <div className="flex gap-2.5">
+                        <button
+                          onClick={() => setExpandedOrderId(expandedOrderId === order.id ? null : order.id)}
+                          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-4 text-[10px] font-bold text-slate-700 bg-slate-50 hover:bg-slate-100/80 rounded-xl transition-all border border-slate-100"
+                        >
+                          <span>{expandedOrderId === order.id ? "Hide Tracking" : "Track Shipment"}</span>
+                          {expandedOrderId === order.id ? <FiChevronUp className="text-xs" /> : <FiChevronDown className="text-xs" />}
+                        </button>
+
+                        {["pending", "processing", "paid", "succeeded"].includes(order.status?.toLowerCase()) && (
+                          <button
+                            onClick={() => handleCancelOrder(order.id)}
+                            className="px-4 py-2.5 text-[10px] font-bold text-red-600 bg-red-50 hover:bg-red-100/80 rounded-xl transition-all border border-red-100/50"
+                          >
+                            Cancel Order
+                          </button>
+                        )}
+                      </div>
+
+                      {expandedOrderId === order.id && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="overflow-hidden border-t border-slate-100 pt-2"
+                        >
+                          <OrderTrackerTimeline order={order} />
+                        </motion.div>
+                      )}
                     </div>
                   </motion.div>
                 );
