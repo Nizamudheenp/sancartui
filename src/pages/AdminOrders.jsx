@@ -79,6 +79,16 @@ const AdminOrders = () => {
           bg: "bg-indigo-50 text-indigo-700 border-indigo-100",
           icon: <FiCheckCircle className="text-indigo-500" />,
         };
+      case "cancelled":
+        return {
+          bg: "bg-red-50 text-red-700 border-red-100",
+          icon: <FiAlertCircle className="text-red-500" />,
+        };
+      case "refunded":
+        return {
+          bg: "bg-purple-50 text-purple-700 border-purple-100",
+          icon: <FiAlertCircle className="text-purple-500" />,
+        };
       default:
         return {
           bg: "bg-gray-50 text-gray-700 border-gray-100",
@@ -272,6 +282,8 @@ const AdminOrders = () => {
                               <option value="processing">Processing</option>
                               <option value="shipped">Shipped</option>
                               <option value="delivered">Delivered</option>
+                              <option value="cancelled">Cancelled</option>
+                              <option value="refunded">Refunded</option>
                             </select>
                           </div>
                         </td>
