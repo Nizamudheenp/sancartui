@@ -15,7 +15,7 @@ const SmallBanner = () => {
   return (
     <section
       id="sm-banner"
-      className="flex flex-col md:flex-row justify-center items-center gap-8 px-6 md:px-16 py-12 bg-white"
+      className="flex flex-col md:flex-row justify-center items-center gap-8 px-6 md:px-16 py-12 bg-section-fade"
     >
       {/* Banner 1 - Smart Devices */}
       <div

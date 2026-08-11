@@ -26,7 +26,7 @@ const TrustBadges = () => {
   ];
 
   return (
-    <section className="py-12 bg-gradient-to-r from-primary-50 via-white to-accent-50">
+    <section className="py-12 bg-[linear-gradient(to_bottom,#fffbeb_0%,#ffffff_20%,#ffffff_80%,#fffbeb_100%)]">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {badges.map((badge, idx) => (

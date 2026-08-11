@@ -6,7 +6,7 @@ const Hero = () => {
   const handleClick = () => navigate("/shop");
 
   return (
-    <section className="relative min-h-[90vh] bg-gradient-to-br from-slate-50 via-indigo-50/30 to-amber-50/20 flex items-center pt-20 md:pt-28 pb-16 overflow-hidden">
+    <section className="relative min-h-[90vh] bg-gradient-to-b from-slate-50 via-indigo-50/30 to-[#fffbeb] flex items-center pt-20 md:pt-28 pb-16 overflow-hidden">
       {/* Decorative Blur Spheres */}
       <div className="absolute top-1/4 -left-10 w-96 h-96 bg-primary-200/20 rounded-full blur-3xl -z-10 animate-pulse" />
       <div className="absolute bottom-1/4 -right-10 w-96 h-96 bg-accent-100/30 rounded-full blur-3xl -z-10" />
@@ -36,13 +36,13 @@ const Hero = () => {
                 onClick={handleClick}
                 className="w-full sm:w-auto px-8 py-4 font-bold rounded-full text-white shadow-xl bg-brand-gradient hover:scale-[1.03] active:scale-[0.98] transform transition-all duration-200"
               >
-                Shop Collection
+                Shop Now
               </button>
               <button
                 onClick={() => navigate("/about")}
-                className="w-full sm:w-auto px-8 py-4 font-semibold rounded-full text-gray-700 bg-white border border-gray-200/80 shadow-sm hover:bg-gray-50 active:scale-[0.98] transition-all duration-200"
+                className="w-full sm:w-auto px-8 py-4 font-semibold rounded-full text-gray-700 bg-white border hover:scale-[1.03] border-gray-200/80 shadow-sm hover:bg-gray-50 active:scale-[0.98] transition-all duration-200"
               >
-                Learn More
+                Discover SanCart
               </button>
             </div>
           </div>

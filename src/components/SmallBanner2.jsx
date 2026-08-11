@@ -31,7 +31,7 @@ const SmallBanner2 = () => {
   return (
     <section
       id="banner-3"
-      className="flex flex-wrap justify-between px-6 md:px-16 py-12 gap-6 bg-slate-50"
+      className="flex flex-wrap justify-between px-6 md:px-16 py-12 gap-6 bg-section-fade"
     >
       {banners.map((item, idx) => (
         <div
