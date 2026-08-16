@@ -19,6 +19,10 @@ const Help = () => {
     {
       question: "Which payment methods are accepted?",
       answer: "We accept all major debit cards, credit cards, UPI (GPay, PhonePe, Paytm), and Net Banking. All transactions are fully secured and processed via Razorpay or Stripe."
+    },
+    {
+      question: "What is your product return policy?",
+      answer: "Customers can request a return within 7 days of delivery. The product must be unused, undamaged, and in its original packaging with all tags, accessories, and invoices. For damaged or defective products, please inform us within 24 hours of delivery. See our Terms & Conditions page for the complete return guidelines."
     }
   ];
 

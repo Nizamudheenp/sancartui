@@ -59,7 +59,46 @@ const TermsConditions = () => {
           </div>
 
           <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-3">6. Governing Law</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-3">7. Product Return Terms & Conditions</h2>
+            <div className="leading-relaxed space-y-4">
+              <p>
+                <strong>7.1 Return Period:</strong> Customers can request a return within <em>7 days</em> from the date of delivery.
+              </p>
+              <p>
+                <strong>7.2 Product Condition:</strong> Products must be unused, undamaged, and returned in their original condition with all original packaging, tags, accessories, manuals, and invoices.
+              </p>
+              <p>
+                <strong>7.3 Damaged/Defective Products:</strong> If the product is received damaged, defective, or incorrect, the customer must inform us within <em>24 hours</em> of delivery and provide clear photos/videos as proof.
+              </p>
+              <p>
+                <strong>7.4 Non-Returnable Products:</strong> Certain products may not be eligible for return, including personalized, customized, perishable, hygiene-sensitive, or clearance products.
+              </p>
+              <p>
+                <strong>7.5 Return Shipping:</strong> For eligible returns due to a defective, damaged, or incorrect product, return shipping costs will be covered by us. For returns due to a change of mind, shipping charges may be deducted from the refund.
+              </p>
+              <p>
+                <strong>7.6 Refund:</strong> Once the returned product is received and inspected, the refund will be processed within <em>5–7 business days</em>. Refunds will be made to the original payment method wherever applicable.
+              </p>
+              <p>
+                <strong>7.7 Exchange:</strong> Product exchanges are subject to product availability. If the requested replacement is unavailable, the customer may be offered a refund or another suitable option.
+              </p>
+              <p>
+                <strong>7.8 Return Approval:</strong> All return requests are subject to verification and approval. Products returned without prior approval may not be accepted.
+              </p>
+              <p>
+                <strong>7.9 Missing Items:</strong> If any accessories, parts, or original packaging are missing, the refund amount may be reduced accordingly.
+              </p>
+              <p>
+                <strong>7.10 Final Decision:</strong> We reserve the right to reject a return if the product does not meet the above return conditions.
+              </p>
+              <p className="italic mt-4 text-slate-500">
+                For return requests, please contact our customer support team with your order number and details of the issue.
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-xl font-bold text-gray-900 mb-3">8. Governing Law</h2>
             <p className="leading-relaxed">
               These Terms & Conditions are governed by and construed in accordance with the laws of India, without regard to conflict of law principles. Any dispute arising from these terms will be subject to the exclusive jurisdiction of the courts located in Wayanad, Kerala.
             </p>
