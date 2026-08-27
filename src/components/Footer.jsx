@@ -58,6 +58,7 @@ const Footer = () => {
             <li><Link to="/coming-soon" className="hover:text-blue-600 hover:underline underline-offset-4 transition">Delivery Information</Link></li>
             <li><Link to="/privacy" className="hover:text-blue-600 hover:underline underline-offset-4 transition">Privacy Policy</Link></li>
             <li><Link to="/terms" className="hover:text-blue-600 hover:underline underline-offset-4 transition">Terms & Conditions</Link></li>
+            <li><Link to="/returns" className="hover:text-blue-600 hover:underline underline-offset-4 transition">Returns & Refunds</Link></li>
             <li><Link to="/contact" className="hover:text-blue-600 hover:underline underline-offset-4 transition">Contact Us</Link></li>
           </ul>
         </div>

@@ -366,31 +366,44 @@ const UserOrders = () => {
                           Items Summary
                         </p>
                         <div className="space-y-3.5">
-                          {order.products.map((item, index) => (
-                            <div
-                              key={index}
-                              className="flex items-center gap-3 text-sm"
-                            >
-                              <div className="w-10 h-10 bg-white border border-gray-100 rounded-lg flex items-center justify-center p-1.5 overflow-hidden flex-shrink-0">
-                                <img
-                                  src={item.product?.images?.[0] || "/placeholder.svg"}
-                                  alt={item.product?.name}
-                                  className="max-w-full max-h-full object-contain"
-                                  onError={(e) => {
-                                    e.target.src = "/placeholder.svg";
-                                  }}
-                                />
+                          {order.products.map((item, index) => {
+                            const canReturn = order.status?.toLowerCase() === "delivered";
+                            return (
+                              <div
+                                key={index}
+                                className="flex items-center justify-between gap-3 text-sm"
+                              >
+                                <div className="flex items-center gap-3 min-w-0 flex-1">
+                                  <div className="w-10 h-10 bg-white border border-gray-100 rounded-lg flex items-center justify-center p-1.5 overflow-hidden flex-shrink-0">
+                                    <img
+                                      src={item.product?.images?.[0] || "/placeholder.svg"}
+                                      alt={item.product?.name}
+                                      className="max-w-full max-h-full object-contain"
+                                      onError={(e) => {
+                                        e.target.src = "/placeholder.svg";
+                                      }}
+                                    />
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <p className="font-bold text-gray-800 text-xs truncate leading-snug">
+                                      {item.product?.name || "Product Item"}
+                                    </p>
+                                    <p className="text-[10px] text-gray-400 font-medium mt-0.5">
+                                      Quantity: {item.quantity}
+                                    </p>
+                                  </div>
+                                </div>
+                                {canReturn && (
+                                  <button
+                                    onClick={() => navigate(`/returns?orderId=${order.id}&productId=${item.product?.id || item.product?._id}`)}
+                                    className="text-[10px] font-bold text-blue-600 hover:text-blue-750 bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-xl transition-all duration-200 flex-shrink-0"
+                                  >
+                                    Return
+                                  </button>
+                                )}
                               </div>
-                              <div className="flex-1 min-w-0">
-                                <p className="font-bold text-gray-800 text-xs truncate leading-snug">
-                                  {item.product?.name || "Product Item"}
-                                </p>
-                                <p className="text-[10px] text-gray-400 font-medium mt-0.5">
-                                  Quantity: {item.quantity}
-                                </p>
-                              </div>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       </div>
                     </div>

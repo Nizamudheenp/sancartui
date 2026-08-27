@@ -33,6 +33,7 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsConditions = lazy(() => import('./pages/TermsConditions'));
 const Help = lazy(() => import('./pages/Help'));
+const ReturnPage = lazy(() => import('./pages/ReturnPage'));
 
 
 const PageLoader = () => (
@@ -77,6 +78,7 @@ function App() {
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsConditions />} />
           <Route path="/help" element={<Help />} />
+          <Route path="/returns" element={<ReturnPage />} />
 
           <Route
             path="/admin/dashboard"
