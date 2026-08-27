@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/api";
 import { showToast } from "../utils/toast";
 import { addToGuestCart } from "../utils/guestCart";
 import { FaStar, FaRegStar, FaStarHalfAlt } from "react-icons/fa";
@@ -34,9 +34,7 @@ const ProductDetails = () => {
       setUser(userData);
 
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/products/getaproduct/${id}`
-        );
+        const res = await api.get(`/api/products/getaproduct/${id}`);
         setProduct(res.data);
       } catch (err) {
         console.error("Error fetching product:", err);
@@ -51,18 +49,14 @@ const ProductDetails = () => {
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/products/addreview/${id}`,
-        { rating, comment },
-        { headers: { Authorization: `Bearer ${token}` } }
+      await api.post(
+        `/api/products/addreview/${id}`,
+        { rating, comment }
       );
       showToast("success", "Review submitted successfully");
       setRating(0);
       setComment("");
-      const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/products/getaproduct/${id}`
-      );
+      const res = await api.get(`/api/products/getaproduct/${id}`);
       setProduct(res.data);
     } catch (err) {
       console.error("Error submitting review:", err);
@@ -78,10 +72,9 @@ const ProductDetails = () => {
       return;
     }
     try {
-      await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/products/addToCart`,
-        { productId: product.id, quantity: 1 },
-        { headers: { Authorization: `Bearer ${token}` } }
+      await api.post(
+        "/api/products/addToCart",
+        { productId: product.id, quantity: 1 }
       );
       showToast("success", "Added to cart!");
     } catch (err) {

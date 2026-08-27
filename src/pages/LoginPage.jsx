@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import { showToast } from "../utils/toast";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -37,8 +37,8 @@ function LoginPage() {
     setIsLoading(true);
     setErrors({});
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
+      const response = await api.post(
+        "/api/auth/login",
         formData
       );
       const token = response.data.token;
@@ -54,10 +54,9 @@ function LoginPage() {
             productId: item.product.id || item.product._id,
             quantity: item.quantity
           }));
-          await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}/api/products/syncCart`,
-            { items },
-            { headers: { Authorization: `Bearer ${token}` } }
+          await api.post(
+            "/api/products/syncCart",
+            { items }
           );
           localStorage.removeItem("guest_cart");
         }

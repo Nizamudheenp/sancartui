@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import { showToast } from "../utils/toast";
 import { motion } from "framer-motion";
@@ -29,7 +29,7 @@ const AdminDashboard = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/products/getproducts`);
+      const response = await api.get('/api/products/getproducts');
       setProducts(response.data.products || response.data || []);
     } catch (error) {
       console.error("Error fetching products", error);
@@ -41,9 +41,7 @@ const AdminDashboard = () => {
   const deleteProduct = async (id) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
     try {
-      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/products/deleteProduct/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.delete(`/api/products/deleteProduct/${id}`);
       showToast('success', 'Product deleted successfully');
       fetchProducts();
     } catch (error) {

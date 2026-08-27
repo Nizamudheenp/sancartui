@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/api";
 import { showToast } from "../utils/toast";
 import { FiMapPin, FiPhone, FiMail } from "react-icons/fi";
 import {
@@ -28,10 +28,9 @@ const Contact = () => {
       return;
     }
     try {
-      await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/orders/contact`,
-        form,
-        { headers: { Authorization: `Bearer ${token}` } }
+      await api.post(
+        "/api/orders/contact",
+        form
       );
       setForm({ name: "", email: "", message: "" });
       showToast("success", "Message sent successfully!");

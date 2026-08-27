@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import { useParams, useNavigate } from 'react-router-dom';
 import { showToast } from "../utils/toast";
 
@@ -42,7 +42,7 @@ const EditProduct = () => {
   const fetchProductDetails = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/products/getaproduct/${id}`);
+      const response = await api.get(`/api/products/getaproduct/${id}`);
       setProduct(response.data);
     } catch (error) {
       console.error('Error fetching product details', error);
@@ -68,10 +68,9 @@ const EditProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/api/products/updateProduct/${id}`,
-        product,
-        { headers: { Authorization: `Bearer ${token}` } }
+      await api.put(
+        `/api/products/updateProduct/${id}`,
+        product
       );
       showToast('success', 'Product updated successfully');
       setTimeout(() => navigate('/admin/dashboard'), 1000);

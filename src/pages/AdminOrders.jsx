@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import { motion } from "framer-motion";
 import {
   FiUser,
@@ -19,11 +19,7 @@ const AdminOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/orders/getAllOrders`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const res = await api.get("/api/orders/getAllOrders");
       setOrders(res.data || []);
     } catch (error) {
       console.error("Failed to fetch orders:", error);
@@ -34,11 +30,9 @@ const AdminOrders = () => {
 
   const updateStatus = async (orderId, newStatus) => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/api/orders/updateorderstatus/${orderId}`,
-        { status: newStatus },
-        { headers: { Authorization: `Bearer ${token}` } }
+      const res = await api.put(
+        `/api/orders/updateorderstatus/${orderId}`,
+        { status: newStatus }
       );
 
       setOrders((prev) =>

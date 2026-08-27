@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import { AiFillStar, AiOutlineStar, AiTwotoneStar } from 'react-icons/ai';
 import { FiShoppingCart } from 'react-icons/fi';
@@ -33,10 +33,9 @@ const ProductCard = ({ product, onClick }) => {
       return;
     }
     try {
-      await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/products/addToCart`,
-        { productId: product.id, quantity: 1 },
-        { headers: { Authorization: `Bearer ${token}` } }
+      await api.post(
+        "/api/products/addToCart",
+        { productId: product.id, quantity: 1 }
       );
       showToast("success", "Added to cart!");
     } catch (err) {
@@ -114,8 +113,8 @@ const ProductCollection = ({ title, tag, category, search, limit }) => {
         if (search) queryParams.append('search', search);
         if (limit) queryParams.append('limit', limit);
 
-        const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/products/getproducts?${queryParams.toString()}`
+        const res = await api.get(
+          `/api/products/getproducts?${queryParams.toString()}`
         );
         setProducts(res.data.products || res.data);
       } catch (err) {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { AiFillStar, AiOutlineStar, AiTwotoneStar } from 'react-icons/ai';
 import { FiShoppingCart, FiSearch, FiSliders, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
@@ -51,10 +51,9 @@ const ProductCard = ({ product, onClick }) => {
       return;
     }
     try {
-      await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/products/addToCart`,
-        { productId: product.id, quantity: 1 },
-        { headers: { Authorization: `Bearer ${token}` } }
+      await api.post(
+        "/api/products/addToCart",
+        { productId: product.id, quantity: 1 }
       );
       showToast("success", "Added to cart!");
     } catch (err) {
@@ -140,8 +139,8 @@ const Shop = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/products/getproducts`,
+      const res = await api.get(
+        "/api/products/getproducts",
         {
           params: {
             category: categoryFilter,

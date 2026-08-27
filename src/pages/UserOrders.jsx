@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { showToast } from "../utils/toast";
@@ -123,11 +123,7 @@ const UserOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/orders/getuserorders`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const { data } = await api.get("/api/orders/getuserorders");
         setOrders(data || []);
       } catch (err) {
         console.error("Error fetching orders:", err);
@@ -141,12 +137,7 @@ const UserOrders = () => {
   const handleCancelOrder = async (orderId) => {
     if (!window.confirm("Are you sure you want to cancel this order?")) return;
     try {
-      const token = localStorage.getItem("token");
-      await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/api/orders/cancelorder/${orderId}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await api.put(`/api/orders/cancelorder/${orderId}`, {});
       // Update local state
       setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: "cancelled" } : o));
       showToast("success", "Order cancelled successfully!");

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import { showToast } from "../utils/toast";
 
@@ -46,12 +46,11 @@ const AddProduct = () => {
     const token = localStorage.getItem('token');
     setLoading(true);
     try {
-      await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/products/createproduct`,
+      await api.post(
+        "/api/products/createproduct",
         formData,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data',
           },
         }
