@@ -12,7 +12,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-slate-50 text-slate-600 py-16 px-4 md:px-8 border-t border-slate-100">
+    <footer className="bg-[#fffbeb] text-slate-600 py-16 px-4 md:px-8 ">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-10">
         <div className="flex flex-col items-start text-start">
           <img

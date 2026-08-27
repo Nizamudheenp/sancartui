@@ -1,5 +1,5 @@
-import React, { lazy, Suspense } from 'react';
-import { Routes, Route, useLocation, } from 'react-router-dom';
+import React, { lazy, Suspense, useEffect } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -7,6 +7,8 @@ import AdminRoute from './components/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
 import { Toaster } from 'react-hot-toast';
 import ScrollToTop from './components/ScrollToTop';
+import { setupResponseInterceptor } from './utils/api';
+import { showToast } from './utils/toast';
 
 
 // Lazy Load Page Components
@@ -40,8 +42,13 @@ const PageLoader = () => (
 );
 
 function App() {
-
+  const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    setupResponseInterceptor(navigate, showToast);
+  }, [navigate]);
+
   const shouldShowFooter = ['/', '/about', '/contact', '/shop', '/privacy', '/terms', '/help', '/myorders'].includes(location.pathname);
   return (
     <>

@@ -17,7 +17,7 @@ const NewsLetter = () => {
   return (
     <section
       id="newsletter"
-      className="px-4 md:px-8 py-16 bg-slate-50 border-t border-b border-slate-100"
+      className="px-4 md:px-8 py-16 bg-section-fade"
     >
       <div className="max-w-[1200px] mx-auto w-full flex flex-col lg:flex-row justify-between items-center gap-8">
         <div className="space-y-2 text-center lg:text-left max-w-xl">

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import { useNavigate } from "react-router-dom";
 import { saveOrderToBackend } from "../utils/saveOrder";
 import { clearGuestCart } from "../utils/guestCart";
@@ -12,6 +12,7 @@ const PaymentPage = ({ amount, cartItems, userToken }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [shippingAddress, setShippingAddress] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("Online");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,10 +36,39 @@ const PaymentPage = ({ amount, cartItems, userToken }) => {
 
     setLoading(true);
 
+    if (paymentMethod === "COD") {
+      try {
+        await saveOrderToBackend({
+          cartItems,
+          amount,
+          userAddress: shippingAddress,
+          paymentId: "COD",
+          paymentMethod: "COD",
+          userToken,
+          guestEmail: userToken ? undefined : guestEmail,
+        });
+
+        showToast("success", "Order placed successfully (Cash on Delivery)!");
+        navigate("/payment-success");
+
+        if (userToken && userToken !== "null" && userToken !== "undefined") {
+          await api.delete("/api/products/clearCart");
+        } else {
+          clearGuestCart();
+        }
+      } catch (err) {
+        console.error("Failed to place COD order", err);
+        showToast("error", "Failed to place COD order");
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
     try {
       // 1. Create Razorpay order on backend
-      const orderRes = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/orders/create-razorpay-order`,
+      const orderRes = await api.post(
+        "/api/orders/create-razorpay-order",
         { amount }
       );
       const { orderId, currency, amount: orderAmount } = orderRes.data;
@@ -55,8 +85,8 @@ const PaymentPage = ({ amount, cartItems, userToken }) => {
           setLoading(true);
           try {
             // 3. Verify Razorpay signature on backend
-            const verifyRes = await axios.post(
-              `${import.meta.env.VITE_BACKEND_URL}/api/orders/verify-payment`,
+            const verifyRes = await api.post(
+              "/api/orders/verify-payment",
               {
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
@@ -80,9 +110,7 @@ const PaymentPage = ({ amount, cartItems, userToken }) => {
 
               // 5. Clear cart
               if (userToken && userToken !== "null" && userToken !== "undefined") {
-                await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/products/clearCart`, {
-                  headers: { Authorization: `Bearer ${userToken}` },
-                });
+                await api.delete("/api/products/clearCart");
               } else {
                 clearGuestCart();
               }
@@ -195,6 +223,37 @@ const PaymentPage = ({ amount, cartItems, userToken }) => {
                 className="w-full border border-gray-200 rounded-2xl p-3.5 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 focus:outline-none transition-all text-sm text-gray-800 placeholder-gray-400"
               />
             </div>
+
+            {/* Payment Method Selector */}
+            <div className="space-y-2 mb-6">
+              <label className="flex items-center gap-1.5 text-xs font-bold text-gray-400 uppercase tracking-wide">
+                Select Payment Method
+              </label>
+              <div className="grid grid-cols-2 gap-4">
+                <div
+                  onClick={() => setPaymentMethod("Online")}
+                  className={`cursor-pointer p-4 rounded-2xl border-2 flex flex-col items-center justify-center text-center transition-all duration-300 ${
+                    paymentMethod === "Online"
+                      ? "border-primary-500 bg-primary-50/30 text-primary-900 shadow-md shadow-primary-500/5"
+                      : "border-gray-100 bg-white hover:border-gray-200 text-gray-500"
+                  }`}
+                >
+                  <FiCreditCard className={`text-xl mb-1 ${paymentMethod === "Online" ? "text-primary-600" : "text-gray-400"}`} />
+                  <span className="text-xs font-bold">Online Payment</span>
+                </div>
+                <div
+                  onClick={() => setPaymentMethod("COD")}
+                  className={`cursor-pointer p-4 rounded-2xl border-2 flex flex-col items-center justify-center text-center transition-all duration-300 ${
+                    paymentMethod === "COD"
+                      ? "border-primary-500 bg-primary-50/30 text-primary-900 shadow-md shadow-primary-500/5"
+                      : "border-gray-100 bg-white hover:border-gray-200 text-gray-500"
+                  }`}
+                >
+                  <FiShoppingBag className={`text-xl mb-1 ${paymentMethod === "COD" ? "text-primary-600" : "text-gray-400"}`} />
+                  <span className="text-xs font-bold">Cash on Delivery</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Right Side: Order Summary & Pay */}
@@ -213,10 +272,17 @@ const PaymentPage = ({ amount, cartItems, userToken }) => {
                 <strong className="text-xl font-black text-primary-600">₹{amount}</strong>
               </div>
 
-              <div className="flex items-start gap-2 bg-blue-50/50 border border-blue-100 rounded-2xl p-4 mb-6 text-xs text-blue-700 leading-relaxed">
-                <FiInfo className="mt-0.5 flex-shrink-0" />
-                <span>Payments are processed securely via Razorpay (supporting Cards, UPI, Netbanking).</span>
-              </div>
+              {paymentMethod === "Online" ? (
+                <div className="flex items-start gap-2 bg-blue-50/50 border border-blue-100 rounded-2xl p-4 mb-6 text-xs text-blue-700 leading-relaxed transition-all duration-300">
+                  <FiInfo className="mt-0.5 flex-shrink-0" />
+                  <span>Payments are processed securely via Razorpay (supporting Cards, UPI, Netbanking).</span>
+                </div>
+              ) : (
+                <div className="flex items-start gap-2 bg-orange-50/50 border border-orange-100 rounded-2xl p-4 mb-6 text-xs text-orange-700 leading-relaxed transition-all duration-300">
+                  <FiInfo className="mt-0.5 flex-shrink-0 text-orange-500" />
+                  <span>Cash on Delivery order. You will pay in cash upon receiving the delivery.</span>
+                </div>
+              )}
             </div>
 
             <button
@@ -228,7 +294,7 @@ const PaymentPage = ({ amount, cartItems, userToken }) => {
                 <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
-                  Confirm & Pay <FiArrowRight size={16} />
+                  {paymentMethod === "Online" ? "Confirm & Pay" : "Place Order (COD)"} <FiArrowRight size={16} />
                 </>
               )}
             </button>

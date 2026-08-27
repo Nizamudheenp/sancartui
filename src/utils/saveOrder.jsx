@@ -1,10 +1,11 @@
-import axios from "axios";
+import api from "./api";
 
 export const saveOrderToBackend = async ({
   cartItems,
   amount,
   userAddress,
   paymentId,
+  paymentMethod,
   userToken,
   guestEmail
 }) => {
@@ -22,22 +23,17 @@ export const saveOrderToBackend = async ({
       totalAmount: amount,
       shippingAddress: userAddress,
       paymentId: paymentId,
-      status: "paid",
+      paymentMethod: paymentMethod || "Online",
+      status: paymentMethod === "COD" ? "processing" : "paid",
     };
 
     if (guestEmail) {
       payload.guestEmail = guestEmail;
     }
 
-    const headers = {};
-    if (userToken && userToken !== "null" && userToken !== "undefined") {
-      headers.Authorization = `Bearer ${userToken}`;
-    }
-
-    const response = await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/api/orders/createorder`,
-      payload,
-      { headers }
+    const response = await api.post(
+      "/api/orders/createorder",
+      payload
     );
 
     console.log(" Order saved:", response.data);

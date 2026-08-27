@@ -36,7 +36,7 @@ const CategoryShowcase = () => {
   ];
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-[linear-gradient(to_bottom,#fffbeb_0%,#ffffff_20%,#ffffff_80%,#fffbeb_100%)]">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center max-w-xl mx-auto mb-12">
           <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import { useNavigate } from "react-router-dom";
 import { showToast } from "../utils/toast";
 import { getGuestCart, updateGuestCartQuantity, removeFromGuestCart } from "../utils/guestCart";
@@ -20,9 +20,7 @@ const CartPage = () => {
       return;
     }
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/products/getCart`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await api.get("/api/products/getCart");
       const validItems = (res.data.items || []).filter(item => item && item.product);
       setCartItems(validItems);
     } catch (err) {
@@ -40,10 +38,9 @@ const CartPage = () => {
       return;
     }
     try {
-      const res = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/api/products/updateCartItem`,
-        { productId, quantity },
-        { headers: { Authorization: `Bearer ${token}` } }
+      const res = await api.put(
+        "/api/products/updateCartItem",
+        { productId, quantity }
       );
       const validItems = (res.data.items || []).filter(item => item && item.product);
       setCartItems(validItems);
@@ -61,9 +58,7 @@ const CartPage = () => {
       return;
     }
     try {
-      const res = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/products/removeFromCart/${productId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await api.delete(`/api/products/removeFromCart/${productId}`);
       const validItems = (res.data.items || []).filter(item => item && item.product);
       setCartItems(validItems);
       showToast("success", "Item removed from cart");

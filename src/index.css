@@ -10,6 +10,7 @@
 html, body, #root {
   height: 100%;
   font-family:Georgia, 'Times New Roman', Times, serif;
+  background-color: #fffbeb;
 }
 
 @layer utilities {
@@ -22,5 +23,8 @@ html, body, #root {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
+  }
+  .bg-section-fade {
+    background: linear-gradient(to bottom, #fffbeb 0%, #ffffff 20%, #ffffff 80%, #fffbeb 100%);
   }
 }
