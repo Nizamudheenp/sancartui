@@ -39,6 +39,7 @@ const ReturnPage = () => {
   const [images, setImages] = useState([]);
   const [returnOption, setReturnOption] = useState("Refund");
   const [submitting, setSubmitting] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
   
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -52,7 +53,9 @@ const ReturnPage = () => {
       const fetchOrder = async () => {
         setLoadingOrder(true);
         try {
-          const res = await api.get(`/api/orders/details/${orderIdParam}`);
+          const user = JSON.parse(localStorage.getItem('user') || 'null');
+          const emailQuery = user?.email ? `?email=${encodeURIComponent(user.email)}` : '';
+          const res = await api.get(`/api/orders/details/${orderIdParam}${emailQuery}`);
           setSelectedOrder(res.data);
           
           if (productIdParam) {
@@ -80,17 +83,23 @@ const ReturnPage = () => {
       showToast("error", "Please enter an order number");
       return;
     }
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    const emailToUse = user?.email || registeredEmail.trim();
+    if (!emailToUse) {
+      showToast("error", "Please enter your registered email address");
+      return;
+    }
     setLoadingOrder(true);
     setSelectedOrder(null);
     setSelectedProduct(null);
     
     try {
-      const res = await api.get(`/api/orders/details/${orderNumber.trim()}`);
+      const res = await api.get(`/api/orders/details/${orderNumber.trim()}?email=${encodeURIComponent(emailToUse)}`);
       setSelectedOrder(res.data);
       showToast("success", "Order found!");
     } catch (err) {
       console.error(err);
-      showToast("error", err.response?.data?.message || "Order not found. Check the ID.");
+      showToast("error", err.response?.data?.message || "Order not found or authorization failed.");
     } finally {
       setLoadingOrder(false);
     }
@@ -132,6 +141,12 @@ const ReturnPage = () => {
     const prodId = selectedProduct.product?.id || selectedProduct.product?._id || selectedProduct.product;
     formData.append("productId", prodId);
     
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    const emailToUse = user?.email || registeredEmail.trim();
+    if (emailToUse) {
+      formData.append("email", emailToUse);
+    }
+
     formData.append("reason", reason);
     formData.append("details", details);
     formData.append("returnOption", returnOption);
@@ -216,21 +231,35 @@ const ReturnPage = () => {
                 </h3>
                 <p className="text-xs text-slate-400 mt-1">Enter your order ID (available in your profile/emails).</p>
                 
-                <form onSubmit={handleFindOrder} className="mt-4 flex flex-col sm:flex-row gap-3">
-                  <div className="relative flex-1">
-                    <input
-                      type="text"
-                      placeholder="Enter Order Number (e.g. 64b2f...)"
-                      value={orderNumber}
-                      onChange={(e) => setOrderNumber(e.target.value)}
-                      className="w-full pl-4 pr-10 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#1b36e3]/20 focus:border-[#1b36e3] text-sm text-gray-800 placeholder-slate-400 transition"
-                    />
-                    <FiSearch className="absolute right-3.5 top-3.5 text-slate-400" />
+                <form onSubmit={handleFindOrder} className="mt-4 flex flex-col gap-3">
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <div className="relative flex-1">
+                      <input
+                        type="text"
+                        placeholder="Enter Order Number (e.g. SAN...)"
+                        value={orderNumber}
+                        onChange={(e) => setOrderNumber(e.target.value)}
+                        className="w-full pl-4 pr-10 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#1b36e3]/20 focus:border-[#1b36e3] text-sm text-gray-800 placeholder-slate-400 transition"
+                      />
+                      <FiSearch className="absolute right-3.5 top-3.5 text-slate-400" />
+                    </div>
+
+                    {!localStorage.getItem("token") && (
+                      <div className="relative flex-1">
+                        <input
+                          type="email"
+                          placeholder="Enter Registered Email"
+                          value={registeredEmail}
+                          onChange={(e) => setRegisteredEmail(e.target.value)}
+                          className="w-full pl-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#1b36e3]/20 focus:border-[#1b36e3] text-sm text-gray-800 placeholder-slate-400 transition"
+                        />
+                      </div>
+                    )}
                   </div>
                   <button
                     type="submit"
                     disabled={loadingOrder}
-                    className="bg-slate-900 text-white font-bold px-6 py-3 rounded-2xl hover:bg-slate-800 active:scale-95 transition text-sm disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto bg-slate-900 text-white font-bold px-6 py-3 rounded-2xl hover:bg-slate-800 active:scale-95 transition text-sm disabled:opacity-50 flex items-center justify-center gap-2 self-start"
                   >
                     {loadingOrder ? "Searching..." : "Find My Order"}
                   </button>
