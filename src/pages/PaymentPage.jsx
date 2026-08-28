@@ -275,7 +275,7 @@ const PaymentPage = ({ amount, cartItems, userToken }) => {
               {paymentMethod === "Online" ? (
                 <div className="flex items-start gap-2 bg-blue-50/50 border border-blue-100 rounded-2xl p-4 mb-6 text-xs text-blue-700 leading-relaxed transition-all duration-300">
                   <FiInfo className="mt-0.5 flex-shrink-0" />
-                  <span>Payments are processed securely via Razorpay (supporting Cards, UPI, Netbanking).</span>
+                  <span>Payments are processed securely (supporting Cards, UPI, Netbanking).</span>
                 </div>
               ) : (
                 <div className="flex items-start gap-2 bg-orange-50/50 border border-orange-100 rounded-2xl p-4 mb-6 text-xs text-orange-700 leading-relaxed transition-all duration-300">

@@ -5,7 +5,8 @@ import {
   FaWhatsapp,
   FaInstagram,
   FaEnvelope,
-  FaStripe,
+  FaShieldAlt,
+  FaMoneyBillWave,
 } from "react-icons/fa";
 
 const Footer = () => {
@@ -79,9 +80,15 @@ const Footer = () => {
         <p className="text-center sm:text-left">
           © {currentYear} <span className="font-semibold text-[#1b36e3]">sancart</span> — Premium Shopping Experience. All rights reserved.
         </p>
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Secured via</span>
-          <FaStripe className="text-4xl text-slate-500 hover:text-slate-800 transition cursor-pointer" />
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center gap-1.5 select-none border border-slate-200/60 bg-white px-3 py-1.5 rounded-xl shadow-sm">
+            <FaShieldAlt className="text-xs text-blue-600 flex-shrink-0" />
+            <span className="text-[9px] font-black uppercase tracking-wider text-slate-750">Secure Payments</span>
+          </div>
+          <div className="flex items-center gap-1.5 select-none border border-slate-200/60 bg-white px-3 py-1.5 rounded-xl shadow-sm">
+            <FaMoneyBillWave className="text-xs text-emerald-600 flex-shrink-0" />
+            <span className="text-[9px] font-black uppercase tracking-wider text-slate-750">Cash on Delivery</span>
+          </div>
         </div>
       </div>
     </footer>
