@@ -329,7 +329,7 @@ const UserOrders = () => {
                             Order Reference
                           </span>
                           <p className="text-sm font-black text-gray-800 tracking-tight truncate max-w-[180px] sm:max-w-xs">
-                            {order.id.startsWith("SAN") ? order.id : `#${order.id.substring(order.id.length - 8).toUpperCase()}`}
+                            {(order.id && order.id.startsWith("SAN")) ? order.id : `#${(order.id || '').substring(Math.max(0, (order.id || '').length - 8)).toUpperCase()}`}
                           </p>
                         </div>
                         <div

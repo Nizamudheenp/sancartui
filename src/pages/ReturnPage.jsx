@@ -24,7 +24,6 @@ const REASONS = [
   "Wrong product received",
   "Changed my mind",
   "Product is defective",
-  "Other",
   "Size/fit issue"
 ];
 
@@ -40,9 +39,17 @@ const ReturnPage = () => {
   const [returnOption, setReturnOption] = useState("Refund");
   const [submitting, setSubmitting] = useState(false);
   const [registeredEmail, setRegisteredEmail] = useState("");
+  const [imagePreviews, setImagePreviews] = useState([]);
   
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    return () => {
+      // Clean up object URLs on component unmount to prevent memory leaks
+      imagePreviews.forEach(p => URL.revokeObjectURL(p.url));
+    };
+  }, [imagePreviews]);
 
   useEffect(() => {
     const orderIdParam = searchParams.get("orderId");
@@ -111,11 +118,37 @@ const ReturnPage = () => {
       showToast("error", "You can upload a maximum of 5 photos");
       return;
     }
-    setImages(prev => [...prev, ...files]);
+
+    const validFiles = [];
+    const newPreviews = [];
+
+    for (let file of files) {
+      if (!file.type.startsWith("image/")) {
+        showToast("error", `File "${file.name}" is not a valid image`);
+        continue;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        showToast("error", `Image "${file.name}" exceeds 5MB limit`);
+        continue;
+      }
+      validFiles.push(file);
+      const url = URL.createObjectURL(file);
+      newPreviews.push({ file, url });
+    }
+
+    if (validFiles.length > 0) {
+      setImages(prev => [...prev, ...validFiles]);
+      setImagePreviews(prev => [...prev, ...newPreviews]);
+    }
   };
 
   const handleRemoveImage = (index) => {
+    const target = imagePreviews[index];
+    if (target) {
+      URL.revokeObjectURL(target.url);
+    }
     setImages(prev => prev.filter((_, idx) => idx !== index));
+    setImagePreviews(prev => prev.filter((_, idx) => idx !== index));
   };
 
   const handleSubmitReturn = async (e) => {
@@ -426,8 +459,7 @@ const ReturnPage = () => {
 
                     {/* Previews */}
                     <AnimatePresence>
-                      {images.map((file, idx) => {
-                        const url = URL.createObjectURL(file);
+                      {imagePreviews.map((preview, idx) => {
                         return (
                           <motion.div
                             key={idx}
@@ -437,7 +469,7 @@ const ReturnPage = () => {
                             className="w-20 h-20 border border-slate-100 rounded-2xl overflow-hidden relative group bg-slate-50 flex items-center justify-center p-1"
                           >
                             <img
-                              src={url}
+                              src={preview.url}
                               alt="preview"
                               className="max-w-full max-h-full object-contain"
                             />

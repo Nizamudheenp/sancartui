@@ -269,7 +269,7 @@ const AdminOrders = () => {
                                   {order.user?.name || "Anonymous User"}
                                 </p>
                                 <p className="text-[10px] text-gray-400 font-medium tracking-tight">
-                                  ID: {order.id.startsWith("SAN") ? order.id : `#${order.id.substring(order.id.length - 8).toUpperCase()}`}
+                                  ID: {(order.id && order.id.startsWith("SAN")) ? order.id : `#${(order.id || '').substring(Math.max(0, (order.id || '').length - 8)).toUpperCase()}`}
                                 </p>
                               </div>
                             </div>
