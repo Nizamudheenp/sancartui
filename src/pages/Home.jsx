@@ -12,19 +12,75 @@ import SEO from '../components/SEO'
 
 function Home() {
   return (
-    <div>
+    <div className="pb-12 pt-6">
       <SEO />
+      
+      {/* Hero Redesign (Has its own full-screen backdrop) */}
       <Hero />
-      <TrustBadges />
-      <ProductCollection title="Trending Products" tag="Trending Product" limit={8} />
-      <CategoryShowcase />
-      <ProductCollection title="Featured Products" tag="Featured" limit={8} />
-      <Banner />
-      <ProductCollection title="Trending Collections" tag="New Arrival" limit={8} />
-      <SmallBanner />
-      <SmallBanner2 />
-      <Testimonials />
-      <NewsLetter />
+      
+      {/* Trust Badges Floating Glass Pill */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 mt-4">
+        <div className="glass-card rounded-[2rem] p-6 shadow-glass">
+          <TrustBadges />
+        </div>
+      </div>
+
+      {/* Trending Products Glass Panel */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <div className="glass-card rounded-[2.5rem] p-3 sm:p-10 shadow-glass">
+          <ProductCollection title="Trending Products" tag="Trending Product" limit={8} />
+        </div>
+      </div>
+
+      {/* Category Showcase Glass Panel */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <div className="glass-card rounded-[2.5rem] p-3 sm:p-10 shadow-glass">
+          <CategoryShowcase />
+        </div>
+      </div>
+
+      {/* Featured Products Glass Panel */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <div className="glass-card rounded-[2.5rem] p-3 sm:p-10 shadow-glass">
+          <ProductCollection title="Featured Products" tag="Featured" limit={8} />
+        </div>
+      </div>
+
+      {/* Main Banner (Borders and card styling are now directly on the Banner component) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <Banner />
+      </div>
+
+      {/* Trending Collections Glass Panel */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <div className="glass-card rounded-[2.5rem] p-3 sm:p-10 shadow-glass">
+          <ProductCollection title="Trending Collections" tag="New Arrival" limit={8} />
+        </div>
+      </div>
+
+      {/* Small Banners Row 1 (2-column grid inside) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <SmallBanner />
+      </div>
+
+      {/* Small Banners Row 2 (3-column grid inside) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <SmallBanner2 />
+      </div>
+
+      {/* Testimonials Glass Panel */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <div className="glass-card rounded-[2.5rem] p-6 sm:p-10 shadow-glass">
+          <Testimonials />
+        </div>
+      </div>
+
+      {/* Newsletter Signup Glass Panel */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <div className="glass-card rounded-[2.5rem] p-6 sm:p-10 shadow-glass">
+          <NewsLetter />
+        </div>
+      </div>
     </div>
   )
 }

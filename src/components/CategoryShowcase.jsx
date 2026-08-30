@@ -1,89 +1,62 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { FiCpu, FiCompass, FiActivity, FiCoffee, FiStar } from "react-icons/fi";
 
 const CategoryShowcase = () => {
   const navigate = useNavigate();
 
   const categories = [
     {
-      name: "Trending Gadgets",
-      tag: "Best Sellers",
-      image: "/images/cat-gadgets.webp",
+      name: "Gadgets",
+      icon: <FiCpu />,
       link: "/shop?category=gadgets",
-      cols: "col-span-1 md:col-span-2",
     },
     {
-      name: "Creative Living",
-      tag: "New Arrivals",
-      image: "/images/cat-lifestyle.webp",
+      name: "Lifestyle",
+      icon: <FiCompass />,
       link: "/shop?category=lifestyle",
-      cols: "col-span-1",
     },
     {
-      name: "Smart Health",
-      tag: "Top Rated",
-      image: "/images/cat-fitness.webp",
+      name: "Fitness",
+      icon: <FiActivity />,
       link: "/shop?category=fitness",
-      cols: "col-span-1",
     },
     {
-      name: "Innovative Kitchen",
-      tag: "Staff Pick",
-      image: "/images/cat-kitchen.webp",
+      name: "Kitchen",
+      icon: <FiCoffee />,
       link: "/shop?category=kitchen",
-      cols: "col-span-1 md:col-span-2",
+    },
+    {
+      name: "Essentials",
+      icon: <FiStar />,
+      link: "/shop?category=essentials",
     },
   ];
 
   return (
-    <section className="py-16 bg-[linear-gradient(to_bottom,#fffbeb_0%,#ffffff_20%,#ffffff_80%,#fffbeb_100%)]">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center max-w-xl mx-auto mb-12">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
-            Explore Trending Categories
-          </h2>
-          <p className="mt-3 text-lg text-gray-500">
-            Handpicked premium essentials curated just for you.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="py-2">
+      <div className="flex flex-col items-center">
+        {/* Category icons wrapped responsively for mobile to split into multiple lines when needed */}
+        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 md:gap-12 py-4 px-6 w-full">
           {categories.map((cat, idx) => (
-            <div
-              key={idx}
+            <div 
+              key={idx} 
               onClick={() => navigate(cat.link)}
-              className={`relative group overflow-hidden rounded-3xl cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500 h-80 ${cat.cols}`}
+              className="flex flex-col items-center gap-3 cursor-pointer group"
             >
-              {/* Image Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent z-10 opacity-70 group-hover:opacity-85 transition-opacity duration-500" />
-              
-              <img
-                src={cat.image}
-                alt={cat.name}
-                className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                onError={(e) => {
-                  /* Fallback gradient if file is not found */
-                  e.target.style.display = 'none';
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-br from-primary-900/30 to-accent-900/40 -z-10" />
-
-              <div className="absolute inset-x-0 bottom-0 p-8 z-20 flex flex-col justify-end h-full">
-                <span className="inline-block self-start px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent-500 bg-white/95 rounded-full mb-3">
-                  {cat.tag}
-                </span>
-                <h3 className="text-2xl font-bold text-white group-hover:translate-x-2 transition-transform duration-300">
-                  {cat.name}
-                </h3>
-                <span className="text-sm font-medium text-gray-300 mt-2 flex items-center gap-1 group-hover:text-white transition-colors duration-300">
-                  Explore Collection &rarr;
-                </span>
+              <div 
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center text-xl sm:text-2xl shadow-glass border border-white/70 bg-white/50 text-gray-850 hover:bg-white hover:scale-110 hover:shadow-glass-hover transition-all duration-300"
+              >
+                {cat.icon}
               </div>
+              <span className="text-[10px] sm:text-xs font-black text-gray-850 uppercase tracking-widest group-hover:text-primary-500 transition-colors">
+                {cat.name}
+              </span>
             </div>
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

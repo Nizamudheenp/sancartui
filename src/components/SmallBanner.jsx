@@ -13,15 +13,12 @@ const SmallBanner = () => {
   };
 
   return (
-    <section
-      id="sm-banner"
-      className="flex flex-col md:flex-row justify-center items-center gap-8 px-6 md:px-16 py-12 bg-section-fade"
-    >
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
       {/* Banner 1 - Smart Devices */}
       <div
-        className="relative flex flex-col justify-end items-start w-full md:w-1/2 h-[350px] md:h-[45vh] p-8 rounded-3xl bg-cover bg-center overflow-hidden group shadow-lg hover:shadow-2xl transition-all duration-300"
+        className="relative flex flex-col justify-end items-start w-full h-[350px] md:h-[42vh] p-8 rounded-[2.5rem] bg-cover bg-center overflow-hidden border border-white/50 shadow-glass group hover:shadow-glass-hover transition-all duration-500"
         style={{
-          backgroundImage: "linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.2)), url('/images/small-banner-1.webp')",
+          backgroundImage: "linear-gradient(to right, rgba(0,0,0,0.65), rgba(0,0,0,0.15)), url('/images/small-banner-1.webp')",
         }}
       >
         <div className="relative z-10 max-w-md">
@@ -33,7 +30,7 @@ const SmallBanner = () => {
             Track your fitness, stay connected, and boost productivity with our trending smartwatch lineups.
           </p>
           <button
-            className="bg-white text-gray-900 font-bold px-6 py-3 rounded-xl hover:bg-gray-100 transition-colors shadow-md active:scale-95 transform duration-150"
+            className="bg-brand-gradient text-white font-bold px-6 py-3 rounded-xl hover:opacity-95 transition-opacity shadow-md active:scale-95 transform duration-150"
             onClick={handleExploreTech}
           >
             Explore Tech
@@ -43,9 +40,9 @@ const SmallBanner = () => {
 
       {/* Banner 2 - Modern Kitchen / Home */}
       <div
-        className="relative flex flex-col justify-end items-start w-full md:w-1/2 h-[350px] md:h-[45vh] p-8 rounded-3xl bg-cover bg-center overflow-hidden group shadow-lg hover:shadow-2xl transition-all duration-300"
+        className="relative flex flex-col justify-end items-start w-full h-[350px] md:h-[42vh] p-8 rounded-[2.5rem] bg-cover bg-center overflow-hidden border border-white/50 shadow-glass group hover:shadow-glass-hover transition-all duration-500"
         style={{
-          backgroundImage: "linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.2)), url('/images/small-banner-2.webp')",
+          backgroundImage: "linear-gradient(to right, rgba(0,0,0,0.65), rgba(0,0,0,0.15)), url('/images/small-banner-2.webp')",
         }}
       >
         <div className="relative z-10 max-w-md">
@@ -57,14 +54,14 @@ const SmallBanner = () => {
             Upgrade your surroundings with our selected smart home appliances and interior novelties.
           </p>
           <button
-            className="bg-white text-gray-900 font-bold px-6 py-3 rounded-xl hover:bg-gray-100 transition-colors shadow-md active:scale-95 transform duration-150"
+            className="bg-brand-gradient text-white font-bold px-6 py-3 rounded-xl hover:opacity-95 transition-opacity shadow-md active:scale-95 transform duration-150"
             onClick={handleShopHome}
           >
             Shop Home
           </button>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
