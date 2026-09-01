@@ -81,129 +81,158 @@ const EditProduct = () => {
   };
 
   return (
-    <div className="mt-16 p-6">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 pt-28">
       {loading ? (
-        <p className="text-center text-gray-500">Loading product details...</p>
+        <div className="min-h-[50vh] flex flex-col items-center justify-center gap-3">
+          <span className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
+          <p className="text-xs font-semibold text-gray-500">Loading product details...</p>
+        </div>
       ) : (
-        <form
-          onSubmit={handleSubmit}
-          className="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-md space-y-4"
-        >
-          <div>
-            <label className="block mb-1 font-semibold text-gray-700">Name</label>
-            <input
-              type="text"
-              name="name"
-              value={product.name}
-              onChange={handleInputChange}
-              required
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
+        <div className="glass-card rounded-[2.5rem] p-6 sm:p-10 shadow-glass text-start">
+          {/* Page Title Header */}
+          <div className="mb-8 border-b border-white/30 pb-6">
+            <span className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary-600 bg-primary-500/10 rounded-lg mb-2">
+              Catalog Management
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-black text-gray-955 tracking-tight">
+              Edit Product
+            </h2>
+            <p className="text-gray-500 text-xs sm:text-sm font-semibold mt-1">
+              Modify product details, pricing, tags, or image URLs.
+            </p>
           </div>
 
-          <div>
-            <label className="block mb-1 font-semibold text-gray-700">Description</label>
-            <textarea
-              name="description"
-              value={product.description}
-              onChange={handleInputChange}
-              required
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Product Name */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Product Name</label>
+              <input
+                type="text"
+                name="name"
+                value={product.name}
+                onChange={handleInputChange}
+                required
+                className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold"
+              />
+            </div>
 
-          <div>
-            <label className="block mb-1 font-semibold text-gray-700">Price</label>
-            <input
-              type="number"
-              name="price"
-              value={product.price}
-              onChange={handleInputChange}
-              required
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
+            {/* Description */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Description</label>
+              <textarea
+                rows="4"
+                name="description"
+                value={product.description}
+                onChange={handleInputChange}
+                required
+                className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold"
+              />
+            </div>
 
-          <div>
-            <label className="block mb-1 font-semibold text-gray-700">Category</label>
-            <select
-              name="category"
-              value={product.category}
-              onChange={handleInputChange}
-              required
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+            {/* Price & Brand Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Price (₹)</label>
+                <input
+                  type="number"
+                  name="price"
+                  value={product.price}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Brand</label>
+                <input
+                  type="text"
+                  name="brand"
+                  value={product.brand}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold"
+                />
+              </div>
+            </div>
+
+            {/* Category Selection */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Category</label>
+              <select
+                name="category"
+                value={product.category}
+                onChange={handleInputChange}
+                required
+                className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none text-sm text-gray-800 font-extrabold cursor-pointer transition"
+              >
+                {CATEGORY_OPTIONS.map((c) => (
+                  <option key={c.value} value={c.value}>{c.label}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Tags Selection */}
+            <div className="space-y-2">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Product Collections (Tags)</label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 p-4 border border-white/60 bg-white/30 rounded-2xl">
+                {TAG_OPTIONS.map((t) => (
+                  <label key={t.value} className="flex items-center gap-2.5 text-xs text-gray-700 font-semibold cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={product.tags?.includes(t.value)}
+                      onChange={(e) => {
+                        let updatedTags = [...(product.tags || [])];
+                        if (e.target.checked) {
+                          updatedTags.push(t.value);
+                        } else {
+                          updatedTags = updatedTags.filter(item => item !== t.value);
+                        }
+                        setProduct({ ...product, tags: updatedTags });
+                      }}
+                      className="w-4 h-4 rounded text-primary-600 focus:ring-primary-500"
+                    />
+                    <span>{t.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Image URLs input */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Images (URLs - Comma Separated)</label>
+              <input
+                type="text"
+                name="images"
+                value={product.images.join(',')}
+                onChange={handleInputChange}
+                required
+                className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold"
+              />
+            </div>
+
+            {/* Image Previews */}
+            {product.images && product.images.length > 0 && (
+              <div className="space-y-2">
+                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Current Image Previews</label>
+                <div className="flex flex-wrap gap-2.5">
+                  {product.images.map((img, idx) => (
+                    <div key={idx} className="w-20 h-20 border border-white/50 bg-white rounded-2xl overflow-hidden flex items-center justify-center p-1 shadow-sm">
+                      <img src={img} alt={`Product ${idx}`} className="max-w-full max-h-full object-contain" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Submit Action */}
+            <button
+              type="submit"
+              className="w-full py-4 mt-4 rounded-full font-bold text-white bg-brand-gradient shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 text-sm"
             >
-              {CATEGORY_OPTIONS.map((c) => (
-                <option key={c.value} value={c.value}>{c.label}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block mb-1 font-semibold text-gray-700">Brand</label>
-            <input
-              type="text"
-              name="brand"
-              value={product.brand}
-              onChange={handleInputChange}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
-
-          <div>
-            <label className="block mb-1 font-semibold text-gray-700">Product Collections (Tags)</label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-3 border border-gray-200 rounded-lg">
-              {TAG_OPTIONS.map((t) => (
-                <label key={t.value} className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={product.tags?.includes(t.value)}
-                    onChange={(e) => {
-                      let updatedTags = [...(product.tags || [])];
-                      if (e.target.checked) {
-                        updatedTags.push(t.value);
-                      } else {
-                        updatedTags = updatedTags.filter(item => item !== t.value);
-                      }
-                      setProduct({ ...product, tags: updatedTags });
-                    }}
-                    className="rounded text-blue-500 focus:ring-blue-400"
-                  />
-                  <span>{t.label}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block mb-1 font-semibold text-gray-700">Images (URLs)</label>
-            <input
-              type="text"
-              name="images"
-              value={product.images.join(',')}
-              onChange={handleInputChange}
-              required
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-            <small className="text-gray-500">Enter image URLs separated by commas</small>
-          </div>
-
-          <div>
-            <h4 className="font-semibold mb-2 text-gray-700">Current Images</h4>
-            <div className="flex flex-wrap gap-2">
-              {product.images.map((img, idx) => (
-                <img key={idx} src={img} alt={`Product ${idx}`} className="w-24 h-24 object-cover rounded-lg" />
-              ))}
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-3 mt-4 rounded-lg font-semibold text-white bg-brand-gradient hover:shadow-md transition-all"
-          >
-            Update Product
-          </button>
-        </form>
+              Update Product
+            </button>
+          </form>
+        </div>
       )}
     </div>
   );

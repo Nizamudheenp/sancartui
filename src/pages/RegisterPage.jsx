@@ -89,42 +89,12 @@ function RegisterPage() {
   };
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen bg-slate-50 px-4 pt-24 pb-12 overflow-hidden">
-      {/* Decorative Background Blobs */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            x: [0, 30, 0],
-            y: [0, -50, 0],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute -top-40 -left-40 w-96 h-96 bg-orange-100 rounded-full blur-3xl opacity-60"
-        />
-        <motion.div
-          animate={{
-            scale: [1, 1.1, 1],
-            x: [0, -40, 0],
-            y: [0, 40, 0],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-100 rounded-full blur-3xl opacity-60"
-        />
-      </div>
-
+    <div className="max-w-md md:max-w-xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 pt-28 text-slate-800 font-sans">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="relative w-full max-w-md bg-white/85 backdrop-blur-md border border-gray-100 rounded-3xl shadow-xl p-8 md:p-10 z-10"
+        className="glass-card rounded-[2.5rem] p-8 sm:p-10 shadow-glass text-center"
       >
         <div className="text-center mb-8">
           <Link to="/" className="inline-block mb-4">
@@ -134,18 +104,18 @@ function RegisterPage() {
               className="h-10 mx-auto object-contain"
             />
           </Link>
-          <h2 className="text-2xl font-bold text-gray-800">Create Account</h2>
-          <p className="text-gray-500 text-sm mt-1">Get started with your free account</p>
+          <h2 className="text-2xl sm:text-3xl font-black text-gray-955 tracking-tight">Create Account</h2>
+          <p className="text-gray-500 text-xs sm:text-sm font-semibold mt-1">Get started with your free account</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5 text-start">
           <motion.div
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 }}
             className="relative"
           >
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
               <FiUser size={18} />
             </span>
             <input
@@ -154,11 +124,11 @@ function RegisterPage() {
               placeholder="Full Name"
               onChange={handleChange}
               required
-              className={`w-full pl-11 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-accent-500/20 focus:border-accent-500 focus:outline-none transition-all duration-300 bg-white/60 placeholder-gray-400 text-gray-800 text-sm ${
-                errors.name ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-200'
+              className={`w-full pl-11 pr-4 py-3.5 border rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition-all duration-300 bg-white/50 placeholder-gray-400 text-gray-800 text-sm font-semibold ${
+                errors.name ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : 'border-white/60'
               }`}
             />
-            {errors.name && <p className="text-red-500 text-xs mt-1 pl-1">{errors.name}</p>}
+            {errors.name && <p className="text-red-500 text-xs mt-1 pl-1 font-semibold">{errors.name}</p>}
           </motion.div>
 
           <motion.div
@@ -167,7 +137,7 @@ function RegisterPage() {
             transition={{ delay: 0.2 }}
             className="relative"
           >
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
               <FiMail size={18} />
             </span>
             <input
@@ -176,11 +146,11 @@ function RegisterPage() {
               placeholder="Email Address"
               onChange={handleChange}
               required
-              className={`w-full pl-11 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-accent-500/20 focus:border-accent-500 focus:outline-none transition-all duration-300 bg-white/60 placeholder-gray-400 text-gray-800 text-sm ${
-                errors.email ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-200'
+              className={`w-full pl-11 pr-4 py-3.5 border rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition-all duration-300 bg-white/50 placeholder-gray-400 text-gray-800 text-sm font-semibold ${
+                errors.email ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : 'border-white/60'
               }`}
             />
-            {errors.email && <p className="text-red-500 text-xs mt-1 pl-1">{errors.email}</p>}
+            {errors.email && <p className="text-red-500 text-xs mt-1 pl-1 font-semibold">{errors.email}</p>}
           </motion.div>
 
           <motion.div
@@ -189,7 +159,7 @@ function RegisterPage() {
             transition={{ delay: 0.3 }}
             className="relative"
           >
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
               <FiLock size={18} />
             </span>
             <input
@@ -198,27 +168,26 @@ function RegisterPage() {
               placeholder="Password"
               onChange={handleChange}
               required
-              className={`w-full pl-11 pr-11 py-3 border rounded-xl focus:ring-2 focus:ring-accent-500/20 focus:border-accent-500 focus:outline-none transition-all duration-300 bg-white/60 placeholder-gray-400 text-gray-800 text-sm ${
-                errors.password ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : 'border-gray-200'
+              className={`w-full pl-11 pr-11 py-3.5 border rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition-all duration-300 bg-white/50 placeholder-gray-400 text-gray-800 text-sm font-semibold ${
+                errors.password ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' : 'border-white/60'
               }`}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 hover:text-gray-600 transition-colors"
+              className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400 hover:text-gray-600 transition-colors"
             >
               {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
             </button>
-            {errors.password && <p className="text-red-500 text-xs mt-1 pl-1">{errors.password}</p>}
+            {errors.password && <p className="text-red-500 text-xs mt-1 pl-1 font-semibold">{errors.password}</p>}
           </motion.div>
-
 
           <motion.button
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-accent-500 to-amber-500 hover:from-accent-600 hover:to-amber-600 text-white font-semibold py-3 rounded-xl shadow-lg shadow-accent-500/20 transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-75 disabled:cursor-not-allowed mt-2"
+            className="w-full bg-brand-gradient text-white font-bold py-4 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-75 disabled:cursor-not-allowed mt-4"
           >
             {isLoading ? (
               <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -230,11 +199,11 @@ function RegisterPage() {
           </motion.button>
         </form>
 
-        <div className="text-center text-xs mt-6 text-gray-500 border-t border-gray-100 pt-6">
+        <div className="text-center text-xs mt-6 text-gray-500 font-semibold border-t border-white/30 pt-6">
           Already have an account?{" "}
           <Link
             to="/login"
-            className="text-primary-500 hover:text-primary-600 font-semibold hover:underline"
+            className="text-primary-600 hover:text-primary-700 font-extrabold hover:underline ml-1"
           >
             Sign in instead
           </Link>

@@ -45,20 +45,28 @@ const AdminOrders = () => {
     }
   };
 
-  const updateStatus = async (orderId, newStatus) => {
+  const updateStatus = async (orderIdentifier, newStatus) => {
+    if (!orderIdentifier) {
+      showToast("error", "Invalid order ID");
+      return;
+    }
     try {
       const res = await api.put(
-        `/api/orders/updateorderstatus/${orderId}`,
+        `/api/orders/updateorderstatus/${orderIdentifier}`,
         { status: newStatus }
       );
 
       setOrders((prev) =>
         prev.map((order) =>
-          order.id === orderId ? { ...order, status: res.data.status } : order
+          (order.id === orderIdentifier || order._id === orderIdentifier)
+            ? { ...order, status: res.data?.status || newStatus }
+            : order
         )
       );
+      showToast("success", `Order status updated to ${newStatus}`);
     } catch (err) {
       console.error("Failed to update status:", err);
+      showToast("error", err.response?.data?.message || "Failed to update order status");
     }
   };
 
@@ -137,60 +145,60 @@ const AdminOrders = () => {
   const pendingOrders = orders.filter((o) => o.status === "processing").length;
 
   return (
-    <div className="min-h-screen bg-slate-50/50 px-4 md:px-8 pt-28 pb-16">
-      <div className="max-w-6xl mx-auto">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 pt-28 text-slate-800 font-sans">
+      <div>
         {/* Page Header */}
         <div className="text-start mb-8">
-          <span className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary-600 bg-primary-50 rounded-lg mb-3">
+          <span className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary-600 bg-primary-500/10 rounded-lg mb-3">
             Admin Panel
           </span>
-          <h2 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+          <h2 className="text-3xl md:text-4xl font-black text-gray-955 tracking-tight">
             Manage Orders
           </h2>
-          <p className="text-gray-500 text-sm mt-1">
+          <p className="text-gray-500 text-sm font-semibold mt-1">
             Track customer purchases, update delivery status, and review business transactions
           </p>
         </div>
 
         {/* Stats Summary Panel */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10 text-start">
-          <div className="bg-white border border-gray-100/80 p-6 rounded-2xl shadow-sm flex items-center gap-4">
-            <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center text-primary-500 text-xl flex-shrink-0">
+          <div className="bg-white/40 backdrop-blur-md border border-white/50 p-6 rounded-3xl shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-primary-500/10 rounded-2xl flex items-center justify-center text-primary-600 text-xl flex-shrink-0">
               <FiLayers />
             </div>
             <div>
-              <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+              <p className="text-xs font-extrabold text-gray-400 uppercase tracking-wider">
                 Total Placed Orders
               </p>
-              <p className="text-2xl font-black text-gray-900 mt-0.5">
+              <p className="text-2xl font-black text-gray-955 mt-0.5">
                 {orders.length}
               </p>
             </div>
           </div>
 
-          <div className="bg-white border border-gray-100/80 p-6 rounded-2xl shadow-sm flex items-center gap-4">
-            <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-500 text-xl flex-shrink-0">
+          <div className="bg-white/40 backdrop-blur-md border border-white/50 p-6 rounded-3xl shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-600 text-xl flex-shrink-0">
               <FiTrendingUp />
             </div>
             <div>
-              <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+              <p className="text-xs font-extrabold text-gray-400 uppercase tracking-wider">
                 Gross Revenue
               </p>
-              <p className="text-2xl font-black text-gray-900 mt-0.5">
+              <p className="text-2xl font-black text-gray-955 mt-0.5">
                 ₹{totalAmount.toFixed(2)}
               </p>
             </div>
           </div>
 
-          <div className="bg-white border border-gray-100/80 p-6 rounded-2xl shadow-sm flex items-center gap-4">
-            <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-amber-500 text-xl flex-shrink-0">
+          <div className="bg-white/40 backdrop-blur-md border border-white/50 p-6 rounded-3xl shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-600 text-xl flex-shrink-0">
               <FiClock className="animate-pulse" />
             </div>
             <div>
-              <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+              <p className="text-xs font-extrabold text-gray-400 uppercase tracking-wider">
                 Processing Orders
               </p>
-              <p className="text-2xl font-black text-gray-900 mt-0.5">
+              <p className="text-2xl font-black text-gray-955 mt-0.5">
                 {pendingOrders}
               </p>
             </div>
@@ -198,23 +206,23 @@ const AdminOrders = () => {
         </div>
 
         {/* View Toggle Tabs */}
-        <div className="flex gap-4 mb-6 border-b border-gray-100 pb-4 text-start">
+        <div className="flex gap-4 mb-6 border-b border-white/30 pb-4 text-start">
           <button
             onClick={() => setActiveTab("orders")}
-            className={`px-6 py-2.5 text-xs font-bold rounded-xl transition-all ${
+            className={`px-6 py-3 text-xs font-bold rounded-2xl transition-all ${
               activeTab === "orders"
-                ? "bg-slate-900 text-white shadow-md"
-                : "bg-white border border-gray-100 hover:border-gray-200 text-gray-600"
+                ? "bg-brand-gradient text-white shadow-md"
+                : "bg-white/40 border border-white/50 hover:bg-white text-gray-700"
             }`}
           >
             All Orders ({orders.length})
           </button>
           <button
             onClick={() => setActiveTab("returns")}
-            className={`px-6 py-2.5 text-xs font-bold rounded-xl transition-all ${
+            className={`px-6 py-3 text-xs font-bold rounded-2xl transition-all ${
               activeTab === "returns"
-                ? "bg-slate-900 text-white shadow-md"
-                : "bg-white border border-gray-100 hover:border-gray-200 text-gray-600"
+                ? "bg-brand-gradient text-white shadow-md"
+                : "bg-white/40 border border-white/50 hover:bg-white text-gray-700"
             }`}
           >
             Return Requests ({returns.length})
@@ -223,12 +231,12 @@ const AdminOrders = () => {
 
         {activeTab === "orders" ? (
           orders.length === 0 ? (
-            <div className="bg-white border border-gray-100 rounded-3xl p-12 text-center max-w-lg mx-auto shadow-sm">
-              <div className="w-16 h-16 rounded-full bg-slate-50 border border-gray-100 flex items-center justify-center mx-auto mb-6 text-2xl text-gray-400">
+            <div className="glass-card rounded-[2.5rem] p-12 text-center max-w-lg mx-auto shadow-glass">
+              <div className="w-16 h-16 rounded-full bg-white/40 border border-white/50 flex items-center justify-center mx-auto mb-6 text-2xl text-gray-400 shadow-sm">
                 <FiPackage />
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">No orders found</h3>
-              <p className="text-sm text-gray-500">
+              <h3 className="text-lg font-extrabold text-gray-955 mb-2">No orders found</h3>
+              <p className="text-xs sm:text-sm text-gray-500 font-semibold">
                 There are currently no customer orders logged in the database.
               </p>
             </div>
@@ -237,7 +245,7 @@ const AdminOrders = () => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden"
+              className="glass-card rounded-[2.5rem] shadow-glass overflow-hidden"
             >
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-100 text-sm text-start">
@@ -251,11 +259,11 @@ const AdminOrders = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
-                    {orders.map((order) => {
+                    {orders.map((order, index) => {
                       const badge = getStatusBadge(order.status);
                       return (
                         <tr
-                          key={order.id}
+                          key={order.id || order._id || `order-${index}`}
                           className="hover:bg-slate-50/50 transition duration-150"
                         >
                           {/* User Details */}
@@ -326,7 +334,7 @@ const AdminOrders = () => {
                             <div className="relative inline-block w-40">
                               <select
                                 value={order.status}
-                                onChange={(e) => updateStatus(order.id, e.target.value)}
+                                onChange={(e) => updateStatus(order.id || order._id, e.target.value)}
                                 className="w-full text-xs font-bold text-gray-700 bg-white border border-gray-200 hover:border-gray-300 rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 cursor-pointer transition"
                               >
                                 <option value="paid">Paid</option>
@@ -382,10 +390,10 @@ const AdminOrders = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
-                    {returns.map((ret) => {
+                    {returns.map((ret, index) => {
                       const isPending = ret.status === "pending";
                       return (
-                        <tr key={ret._id || ret.id} className="hover:bg-slate-50/50 transition duration-150">
+                        <tr key={ret._id || ret.id || `ret-${index}`} className="hover:bg-slate-50/50 transition duration-150">
                           <td className="px-6 py-5 whitespace-nowrap">
                             <div className="text-start">
                               <p className="font-bold text-gray-800 text-sm">{ret.userId?.name || "Anonymous"}</p>

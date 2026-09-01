@@ -210,59 +210,62 @@ const ReturnPage = () => {
         title="Return Your Product" 
         description="Easy return and refund requests for your sancart orders." 
       />
-      <div className="min-h-screen bg-[#fffbeb] pt-28 pb-16 px-4 md:px-8 text-slate-800 font-sans">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 pt-28 text-slate-800 font-sans">
         
         {/* Header Hero Section */}
-        <div className="max-w-7xl mx-auto bg-gradient-to-r from-[#1b36e3] to-[#5094ff] rounded-[2rem] text-white p-8 md:p-12 mb-10 shadow-lg text-start flex flex-col md:flex-row justify-between items-start md:items-center gap-8 relative overflow-hidden">
-          <div className="z-10 max-w-xl">
-            <h1 className="text-3xl md:text-5xl font-black tracking-tight mb-3">Return Your Product</h1>
-            <p className="text-blue-100 text-sm md:text-base">
-              We're here to make your return process simple, straightforward, and completely hassle-free.
-            </p>
-          </div>
-          
+        <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
+          <span className="inline-block px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-primary-600 bg-primary-500/10 rounded-xl">
+            Returns & Refunds
+          </span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-955 tracking-tight leading-tight">
+            Return Your <span className="text-brand-gradient">Product</span>
+          </h1>
+          <p className="text-gray-500 text-sm sm:text-base leading-relaxed max-w-xl mx-auto font-semibold">
+            We're here to make your return process simple, straightforward, and completely hassle-free.
+          </p>
+
           {/* Benefit Pillars */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 z-10 w-full md:w-auto">
-            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10">
-              <FiCheckCircle className="text-xl text-amber-300 flex-shrink-0" />
-              <div className="text-left">
-                <h4 className="text-xs font-bold uppercase">Easy Returns</h4>
-                <p className="text-[10px] text-blue-100 mt-0.5">Hassle-free process</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 max-w-3xl mx-auto">
+            <div className="flex items-center gap-3 bg-white/40 backdrop-blur-md p-4 rounded-2xl border border-white/50 shadow-sm text-start">
+              <FiCheckCircle className="text-2xl text-primary-600 flex-shrink-0" />
+              <div>
+                <h4 className="text-xs font-extrabold text-gray-955 uppercase tracking-wider">Easy Returns</h4>
+                <p className="text-[10px] text-gray-500 font-semibold mt-0.5">Hassle-free process</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10">
-              <FiClock className="text-xl text-amber-300 flex-shrink-0" />
-              <div className="text-left">
-                <h4 className="text-xs font-bold uppercase">Quick Refunds</h4>
-                <p className="text-[10px] text-blue-100 mt-0.5">Within 5-7 days</p>
+            <div className="flex items-center gap-3 bg-white/40 backdrop-blur-md p-4 rounded-2xl border border-white/50 shadow-sm text-start">
+              <FiClock className="text-2xl text-primary-600 flex-shrink-0" />
+              <div>
+                <h4 className="text-xs font-extrabold text-gray-955 uppercase tracking-wider">Quick Refunds</h4>
+                <p className="text-[10px] text-gray-500 font-semibold mt-0.5">Within 5-7 days</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10">
-              <FiPhone className="text-xl text-amber-300 flex-shrink-0" />
-              <div className="text-left">
-                <h4 className="text-xs font-bold uppercase">24/7 Support</h4>
-                <p className="text-[10px] text-blue-100 mt-0.5">Here to help you</p>
+            <div className="flex items-center gap-3 bg-white/40 backdrop-blur-md p-4 rounded-2xl border border-white/50 shadow-sm text-start">
+              <FiPhone className="text-2xl text-primary-600 flex-shrink-0" />
+              <div>
+                <h4 className="text-xs font-extrabold text-gray-955 uppercase tracking-wider">24/7 Support</h4>
+                <p className="text-[10px] text-gray-500 font-semibold mt-0.5">Here to help you</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Main Grid: Left Side Stepper form & Right Side policy */}
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-8">
           
           {/* Left: Step Form Container */}
           <div className="flex-1 space-y-6">
             
             {/* Step 1: Select Order */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-sm text-start flex gap-5 items-start">
-              <div className="w-10 h-10 rounded-full bg-[#1b36e3] text-white flex items-center justify-center font-bold text-sm flex-shrink-0">
+            <div className="bg-white/40 backdrop-blur-md border border-white/50 rounded-[2rem] p-6 md:p-8 shadow-sm text-start flex gap-5 items-start">
+              <div className="w-10 h-10 rounded-full bg-brand-gradient text-white flex items-center justify-center font-black text-sm flex-shrink-0 shadow-md">
                 1
               </div>
               <div className="flex-1">
-                <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
-                  <FiFileText className="text-primary-500" /> Select Order
+                <h3 className="text-lg font-extrabold text-gray-955 flex items-center gap-2">
+                  <FiFileText className="text-primary-600" /> Select Order
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">Enter your order ID (available in your profile/emails).</p>
+                <p className="text-xs text-gray-500 font-semibold mt-1">Enter your order ID (available in your profile/emails).</p>
                 
                 <form onSubmit={handleFindOrder} className="mt-4 flex flex-col gap-3">
                   <div className="flex flex-col sm:flex-row gap-3">
@@ -272,9 +275,9 @@ const ReturnPage = () => {
                         placeholder="Enter Order Number (e.g. SAN...)"
                         value={orderNumber}
                         onChange={(e) => setOrderNumber(e.target.value)}
-                        className="w-full pl-4 pr-10 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#1b36e3]/20 focus:border-[#1b36e3] text-sm text-gray-800 placeholder-slate-400 transition"
+                        className="w-full pl-4 pr-10 py-3 rounded-2xl border border-white/60 bg-white/50 focus:outline-none focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 text-sm text-gray-800 font-semibold placeholder-gray-400 transition"
                       />
-                      <FiSearch className="absolute right-3.5 top-3.5 text-slate-400" />
+                      <FiSearch className="absolute right-3.5 top-3.5 text-gray-400" />
                     </div>
 
                     {!localStorage.getItem("token") && (
@@ -284,7 +287,7 @@ const ReturnPage = () => {
                           placeholder="Enter Registered Email"
                           value={registeredEmail}
                           onChange={(e) => setRegisteredEmail(e.target.value)}
-                          className="w-full pl-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#1b36e3]/20 focus:border-[#1b36e3] text-sm text-gray-800 placeholder-slate-400 transition"
+                          className="w-full pl-4 py-3 rounded-2xl border border-white/60 bg-white/50 focus:outline-none focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 text-sm text-gray-800 font-semibold placeholder-gray-400 transition"
                         />
                       </div>
                     )}
@@ -292,7 +295,7 @@ const ReturnPage = () => {
                   <button
                     type="submit"
                     disabled={loadingOrder}
-                    className="w-full sm:w-auto bg-slate-900 text-white font-bold px-6 py-3 rounded-2xl hover:bg-slate-800 active:scale-95 transition text-sm disabled:opacity-50 flex items-center justify-center gap-2 self-start"
+                    className="w-full sm:w-auto bg-gray-950 text-white font-bold px-6 py-3 rounded-2xl hover:bg-gray-850 active:scale-95 transition text-xs disabled:opacity-50 flex items-center justify-center gap-2 self-start shadow-md"
                   >
                     {loadingOrder ? "Searching..." : "Find My Order"}
                   </button>
@@ -301,15 +304,15 @@ const ReturnPage = () => {
             </div>
 
             {/* Step 2: Select Product */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-sm text-start flex gap-5 items-start">
-              <div className="w-10 h-10 rounded-full bg-[#1b36e3] text-white flex items-center justify-center font-bold text-sm flex-shrink-0">
+            <div className="bg-white/40 backdrop-blur-md border border-white/50 rounded-[2rem] p-6 md:p-8 shadow-sm text-start flex gap-5 items-start">
+              <div className="w-10 h-10 rounded-full bg-brand-gradient text-white flex items-center justify-center font-black text-sm flex-shrink-0 shadow-md">
                 2
               </div>
               <div className="flex-1">
-                <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
-                  <FiBox className="text-primary-500" /> Select Product
+                <h3 className="text-lg font-extrabold text-gray-955 flex items-center gap-2">
+                  <FiBox className="text-primary-600" /> Select Product
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">Select the item inside the order you want to return.</p>
+                <p className="text-xs text-gray-500 font-semibold mt-1">Select the item inside the order you want to return.</p>
 
                 {selectedOrder ? (
                   <div className="mt-4 space-y-3">
@@ -323,12 +326,12 @@ const ReturnPage = () => {
                           onClick={() => setSelectedProduct(item)}
                           className={`cursor-pointer border-2 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all duration-300 ${
                             isSelected 
-                              ? "border-[#1b36e3] bg-[#1b36e3]/5" 
-                              : "border-slate-100 hover:border-slate-200 bg-white"
+                              ? "border-primary-500 bg-primary-500/10 text-primary-600 shadow-sm" 
+                              : "border-white/60 hover:border-white/80 bg-white/40"
                           }`}
                         >
                           <div className="flex items-center gap-4">
-                            <div className="w-16 h-16 border border-slate-100 bg-slate-50 rounded-xl overflow-hidden flex items-center justify-center p-2 flex-shrink-0">
+                            <div className="w-16 h-16 border border-white/50 bg-white rounded-xl overflow-hidden flex items-center justify-center p-2 flex-shrink-0">
                               <img
                                 src={productDetails.images?.[0] || "/placeholder.svg"}
                                 alt={productDetails.name}
@@ -336,15 +339,15 @@ const ReturnPage = () => {
                               />
                             </div>
                             <div className="text-left">
-                              <h4 className="text-sm font-extrabold text-slate-800 line-clamp-1">
+                              <h4 className="text-sm font-extrabold text-gray-950 line-clamp-1">
                                 {productDetails.name || "Product Item"}
                               </h4>
                               {productDetails.brand && (
-                                <p className="text-[10px] text-slate-400 uppercase font-semibold mt-0.5">
+                                <p className="text-[10px] text-gray-400 uppercase font-bold mt-0.5">
                                   {productDetails.brand}
                                 </p>
                               )}
-                              <p className="text-xs text-[#1b36e3] font-extrabold mt-1">
+                              <p className="text-xs text-primary-600 font-black mt-1">
                                 ₹{productDetails.price || selectedOrder.totalAmount}
                               </p>
                             </div>
@@ -356,16 +359,16 @@ const ReturnPage = () => {
                               name="product-select"
                               checked={isSelected}
                               onChange={() => setSelectedProduct(item)}
-                              className="w-4 h-4 text-[#1b36e3] focus:ring-[#1b36e3]"
+                              className="w-4 h-4 text-primary-600 focus:ring-primary-500"
                             />
-                            <span className="text-xs font-bold text-slate-500">Select Product</span>
+                            <span className="text-xs font-extrabold text-gray-600">Select Product</span>
                           </div>
                         </div>
                       );
                     })}
                   </div>
                 ) : (
-                  <div className="mt-4 border border-dashed border-slate-200 rounded-2xl p-6 text-center text-xs text-slate-400 italic">
+                  <div className="mt-4 border border-dashed border-white/60 bg-white/20 rounded-2xl p-6 text-center text-xs text-gray-400 font-semibold italic">
                     Search and verify your order above to load product items.
                   </div>
                 )}
@@ -373,24 +376,24 @@ const ReturnPage = () => {
             </div>
 
             {/* Step 3: Reason for Return */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-sm text-start flex gap-5 items-start">
-              <div className="w-10 h-10 rounded-full bg-[#1b36e3] text-white flex items-center justify-center font-bold text-sm flex-shrink-0">
+            <div className="bg-white/40 backdrop-blur-md border border-white/50 rounded-[2rem] p-6 md:p-8 shadow-sm text-start flex gap-5 items-start">
+              <div className="w-10 h-10 rounded-full bg-brand-gradient text-white flex items-center justify-center font-black text-sm flex-shrink-0 shadow-md">
                 3
               </div>
               <div className="flex-1">
-                <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
-                  <FiHelpCircle className="text-primary-500" /> Why are you returning this product?
+                <h3 className="text-lg font-extrabold text-gray-955 flex items-center gap-2">
+                  <FiHelpCircle className="text-primary-600" /> Why are you returning this product?
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">Select the main reason for your request.</p>
+                <p className="text-xs text-gray-500 font-semibold mt-1">Select the main reason for your request.</p>
 
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {REASONS.map((r, index) => (
                     <label
                       key={index}
-                      className={`flex items-center gap-3 p-3.5 border rounded-2xl cursor-pointer text-xs font-bold text-slate-600 transition-all duration-300 ${
+                      className={`flex items-center gap-3 p-3.5 border rounded-2xl cursor-pointer text-xs font-extrabold transition-all duration-300 ${
                         reason === r 
-                          ? "border-[#1b36e3] bg-[#1b36e3]/5 text-[#1b36e3]" 
-                          : "border-slate-100 hover:border-slate-200 bg-white"
+                          ? "border-primary-500 bg-primary-500/10 text-primary-600 shadow-sm" 
+                          : "border-white/60 hover:border-white/80 bg-white/40 text-gray-700"
                       }`}
                     >
                       <input
@@ -399,7 +402,7 @@ const ReturnPage = () => {
                         value={r}
                         checked={reason === r}
                         onChange={() => setReason(r)}
-                        className="w-4 h-4 text-[#1b36e3] focus:ring-[#1b36e3]"
+                        className="w-4 h-4 text-primary-600 focus:ring-primary-500"
                       />
                       <span>{r}</span>
                     </label>
@@ -409,21 +412,21 @@ const ReturnPage = () => {
             </div>
 
             {/* Step 4: Add Details */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-sm text-start flex gap-5 items-start">
-              <div className="w-10 h-10 rounded-full bg-[#1b36e3] text-white flex items-center justify-center font-bold text-sm flex-shrink-0">
+            <div className="bg-white/40 backdrop-blur-md border border-white/50 rounded-[2rem] p-6 md:p-8 shadow-sm text-start flex gap-5 items-start">
+              <div className="w-10 h-10 rounded-full bg-brand-gradient text-white flex items-center justify-center font-black text-sm flex-shrink-0 shadow-md">
                 4
               </div>
               <div className="flex-1 space-y-6">
                 <div>
-                  <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
-                    <FiUpload className="text-primary-500" /> Tell us more & Upload Photos
+                  <h3 className="text-lg font-extrabold text-gray-955 flex items-center gap-2">
+                    <FiUpload className="text-primary-600" /> Tell us more & Upload Photos
                   </h3>
-                  <p className="text-xs text-slate-400 mt-1">Include details or photos to help verify the issue.</p>
+                  <p className="text-xs text-gray-500 font-semibold mt-1">Include details or photos to help verify the issue.</p>
                 </div>
 
                 {/* Textarea description */}
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block">
                     Describe your reason for return
                   </label>
                   <textarea
@@ -431,22 +434,22 @@ const ReturnPage = () => {
                     value={details}
                     onChange={(e) => setDetails(e.target.value)}
                     placeholder="Enter additional description details..."
-                    className="w-full border border-slate-200 rounded-2xl p-3.5 focus:ring-2 focus:ring-[#1b36e3]/20 focus:border-[#1b36e3] focus:outline-none transition text-sm text-slate-800 placeholder-slate-400"
+                    className="w-full border border-white/60 bg-white/50 rounded-2xl p-3.5 focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold placeholder-gray-400"
                   />
                 </div>
 
                 {/* Upload Section */}
                 <div className="space-y-3">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block">
                     Upload Photos (Optional - up to 5 photos)
                   </label>
                   
                   <div className="flex flex-wrap gap-3 items-center">
                     {/* Select Photo trigger box */}
                     {images.length < 5 && (
-                      <label className="w-20 h-20 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-[#1b36e3]/50 transition-colors text-slate-400">
-                        <FiUpload className="text-lg" />
-                        <span className="text-[8px] font-bold mt-1">Upload</span>
+                      <label className="w-20 h-20 border-2 border-dashed border-white/60 bg-white/40 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-primary-500 transition-colors text-gray-500">
+                        <FiUpload className="text-lg text-primary-600" />
+                        <span className="text-[8px] font-extrabold uppercase mt-1">Upload</span>
                         <input
                           type="file"
                           multiple
@@ -466,7 +469,7 @@ const ReturnPage = () => {
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.8, opacity: 0 }}
-                            className="w-20 h-20 border border-slate-100 rounded-2xl overflow-hidden relative group bg-slate-50 flex items-center justify-center p-1"
+                            className="w-20 h-20 border border-white/50 rounded-2xl overflow-hidden relative group bg-white flex items-center justify-center p-1 shadow-sm"
                           >
                             <img
                               src={preview.url}
@@ -489,7 +492,7 @@ const ReturnPage = () => {
 
                 {/* Choose Return Option */}
                 <div className="space-y-3 pt-2">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block">
                     Choose Return Option
                   </label>
                   
@@ -498,26 +501,26 @@ const ReturnPage = () => {
                       onClick={() => setReturnOption("Refund")}
                       className={`cursor-pointer p-4 rounded-2xl border-2 flex flex-col items-center justify-center text-center transition-all duration-300 ${
                         returnOption === "Refund"
-                          ? "border-[#1b36e3] bg-[#1b36e3]/5 text-[#1b36e3] shadow-md shadow-blue-500/5"
-                          : "border-slate-100 bg-white hover:border-slate-200 text-slate-500"
+                          ? "border-primary-500 bg-primary-500/10 text-primary-600 shadow-sm"
+                          : "border-white/60 bg-white/40 hover:border-white/80 text-gray-600"
                       }`}
                     >
                       <FiCheckCircle className="text-xl mb-1" />
                       <span className="text-xs font-black">Refund</span>
-                      <span className="text-[9px] text-slate-400 font-bold mt-1">Refund to your original method</span>
+                      <span className="text-[9px] text-gray-400 font-bold mt-1">Refund to your original method</span>
                     </div>
 
                     <div
                       onClick={() => setReturnOption("Replacement")}
                       className={`cursor-pointer p-4 rounded-2xl border-2 flex flex-col items-center justify-center text-center transition-all duration-300 ${
                         returnOption === "Replacement"
-                          ? "border-[#1b36e3] bg-[#1b36e3]/5 text-[#1b36e3] shadow-md shadow-blue-500/5"
-                          : "border-slate-100 bg-white hover:border-slate-200 text-slate-500"
+                          ? "border-primary-500 bg-primary-500/10 text-primary-600 shadow-sm"
+                          : "border-white/60 bg-white/40 hover:border-white/80 text-gray-600"
                       }`}
                     >
                       <FiBox className="text-xl mb-1" />
                       <span className="text-xs font-black">Replacement</span>
-                      <span className="text-[9px] text-slate-400 font-bold mt-1">Get the same item replaced</span>
+                      <span className="text-[9px] text-gray-400 font-bold mt-1">Get the same item replaced</span>
                     </div>
                   </div>
                 </div>
@@ -526,7 +529,7 @@ const ReturnPage = () => {
                 <button
                   onClick={handleSubmitReturn}
                   disabled={submitting}
-                  className="w-full bg-gradient-to-r from-[#1b36e3] to-[#5094ff] hover:shadow-lg hover:shadow-blue-500/20 text-white font-bold py-4 rounded-2xl transition active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
+                  className="w-full bg-brand-gradient text-white font-bold py-4 rounded-2xl shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] transform transition-all duration-200 disabled:opacity-50 flex items-center justify-center gap-2 text-xs sm:text-sm"
                 >
                   {submitting ? "Submitting Request..." : "Submit Return Request"}
                 </button>
@@ -534,20 +537,20 @@ const ReturnPage = () => {
             </div>
 
             {/* Call Support Center bottom highlight */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-start">
+            <div className="bg-white/40 backdrop-blur-md border border-white/50 rounded-[2rem] p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-start shadow-sm">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-[#1b36e3] text-lg">
+                <div className="w-10 h-10 rounded-xl bg-primary-500/10 flex items-center justify-center text-primary-600 text-lg">
                   <FiHelpCircle />
                 </div>
                 <div>
-                  <h4 className="text-sm font-extrabold text-slate-900">Need Help?</h4>
-                  <p className="text-xs text-slate-400 mt-0.5">Our support team is here to assist you.</p>
+                  <h4 className="text-sm font-extrabold text-gray-950">Need Help?</h4>
+                  <p className="text-xs text-gray-500 font-semibold mt-0.5">Our support team is here to assist you.</p>
                 </div>
               </div>
               
               <button
                 onClick={() => navigate("/contact")}
-                className="w-full sm:w-auto border border-slate-200 hover:border-slate-300 font-bold px-6 py-2.5 rounded-xl transition text-xs text-slate-600 bg-white text-center"
+                className="w-full sm:w-auto border border-white/70 hover:bg-white font-bold px-6 py-2.5 rounded-xl transition text-xs text-gray-800 bg-white/50 text-center shadow-sm"
               >
                 Contact Customer Support
               </button>
@@ -557,28 +560,28 @@ const ReturnPage = () => {
 
           {/* Right Sidebar: Policy Details */}
           <div className="w-full lg:w-80 flex-shrink-0">
-            <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm text-start space-y-6 lg:sticky lg:top-28">
-              <div className="flex items-center gap-2 pb-4 border-b border-slate-50">
-                <FiInfo className="text-[#1b36e3] text-lg" />
-                <h4 className="text-sm font-black text-slate-900">Return Policy Highlights</h4>
+            <div className="bg-white/40 border border-white/50 backdrop-blur-md rounded-[2rem] p-6 shadow-sm text-start space-y-6 lg:sticky lg:top-28">
+              <div className="flex items-center gap-2 pb-4 border-b border-white/30">
+                <FiInfo className="text-primary-600 text-lg" />
+                <h4 className="text-sm font-extrabold text-gray-955">Return Policy Highlights</h4>
               </div>
 
-              <div className="space-y-4 text-xs text-slate-500 leading-relaxed">
+              <div className="space-y-4 text-xs text-gray-600 font-semibold leading-relaxed">
                 <div>
-                  <h5 className="font-bold text-slate-700">Return Window</h5>
-                  <p className="mt-1">Return requests must be submitted within <strong>7 days</strong> of delivery.</p>
+                  <h5 className="font-extrabold text-gray-900">Return Window</h5>
+                  <p className="mt-1">Return requests must be submitted within <strong className="text-primary-600 font-extrabold">7 days</strong> of delivery.</p>
                 </div>
                 <div>
-                  <h5 className="font-bold text-slate-700">Condition Requirements</h5>
+                  <h5 className="font-extrabold text-gray-900">Condition Requirements</h5>
                   <p className="mt-1">Product must be unused, undamaged, and returned in original condition.</p>
                 </div>
                 <div>
-                  <h5 className="font-bold text-slate-700">Packaging</h5>
+                  <h5 className="font-extrabold text-gray-900">Packaging</h5>
                   <p className="mt-1">Original packaging, tags, invoices, and accessories must be included.</p>
                 </div>
                 <div>
-                  <h5 className="font-bold text-slate-700">Refund processing</h5>
-                  <p className="mt-1">Refunds are processed within <strong>5-7 business days</strong> after inspection.</p>
+                  <h5 className="font-extrabold text-gray-900">Refund processing</h5>
+                  <p className="mt-1">Refunds are processed within <strong className="text-primary-600 font-extrabold">5-7 business days</strong> after inspection.</p>
                 </div>
               </div>
             </div>
