@@ -15,6 +15,8 @@ import {
   FiFilter,
 } from "react-icons/fi";
 
+import ProductCardImageSlider from '../components/ProductCardImageSlider';
+
 const AdminDashboard = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -221,15 +223,12 @@ const AdminDashboard = () => {
                   className="glass-card rounded-3xl shadow-glass overflow-hidden flex flex-col justify-between text-start group hover:-translate-y-1 transition-all duration-300"
                 >
                   <div>
-                    {/* Image Showcase Frame */}
-                    <div className="h-36 sm:h-44 w-full relative overflow-hidden bg-gray-100/50">
-                      <img
-                        src={product.images?.[0] || "/placeholder.jpg"}
+                    {/* Image Showcase Frame with Slider */}
+                    <div className="relative w-full overflow-hidden">
+                      <ProductCardImageSlider
+                        images={product.images}
                         alt={product.name}
-                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-                        onError={(e) => {
-                          e.target.src = "/placeholder.jpg";
-                        }}
+                        aspectRatio="h-36 sm:h-44"
                       />
                       <span className="absolute top-2.5 right-2.5 bg-white/90 backdrop-blur-md border border-white/60 px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-black text-gray-955 shadow-sm z-10">
                         ₹{product.price}
@@ -255,34 +254,9 @@ const AdminDashboard = () => {
                         {product.name}
                       </h3>
 
-                      <p className="text-[11px] text-gray-500 font-semibold leading-relaxed line-clamp-1 mb-2">
+                      <p className="text-[11px] text-gray-500 font-semibold leading-relaxed line-clamp-1">
                         {product.description}
                       </p>
-
-                      {/* Image thumb preview stack */}
-                      {product.images && product.images.length > 1 && (
-                        <div className="mt-1 border-t border-white/30 pt-2">
-                          <div className="flex flex-wrap gap-1">
-                            {product.images.slice(0, 4).map((img, idx) => (
-                              <div key={idx} className="w-6 h-6 rounded-md border border-white/50 overflow-hidden flex items-center justify-center p-0.5 bg-white/50 shadow-sm">
-                                <img
-                                  src={img}
-                                  alt="Thumb"
-                                  className="max-w-full max-h-full object-contain"
-                                  onError={(e) => {
-                                    e.target.src = "/placeholder.jpg";
-                                  }}
-                                />
-                              </div>
-                            ))}
-                            {product.images.length > 4 && (
-                              <span className="text-[9px] font-bold text-gray-400 self-center">
-                                +{product.images.length - 4}
-                              </span>
-                            )} 
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </div>
 

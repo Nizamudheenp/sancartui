@@ -7,6 +7,8 @@ import { showToast } from '../utils/toast';
 import { addToGuestCart } from '../utils/guestCart';
 import { motion } from 'framer-motion';
 
+import ProductCardImageSlider from './ProductCardImageSlider';
+
 const ProductCard = ({ product, onClick }) => {
   const navigate = useNavigate();
 
@@ -35,7 +37,7 @@ const ProductCard = ({ product, onClick }) => {
     try {
       await api.post(
         "/api/products/addToCart",
-        { productId: product.id, quantity: 1 }
+        { productId: product.id || product._id, quantity: 1 }
       );
       showToast("success", "Added to cart!");
     } catch (err) {
@@ -54,22 +56,19 @@ const ProductCard = ({ product, onClick }) => {
       whileTap={{ scale: 0.98 }}
     >
       <div>
-        {/* Image Container - Stretches exactly to the top, left, and right outer card edges */}
-        <div className="relative w-full h-40 sm:h-52 bg-white flex items-center justify-center overflow-hidden border-b border-white/30 rounded-t-[1.95rem]">
-          <img
-            src={product.images?.[0] || '/placeholder.svg'}
+        {/* Image Container with Slider for Multi-Image */}
+        <div className="relative w-full border-b border-white/30 rounded-t-[1.95rem] overflow-hidden">
+          <ProductCardImageSlider
+            images={product.images}
             alt={product.name}
-            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
-            onError={(e) => {
-              e.target.src = "/placeholder.svg";
-            }}
+            aspectRatio="h-40 sm:h-52"
           />
           {product.brand ? (
-            <span className="absolute top-3 left-3 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-[#1b36e3] bg-white/95 rounded-lg shadow-sm border border-gray-100/50">
+            <span className="absolute top-3 left-3 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-[#1b36e3] bg-white/95 rounded-lg shadow-sm border border-gray-100/50">
               {product.brand}
             </span>
           ) : (
-            <span className="absolute top-3 left-3 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-amber-600 bg-amber-500/10 border border-amber-500/20 backdrop-blur-md rounded-lg">
+            <span className="absolute top-3 left-3 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-amber-600 bg-amber-500/10 border border-amber-500/20 backdrop-blur-md rounded-lg">
               Trending
             </span>
           )}

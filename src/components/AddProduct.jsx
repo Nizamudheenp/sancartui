@@ -31,17 +31,33 @@ const AddProduct = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const handleImageSelect = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    if (selectedFiles.length > 0) {
+      setImages((prev) => [...prev, ...selectedFiles]);
+    }
+  };
+
+  const removeImage = (indexToRemove) => {
+    setImages((prev) => prev.filter((_, idx) => idx !== indexToRemove));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (images.length === 0) {
+      showToast('error', 'Please select at least one product image.');
+      return;
+    }
+
     const formData = new FormData();
-    Array.from(images).forEach(image => formData.append('images', image));
+    images.forEach(image => formData.append('images', image));
 
     formData.append('name', name);
     formData.append('description', description);
     formData.append('price', price);
     formData.append('brand', brand);
     formData.append('category', category);
-    tags.forEach(tag =>formData.append('tags[]', tags));
+    tags.forEach(tag => formData.append('tags[]', tag));
 
     const token = localStorage.getItem('token');
     setLoading(true);
@@ -60,7 +76,7 @@ const AddProduct = () => {
       setTimeout(() => navigate('/admin/dashboard'), 1000);
     } catch (error) {
       setLoading(false);
-      showToast('error', 'Error adding product');
+      showToast('error', error.response?.data?.message || 'Error adding product');
     }
   };
 
@@ -173,15 +189,42 @@ const AddProduct = () => {
           </div>
 
           {/* Product Images Upload */}
-          <div className="space-y-1.5">
-            <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Product Images</label>
+          <div className="space-y-2">
+            <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Product Images (Multi-File Select)</label>
             <input
               type="file"
               multiple
-              onChange={(e) => setImages(Array.from(e.target.files))}
-              required
+              accept="image/*"
+              onChange={handleImageSelect}
               className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none text-xs text-gray-700 font-semibold cursor-pointer"
             />
+
+            {/* Selected Images Preview Grid */}
+            {images.length > 0 && (
+              <div className="mt-3 p-4 border border-white/60 bg-white/30 rounded-2xl">
+                <p className="text-[11px] font-bold text-gray-500 mb-2">
+                  Selected Images ({images.length}) - Will be auto-optimized to WebP:
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {images.map((file, idx) => {
+                    const objectUrl = URL.createObjectURL(file);
+                    return (
+                      <div key={idx} className="relative w-20 h-20 rounded-2xl border border-white/60 bg-white overflow-hidden p-1 shadow-sm group">
+                        <img src={objectUrl} alt={`Preview ${idx}`} className="w-full h-full object-cover rounded-xl" />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(idx)}
+                          className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-[10px] font-extrabold shadow-md hover:bg-red-600 transition"
+                          title="Remove image"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Submit Action */}
