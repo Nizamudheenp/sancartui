@@ -7,6 +7,7 @@ import { FaStar, FaRegStar, FaStarHalfAlt } from "react-icons/fa";
 import SEO from "../components/SEO";
 import { Helmet } from "react-helmet-async";
 import ProductCollection from "../components/ProductCollection";
+import ProductCardImageSlider from "../components/ProductCardImageSlider";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -15,7 +16,6 @@ const ProductDetails = () => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [user, setUser] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(0);
   const navigate = useNavigate();
 
   const getUserFromToken = () => {
@@ -49,6 +49,10 @@ const ProductDetails = () => {
 
   const handleSubmitReview = async (e) => {
     e.preventDefault();
+    if (!rating || rating < 1) {
+      showToast("error", "Please select a star rating before submitting!");
+      return;
+    }
     try {
       await api.post(
         `/api/products/addreview/${id}`,
@@ -171,8 +175,6 @@ const ProductDetails = () => {
     };
   }
 
-  const currentImageSrc = product.images?.[selectedImage] || product.images?.[0] || "/placeholder.svg";
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 pt-28 text-slate-800 font-sans">
       <SEO
@@ -191,44 +193,13 @@ const ProductDetails = () => {
       {/* Main Showcase Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-start mb-16">
 
-        {/* 1. Image Showcase Panel */}
-        <div className="flex flex-col gap-4 w-full">
-          <div className="glass-card rounded-[2.5rem] p-0 shadow-glass relative flex items-center justify-center h-[340px] sm:h-[480px] overflow-hidden bg-gray-100/50 border border-white/50">
-            <img
-              src={currentImageSrc}
-              alt={product.name}
-              className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-              onError={(e) => {
-                e.target.src = "/placeholder.svg";
-              }}
-            />
-          </div>
-
-          {/* Thumbnail Gallery Stack */}
-          {product.images && product.images.length > 1 && (
-            <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none">
-              {product.images.map((img, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setSelectedImage(idx)}
-                  className={`w-20 h-20 rounded-2xl border transition-all p-1 flex-shrink-0 bg-white/50 overflow-hidden shadow-sm ${
-                    selectedImage === idx
-                      ? "border-primary-500 ring-2 ring-primary-500/20 scale-105"
-                      : "border-white/60 hover:border-gray-300"
-                  }`}
-                >
-                  <img
-                    src={img}
-                    alt={`Thumbnail ${idx + 1}`}
-                    className="w-full h-full object-contain"
-                    onError={(e) => {
-                      e.target.src = "/placeholder.svg";
-                    }}
-                  />
-                </button>
-              ))}
-            </div>
-          )}
+        {/* 1. Image Showcase Panel (Slider Carousel) */}
+        <div className="glass-card rounded-[2.5rem] p-0 shadow-glass relative overflow-hidden bg-gray-100/50 border border-white/50 w-full">
+          <ProductCardImageSlider
+            images={product.images}
+            alt={product.name}
+            aspectRatio="h-[340px] sm:h-[480px]"
+          />
         </div>
 
         {/* 2. Details Info Card */}
@@ -309,7 +280,6 @@ const ProductDetails = () => {
                   rows="4"
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  required
                   placeholder="What did you like or dislike about this item?"
                   className="w-full border border-white/60 bg-white/50 rounded-2xl p-4 text-sm text-gray-800 font-semibold focus:outline-none focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 transition-all placeholder-gray-400"
                 ></textarea>

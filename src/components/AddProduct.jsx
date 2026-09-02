@@ -141,7 +141,7 @@ const AddProduct = () => {
               <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Brand</label>
               <input
                 type="text"
-                placeholder="Brand Name (Optional)"
+                placeholder="Brand Name"
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}
                 className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold placeholder-gray-400"
