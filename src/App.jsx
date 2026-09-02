@@ -7,6 +7,7 @@ import AdminRoute from './components/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
 import { Toaster } from 'react-hot-toast';
 import ScrollToTop from './components/ScrollToTop';
+import ErrorBoundary from './components/ErrorBoundary';
 import { setupResponseInterceptor } from './utils/api';
 import { showToast } from './utils/toast';
 
@@ -16,7 +17,6 @@ const Home = lazy(() => import('./pages/Home'));
 const Shop = lazy(() => import('./pages/Shop'));
 const ProductDetails = lazy(() => import('./pages/ProductPage'));
 const CartPage = lazy(() => import('./pages/CartPage'));
-const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
 const PaymentPage = lazy(() => import('./pages/PaymentPage'));
 const PaymentSuccess = lazy(() => import('./pages/PaymentSuccess'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -33,6 +33,7 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsConditions = lazy(() => import('./pages/TermsConditions'));
 const Help = lazy(() => import('./pages/Help'));
+const ReturnPage = lazy(() => import('./pages/ReturnPage'));
 
 
 const PageLoader = () => (
@@ -55,64 +56,64 @@ function App() {
       <ScrollToTop />
       <Header />
 
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/product/:id" element={<ProductDetails />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/coming-soon" element={<ComingSoon />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/payment" element={<PaymentPage />} />
-          <Route path="/payment-success" element={<PaymentSuccess />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path='/myorders' element={
-            <ProtectedRoute>
-              <UserOrders />
-            </ProtectedRoute>
-          } />
-          <Route path='/about' element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<TermsConditions />} />
-          <Route path="/help" element={<Help />} />
-
-          <Route
-            path="/admin/dashboard"
-            element={
-              <AdminRoute>
-                <AdminDashboard />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/admin/add-product"
-            element={
-              <AdminRoute>
-                <AddProduct />
-              </AdminRoute>
-            }
-          />
-          <Route
-            path="/admin/edit-product/:id"
-            element={
-              <AdminRoute>
-                <EditProduct />
-              </AdminRoute>
-            }
-          />
-          <Route path="/admin/orders"
-            element={
-              <AdminRoute>
-                <AdminOrders />
-              </AdminRoute>
+      <ErrorBoundary>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/coming-soon" element={<ComingSoon />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<PaymentPage />} />
+            <Route path="/payment-success" element={<PaymentSuccess />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path='/myorders' element={
+              <ProtectedRoute>
+                <UserOrders />
+              </ProtectedRoute>
             } />
-          <Route path="*" element={<NotFound />} />
+            <Route path='/about' element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsConditions />} />
+            <Route path="/help" element={<Help />} />
+            <Route path="/returns" element={<ReturnPage />} />
 
-
-        </Routes>
-      </Suspense>
+            <Route
+              path="/admin/dashboard"
+              element={
+                <AdminRoute>
+                  <AdminDashboard />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/add-product"
+              element={
+                <AdminRoute>
+                  <AddProduct />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/edit-product/:id"
+              element={
+                <AdminRoute>
+                  <EditProduct />
+                </AdminRoute>
+              }
+            />
+            <Route path="/admin/orders"
+              element={
+                <AdminRoute>
+                  <AdminOrders />
+                </AdminRoute>
+              } />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
 
       {shouldShowFooter && <Footer />}
 

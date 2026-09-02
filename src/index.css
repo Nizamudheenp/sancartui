@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..950;1,400..950&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,23 +10,45 @@
 }
 
 html, body, #root {
-  height: 100%;
-  font-family:Georgia, 'Times New Roman', Times, serif;
-  background-color: #fffbeb;
+  min-height: 100%;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #f8fafc;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(255, 122, 24, 0.14) 0%, transparent 45%),
+    radial-gradient(circle at 85% 20%, rgba(30, 59, 240, 0.16) 0%, transparent 45%),
+    radial-gradient(circle at 50% 85%, rgba(255, 122, 24, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 85%, rgba(30, 59, 240, 0.12) 0%, transparent 45%);
+  background-attachment: fixed;
 }
 
 @layer utilities {
   .bg-brand-gradient {
-    background: linear-gradient(135deg, #1b36e3 0%, #60b2ff 100%);
+    background: linear-gradient(135deg, #1e3a8a 0%, #1b36e3 50%, #60a5fa 100%);
   }
   .text-brand-gradient {
-    background: linear-gradient(135deg, #1b36e3 0%, #60b2ff 100%);
+    background: linear-gradient(135deg, #1e3a8a 0%, #1b36e3 50%, #60a5fa 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
   }
   .bg-section-fade {
-    background: linear-gradient(to bottom, #fffbeb 0%, #ffffff 20%, #ffffff 80%, #fffbeb 100%);
+    background: linear-gradient(to bottom, rgba(248, 250, 252, 0) 0%, rgba(255, 255, 255, 0.5) 20%, rgba(255, 255, 255, 0.5) 80%, rgba(248, 250, 252, 0) 100%);
+  }
+  .glass-card {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 
+      0 8px 32px 0 rgba(31, 38, 135, 0.06), 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
+  }
+  .glass-card-dark {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
   }
 }

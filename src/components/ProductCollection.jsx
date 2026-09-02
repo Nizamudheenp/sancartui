@@ -7,6 +7,8 @@ import { showToast } from '../utils/toast';
 import { addToGuestCart } from '../utils/guestCart';
 import { motion } from 'framer-motion';
 
+import ProductCardImageSlider from './ProductCardImageSlider';
+
 const ProductCard = ({ product, onClick }) => {
   const navigate = useNavigate();
 
@@ -35,7 +37,7 @@ const ProductCard = ({ product, onClick }) => {
     try {
       await api.post(
         "/api/products/addToCart",
-        { productId: product.id, quantity: 1 }
+        { productId: product.id || product._id, quantity: 1 }
       );
       showToast("success", "Added to cart!");
     } catch (err) {
@@ -47,54 +49,78 @@ const ProductCard = ({ product, onClick }) => {
   return (
     <motion.div
       onClick={onClick}
-      className="group relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-[2rem] border border-gray-100 bg-white p-3 sm:p-4 shadow-sm hover:shadow-[0_15px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+      className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] border border-white/50 bg-white/20 backdrop-blur-md shadow-glass hover:shadow-glass-hover hover:-translate-y-1.5 transition-all duration-500 cursor-pointer"
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.5 }}
       whileTap={{ scale: 0.98 }}
     >
       <div>
-        {/* Constrained Height Image Container */}
-        <div className="relative overflow-hidden h-32 sm:h-48 w-full bg-slate-50/70 rounded-xl sm:rounded-2xl p-2 sm:p-4 flex items-center justify-center transition-colors duration-300 group-hover:bg-slate-50">
-          <img
-            src={product.images?.[0] || '/placeholder.svg'}
+        {/* Image Container with Slider for Multi-Image */}
+        <div className="relative w-full border-b border-white/30 rounded-t-[1.95rem] overflow-hidden">
+          <ProductCardImageSlider
+            images={product.images}
             alt={product.name}
-            className="max-w-[85%] max-h-[85%] object-contain transform group-hover:scale-105 transition-transform duration-500"
-            onError={(e) => {
-              e.target.src = "/placeholder.svg";
-            }}
+            aspectRatio="h-40 sm:h-52"
           />
-          {product.brand && (
-            <span className="absolute top-2 left-2 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider text-[#1b36e3] bg-white/95 rounded shadow-sm border border-gray-100/50">
+          {product.brand ? (
+            <span className="absolute top-3 left-3 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-[#1b36e3] bg-white/95 rounded-lg shadow-sm border border-gray-100/50">
               {product.brand}
+            </span>
+          ) : (
+            <span className="absolute top-3 left-3 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-amber-600 bg-amber-500/10 border border-amber-500/20 backdrop-blur-md rounded-lg">
+              Trending
             </span>
           )}
         </div>
 
-        {/* Text details */}
-        <div className="px-0.5 pt-3 sm:pt-4 pb-1 text-start">
-          <h5 className="text-gray-900 font-extrabold text-xs sm:text-sm leading-snug group-hover:text-[#1b36e3] transition-colors truncate">
+        {/* Details Section - Padded inside */}
+        <div className="p-4 sm:p-5 text-start">
+          <span className="text-[9px] font-extrabold text-gray-450 uppercase tracking-widest block mb-1">
+            {product.category || "Trending Item"}
+          </span>
+          <h5 
+            className="text-gray-950 font-black text-xs sm:text-sm leading-snug group-hover:text-primary-500 transition-colors"
+            style={{
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              height: "2.5rem"
+            }}
+          >
             {product.name}
           </h5>
-          <div className="flex items-center gap-1 mt-1 sm:mt-1.5 flex-wrap">
-            <div className="flex text-[10px] sm:text-xs">{renderStars()}</div>
-            <span className="text-gray-400 text-[9px] sm:text-[10px] font-bold">({product.numReviews || 0})</span>
-          </div>
         </div>
       </div>
 
-      {/* Card bottom section with Add To Cart button as a block */}
-      <div className="px-0.5 pt-2 sm:pt-3 border-t border-gray-50 mt-3 sm:mt-4 flex flex-col text-start">
-        <span className="text-[8px] font-bold text-gray-400 uppercase tracking-wider block">Price</span>
-        <h4 className="text-base sm:text-lg font-black text-gray-950 leading-none mt-0.5 sm:mt-1">₹{product.price}</h4>
+      {/* Bottom price and action bar - Padded inside, responsive stacking for mobile */}
+      <div className="px-4 sm:px-5 pb-4 sm:pb-5 pt-3 border-t border-white/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="text-start">
+          <span className="text-[8px] font-bold text-gray-400 uppercase tracking-widest block">Price</span>
+          <h4 className="text-sm sm:text-base font-black text-gray-950">₹{product.price}</h4>
+        </div>
 
-        <button
-          onClick={handleAddToCart}
-          className="w-full mt-2.5 flex items-center justify-center gap-1.5 py-2 sm:py-3 text-[10px] sm:text-xs font-bold rounded-lg sm:rounded-xl text-white bg-brand-gradient hover:shadow-md active:scale-95 transition-all duration-200"
-        >
-          <FiShoppingCart className="text-xs sm:text-sm" />
-          <span>Add to Cart</span>
-        </button>
+        {/* Ratings and Cart Action Row - spans full width on mobile, aligns right on desktop */}
+        <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto">
+          {/* Dynamic rating value display */}
+          {product.rating > 0 ? (
+            <div className="flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded-xl text-amber-600 text-[9px] font-black">
+              <span>{product.rating.toFixed(1)}</span>
+              <span>★</span>
+            </div>
+          ) : (
+            <div className="flex-shrink-0" />
+          )}
+
+          <button
+            onClick={handleAddToCart}
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-white/80 bg-white hover:bg-primary-500 hover:text-white text-gray-800 flex items-center justify-center shadow-md active:scale-90 transform transition-all duration-300"
+          >
+            <FiShoppingCart className="text-xs sm:text-sm" />
+          </button>
+        </div>
       </div>
     </motion.div>
   );
@@ -127,7 +153,7 @@ const ProductCollection = ({ title, tag, category, search, limit }) => {
   if (!products.length) return null;
 
   return (
-    <section className="max-w-[1300px] mx-auto px-6 md:px-8 py-16" id="Product-1">
+    <section className="max-w-[1300px] mx-auto px-0 md:px-8 py-8 md:py-16" id="Product-1">
       <div className="max-w-xl text-start mb-10">
         <motion.h2
           className="text-2xl md:text-4xl font-extrabold text-gray-950 tracking-tight"

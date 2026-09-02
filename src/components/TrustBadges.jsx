@@ -26,26 +26,22 @@ const TrustBadges = () => {
   ];
 
   return (
-    <section className="py-12 bg-[linear-gradient(to_bottom,#fffbeb_0%,#ffffff_20%,#ffffff_80%,#fffbeb_100%)]">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {badges.map((badge, idx) => (
-            <div
-              key={idx}
-              className="flex items-center gap-4 p-6 bg-white/80 backdrop-blur-md rounded-2xl border border-white/50 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1"
-            >
-              <div className="p-3 bg-primary-50 rounded-xl">
-                {badge.icon}
-              </div>
-              <div>
-                <h4 className="font-bold text-gray-900 text-base">{badge.title}</h4>
-                <p className="text-sm text-gray-500 mt-1">{badge.desc}</p>
-              </div>
-            </div>
-          ))}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {badges.map((badge, idx) => (
+        <div
+          key={idx}
+          className="flex items-center gap-4 p-5 bg-white/40 backdrop-blur-md rounded-2xl border border-white/50 shadow-glass transition-all duration-300 transform hover:-translate-y-1"
+        >
+          <div className="p-3 bg-primary-500/10 rounded-xl text-primary-600">
+            {badge.icon}
+          </div>
+          <div>
+            <h4 className="font-extrabold text-gray-900 text-sm sm:text-base">{badge.title}</h4>
+            <p className="text-xs text-gray-500 mt-1 font-medium">{badge.desc}</p>
+          </div>
         </div>
-      </div>
-    </section>
+      ))}
+    </div>
   );
 };
 

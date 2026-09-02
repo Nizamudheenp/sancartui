@@ -221,18 +221,18 @@ const UserOrders = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50/50 px-4 md:px-8 pt-28 pb-16">
-      <div className="max-w-5xl mx-auto">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 pt-28">
+      <div>
         {/* Page Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
           <div className="text-start">
-            <span className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary-600 bg-primary-50 rounded-lg mb-3">
+            <span className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary-600 bg-primary-500/10 rounded-lg mb-3">
               Dashboard
             </span>
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-black text-gray-955 tracking-tight">
               Order History
             </h2>
-            <p className="text-gray-500 text-sm mt-1">
+            <p className="text-gray-500 text-sm font-semibold mt-1">
               Manage and track your recent orders
             </p>
           </div>
@@ -243,18 +243,18 @@ const UserOrders = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white border border-gray-100 rounded-3xl p-12 text-center max-w-lg mx-auto shadow-sm"
+            className="glass-card rounded-[2.5rem] p-12 text-center max-w-lg mx-auto shadow-glass"
           >
-            <div className="w-16 h-16 rounded-full bg-slate-50 border border-gray-100 flex items-center justify-center mx-auto mb-6 text-2xl text-gray-400">
+            <div className="w-16 h-16 rounded-full bg-white/40 border border-white/50 flex items-center justify-center mx-auto mb-6 text-2xl text-primary-600 shadow-sm">
               <FiShoppingBag />
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-2">No orders yet</h3>
-            <p className="text-sm text-gray-500 mb-6">
+            <h3 className="text-lg font-extrabold text-gray-955 mb-2">No orders yet</h3>
+            <p className="text-xs sm:text-sm text-gray-500 font-semibold mb-6">
               Looks like you haven't placed any orders. Start exploring our shop!
             </p>
             <button
               onClick={() => navigate("/shop")}
-              className="px-6 py-2.5 text-xs font-bold rounded-full text-white bg-gradient-to-r from-primary-500 to-indigo-600 hover:shadow-md hover:shadow-primary-500/10 transition active:scale-95 flex items-center gap-2 mx-auto"
+              className="px-6 py-3 text-xs font-bold rounded-full text-white bg-brand-gradient hover:shadow-md transition active:scale-95 flex items-center gap-2 mx-auto"
             >
               Start Shopping <FiArrowRight />
             </button>
@@ -263,43 +263,43 @@ const UserOrders = () => {
           <>
             {/* Quick Stats Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10 text-start">
-              <div className="bg-white border border-gray-100/80 p-6 rounded-2xl shadow-sm flex items-center gap-4">
-                <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center text-primary-500 text-xl flex-shrink-0">
+              <div className="bg-white/40 backdrop-blur-md border border-white/50 p-6 rounded-3xl shadow-sm flex items-center gap-4">
+                <div className="w-12 h-12 bg-primary-500/10 rounded-2xl flex items-center justify-center text-primary-600 text-xl flex-shrink-0">
                   <FiPackage />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+                  <p className="text-xs font-extrabold text-gray-400 uppercase tracking-wider">
                     Total Orders
                   </p>
-                  <p className="text-2xl font-black text-gray-900 mt-0.5">
+                  <p className="text-2xl font-black text-gray-955 mt-0.5">
                     {totalOrdersCount}
                   </p>
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-100/80 p-6 rounded-2xl shadow-sm flex items-center gap-4">
-                <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-500 text-xl flex-shrink-0">
+              <div className="bg-white/40 backdrop-blur-md border border-white/50 p-6 rounded-3xl shadow-sm flex items-center gap-4">
+                <div className="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-600 text-xl flex-shrink-0">
                   <FiCreditCard />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+                  <p className="text-xs font-extrabold text-gray-400 uppercase tracking-wider">
                     Total Spent
                   </p>
-                  <p className="text-2xl font-black text-gray-900 mt-0.5">
+                  <p className="text-2xl font-black text-gray-955 mt-0.5">
                     ₹{totalSpent}
                   </p>
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-100/80 p-6 rounded-2xl shadow-sm flex items-center gap-4">
-                <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-amber-500 text-xl flex-shrink-0">
+              <div className="bg-white/40 backdrop-blur-md border border-white/50 p-6 rounded-3xl shadow-sm flex items-center gap-4">
+                <div className="w-12 h-12 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-600 text-xl flex-shrink-0">
                   <FiClock className="animate-pulse" />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+                  <p className="text-xs font-extrabold text-gray-400 uppercase tracking-wider">
                     Active Orders
                   </p>
-                  <p className="text-2xl font-black text-gray-900 mt-0.5">
+                  <p className="text-2xl font-black text-gray-955 mt-0.5">
                     {activeOrdersCount}
                   </p>
                 </div>
@@ -313,35 +313,37 @@ const UserOrders = () => {
               animate="show"
               className="grid gap-6 md:grid-cols-2"
             >
-              {orders.map((order) => {
+              {orders.map((order, orderIndex) => {
                 const badge = getStatusBadge(order.status);
+                const orderKey = order.id || order._id || `user-order-${orderIndex}`;
+
                 return (
                   <motion.div
-                    key={order.id}
+                    key={orderKey}
                     variants={cardVariants}
-                    className="bg-white border border-gray-100/80 rounded-3xl shadow-sm p-6 hover:shadow-md transition-all duration-300 flex flex-col justify-between text-start"
+                    className="glass-card rounded-[2.5rem] p-6 shadow-glass hover:shadow-md transition-all duration-300 flex flex-col justify-between text-start"
                   >
                     <div>
                       {/* Card Header Info */}
-                      <div className="flex items-start justify-between gap-4 mb-4 pb-4 border-b border-gray-50">
+                      <div className="flex items-start justify-between gap-4 mb-4 pb-4 border-b border-white/30">
                         <div>
-                          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wide">
+                          <span className="text-[10px] font-black text-gray-400 uppercase tracking-wider">
                             Order Reference
                           </span>
-                          <p className="text-sm font-black text-gray-800 tracking-tight truncate max-w-[180px] sm:max-w-xs">
-                            #{order.id.substring(order.id.length - 8).toUpperCase()}
+                          <p className="text-sm font-black text-gray-955 tracking-tight truncate max-w-[180px] sm:max-w-xs">
+                            {(order.id && order.id.startsWith("SAN")) ? order.id : `#${(order.id || '').substring(Math.max(0, (order.id || '').length - 8)).toUpperCase()}`}
                           </p>
                         </div>
                         <div
                           className={`flex items-center gap-1.5 px-3 py-1 text-xs font-bold border rounded-full ${badge.bg}`}
                         >
                           {badge.icon}
-                          <span>{order.status}</span>
+                          <span className="capitalize">{order.status}</span>
                         </div>
                       </div>
 
                       {/* Placed Date & Billing */}
-                      <div className="grid grid-cols-2 gap-4 mb-5 text-xs text-gray-500">
+                      <div className="grid grid-cols-2 gap-4 mb-5 text-xs text-gray-500 font-semibold">
                         <div className="flex items-center gap-2">
                           <FiCalendar className="text-gray-400 flex-shrink-0" />
                           <span>
@@ -354,50 +356,63 @@ const UserOrders = () => {
                         </div>
                         <div className="flex items-center gap-2">
                           <FiCreditCard className="text-gray-400 flex-shrink-0" />
-                          <span className="font-bold text-gray-900">
+                          <span className="font-black text-gray-955">
                             Total: ₹{order.totalAmount}
                           </span>
                         </div>
                       </div>
 
                       {/* Products Stack */}
-                      <div className="mb-5 bg-slate-50/50 border border-slate-100 rounded-2xl p-4">
-                        <p className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">
+                      <div className="mb-5 bg-white/40 border border-white/50 rounded-2xl p-4">
+                        <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-3">
                           Items Summary
                         </p>
                         <div className="space-y-3.5">
-                          {order.products.map((item, index) => (
-                            <div
-                              key={index}
-                              className="flex items-center gap-3 text-sm"
-                            >
-                              <div className="w-10 h-10 bg-white border border-gray-100 rounded-lg flex items-center justify-center p-1.5 overflow-hidden flex-shrink-0">
-                                <img
-                                  src={item.product?.images?.[0] || "/placeholder.svg"}
-                                  alt={item.product?.name}
-                                  className="max-w-full max-h-full object-contain"
-                                  onError={(e) => {
-                                    e.target.src = "/placeholder.svg";
-                                  }}
-                                />
+                          {order.products.map((item, index) => {
+                            const canReturn = order.status?.toLowerCase() === "delivered";
+                            return (
+                              <div
+                                key={index}
+                                className="flex items-center justify-between gap-3 text-sm"
+                              >
+                                <div className="flex items-center gap-3 min-w-0 flex-1">
+                                  <div className="w-10 h-10 bg-white border border-white/50 rounded-xl flex items-center justify-center p-1.5 overflow-hidden flex-shrink-0 shadow-sm">
+                                    <img
+                                      src={item.product?.images?.[0] || "/placeholder.svg"}
+                                      alt={item.product?.name}
+                                      className="max-w-full max-h-full object-contain"
+                                      onError={(e) => {
+                                        e.target.src = "/placeholder.svg";
+                                      }}
+                                    />
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <p className="font-extrabold text-gray-955 text-xs truncate leading-snug">
+                                      {item.product?.name || "Product Item"}
+                                    </p>
+                                    <p className="text-[10px] text-gray-400 font-bold mt-0.5">
+                                      Quantity: {item.quantity}
+                                    </p>
+                                  </div>
+                                </div>
+                                {canReturn && (
+                                  <button
+                                    onClick={() => navigate(`/returns?orderId=${order.id || order._id}&productId=${item.product?.id || item.product?._id}`)}
+                                    className="text-[10px] font-bold text-primary-600 hover:text-primary-700 bg-primary-500/10 hover:bg-primary-500/20 px-3 py-2 rounded-xl transition-all duration-200 flex-shrink-0"
+                                  >
+                                    Return
+                                  </button>
+                                )}
                               </div>
-                              <div className="flex-1 min-w-0">
-                                <p className="font-bold text-gray-800 text-xs truncate leading-snug">
-                                  {item.product?.name || "Product Item"}
-                                </p>
-                                <p className="text-[10px] text-gray-400 font-medium mt-0.5">
-                                  Quantity: {item.quantity}
-                                </p>
-                              </div>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       </div>
                     </div>
 
                     {/* Shipping Address Section & Collapsible Tracking */}
-                    <div className="pt-4 border-t border-gray-50 flex flex-col gap-3">
-                      <div className="flex items-start gap-2 text-xs text-gray-500">
+                    <div className="pt-4 border-t border-white/30 flex flex-col gap-3">
+                      <div className="flex items-start gap-2 text-xs text-gray-500 font-semibold">
                         <FiMapPin className="text-gray-400 mt-0.5 flex-shrink-0" />
                         <p className="line-clamp-2 leading-relaxed">
                           {order.shippingAddress || "No shipping address provided."}
@@ -407,7 +422,7 @@ const UserOrders = () => {
                       <div className="flex gap-2.5">
                         <button
                           onClick={() => setExpandedOrderId(expandedOrderId === order.id ? null : order.id)}
-                          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-4 text-[10px] font-bold text-slate-700 bg-slate-50 hover:bg-slate-100/80 rounded-xl transition-all border border-slate-100"
+                          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-4 text-[10px] font-bold text-gray-800 bg-white/50 hover:bg-white rounded-xl transition-all border border-white/60 shadow-sm"
                         >
                           <span>{expandedOrderId === order.id ? "Hide Tracking" : "Track Shipment"}</span>
                           {expandedOrderId === order.id ? <FiChevronUp className="text-xs" /> : <FiChevronDown className="text-xs" />}
@@ -415,8 +430,8 @@ const UserOrders = () => {
 
                         {["pending", "processing", "paid", "succeeded"].includes(order.status?.toLowerCase()) && (
                           <button
-                            onClick={() => handleCancelOrder(order.id)}
-                            className="px-4 py-2.5 text-[10px] font-bold text-red-600 bg-red-50 hover:bg-red-100/80 rounded-xl transition-all border border-red-100/50"
+                            onClick={() => handleCancelOrder(order.id || order._id)}
+                            className="px-4 py-2.5 text-[10px] font-bold text-red-600 bg-red-500/10 hover:bg-red-500/20 rounded-xl transition-all border border-red-200 shadow-sm"
                           >
                             Cancel Order
                           </button>
@@ -429,7 +444,7 @@ const UserOrders = () => {
                           animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.25 }}
-                          className="overflow-hidden border-t border-slate-100 pt-2"
+                          className="overflow-hidden border-t border-white/30 pt-2"
                         >
                           <OrderTrackerTimeline order={order} />
                         </motion.div>

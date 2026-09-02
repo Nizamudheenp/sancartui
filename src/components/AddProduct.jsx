@@ -31,17 +31,33 @@ const AddProduct = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const handleImageSelect = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    if (selectedFiles.length > 0) {
+      setImages((prev) => [...prev, ...selectedFiles]);
+    }
+  };
+
+  const removeImage = (indexToRemove) => {
+    setImages((prev) => prev.filter((_, idx) => idx !== indexToRemove));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (images.length === 0) {
+      showToast('error', 'Please select at least one product image.');
+      return;
+    }
+
     const formData = new FormData();
-    Array.from(images).forEach(image => formData.append('images', image));
+    images.forEach(image => formData.append('images', image));
 
     formData.append('name', name);
     formData.append('description', description);
     formData.append('price', price);
     formData.append('brand', brand);
     formData.append('category', category);
-    tags.forEach(tag =>formData.append('tags[]', tags));
+    tags.forEach(tag => formData.append('tags[]', tag));
 
     const token = localStorage.getItem('token');
     setLoading(true);
@@ -60,98 +76,169 @@ const AddProduct = () => {
       setTimeout(() => navigate('/admin/dashboard'), 1000);
     } catch (error) {
       setLoading(false);
-      showToast('error', 'Error adding product');
+      showToast('error', error.response?.data?.message || 'Error adding product');
     }
   };
 
   return (
-    <div className="mt-16 p-6">
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-md space-y-4"
-      >
-        <input
-          type="text"
-          placeholder="Product Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <textarea
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <input
-          type="number"
-          placeholder="Price"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          required
-          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <div className="text-start space-y-1.5">
-          <label className="block text-sm font-semibold text-gray-700">Category</label>
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
-            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
-          >
-            {CATEGORY_OPTIONS.map((c) => (
-              <option key={c.value} value={c.value}>{c.label}</option>
-            ))}
-          </select>
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 pt-28">
+      <div className="glass-card rounded-[2.5rem] p-6 sm:p-10 shadow-glass text-start">
+        {/* Page Title Header */}
+        <div className="mb-8 border-b border-white/30 pb-6">
+          <span className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary-600 bg-primary-500/10 rounded-lg mb-2">
+            Catalog Management
+          </span>
+          <h2 className="text-2xl sm:text-4xl font-black text-gray-955 tracking-tight">
+            Add New Product
+          </h2>
+          <p className="text-gray-500 text-xs sm:text-sm font-semibold mt-1">
+            Fill in the details below to add a new item to your store catalog.
+          </p>
         </div>
-        <input
-          type="text"
-          placeholder="Brand"
-          value={brand}
-          onChange={(e) => setBrand(e.target.value)}
-          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <div className="text-start space-y-2">
-          <label className="block text-sm font-semibold text-gray-700">Product Collections (Tags)</label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-3 border border-gray-200 rounded-lg">
-            {TAG_OPTIONS.map((t) => (
-              <label key={t.value} className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={tags.includes(t.value)}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setTags([...tags, t.value]);
-                    } else {
-                      setTags(tags.filter((item) => item !== t.value));
-                    }
-                  }}
-                  className="rounded text-blue-500 focus:ring-blue-400"
-                />
-                <span>{t.label}</span>
-              </label>
-            ))}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Product Name */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Product Name</label>
+            <input
+              type="text"
+              placeholder="e.g. Wireless Noise-Canceling Headphones"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold placeholder-gray-400"
+            />
           </div>
-        </div>
-        <input
-          type="file"
-          multiple
-          onChange={(e) => setImages(Array.from(e.target.files))}
-          required
-          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className={`w-full py-3 mt-2 rounded-lg font-semibold text-white transition-all ${
-            loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-brand-gradient hover:shadow-md'
-          }`}
-        >
-          {loading ? 'Adding...' : 'Add Product'}
-        </button>
-      </form>
+
+          {/* Description */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Description</label>
+            <textarea
+              rows="4"
+              placeholder="Detailed product overview..."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+              className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold placeholder-gray-400"
+            />
+          </div>
+
+          {/* Price & Brand Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Price (₹)</label>
+              <input
+                type="number"
+                placeholder="2999"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                required
+                className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold placeholder-gray-400"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Brand</label>
+              <input
+                type="text"
+                placeholder="Brand Name"
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
+                className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold placeholder-gray-400"
+              />
+            </div>
+          </div>
+
+          {/* Category Selection */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Category</label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+              className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none text-sm text-gray-800 font-extrabold cursor-pointer transition"
+            >
+              {CATEGORY_OPTIONS.map((c) => (
+                <option key={c.value} value={c.value}>{c.label}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Tags Selection */}
+          <div className="space-y-2">
+            <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Product Collections (Tags)</label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 p-4 border border-white/60 bg-white/30 rounded-2xl">
+              {TAG_OPTIONS.map((t) => (
+                <label key={t.value} className="flex items-center gap-2.5 text-xs text-gray-700 font-semibold cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={tags.includes(t.value)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setTags([...tags, t.value]);
+                      } else {
+                        setTags(tags.filter((item) => item !== t.value));
+                      }
+                    }}
+                    className="w-4 h-4 rounded text-primary-600 focus:ring-primary-500"
+                  />
+                  <span>{t.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Product Images Upload */}
+          <div className="space-y-2">
+            <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Product Images (Multi-File Select)</label>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleImageSelect}
+              className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none text-xs text-gray-700 font-semibold cursor-pointer"
+            />
+
+            {/* Selected Images Preview Grid */}
+            {images.length > 0 && (
+              <div className="mt-3 p-4 border border-white/60 bg-white/30 rounded-2xl">
+                <p className="text-[11px] font-bold text-gray-500 mb-2">
+                  Selected Images ({images.length}) - Will be auto-optimized to WebP:
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {images.map((file, idx) => {
+                    const objectUrl = URL.createObjectURL(file);
+                    return (
+                      <div key={idx} className="relative w-20 h-20 rounded-2xl border border-white/60 bg-white overflow-hidden p-1 shadow-sm group">
+                        <img src={objectUrl} alt={`Preview ${idx}`} className="w-full h-full object-cover rounded-xl" />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(idx)}
+                          className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-[10px] font-extrabold shadow-md hover:bg-red-600 transition"
+                          title="Remove image"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Submit Action */}
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-4 mt-4 rounded-full font-bold text-white shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 text-sm ${
+              loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-brand-gradient'
+            }`}
+          >
+            {loading ? 'Adding Product...' : 'Add Product to Catalog'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

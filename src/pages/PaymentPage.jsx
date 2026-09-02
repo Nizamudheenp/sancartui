@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
 import api from "../utils/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { saveOrderToBackend } from "../utils/saveOrder";
-import { clearGuestCart } from "../utils/guestCart";
+import { getGuestCart, clearGuestCart } from "../utils/guestCart";
 import { showToast } from "../utils/toast";
 import { motion } from "framer-motion";
 import { FiMapPin, FiArrowRight, FiShoppingBag, FiInfo, FiMail, FiCreditCard } from "react-icons/fi";
 
-const PaymentPage = ({ amount, cartItems, userToken }) => {
+const PaymentPage = ({ amount: propAmount, cartItems: propCartItems, userToken: propToken }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const userToken = propToken || location.state?.token || localStorage.getItem("token");
+
   const [loading, setLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
+  const [fetchedCartItems, setFetchedCartItems] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
   const [shippingAddress, setShippingAddress] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("Online");
-  const navigate = useNavigate();
 
   useEffect(() => {
     const checkScreen = () => setIsMobile(window.innerWidth <= 768);
@@ -21,6 +27,43 @@ const PaymentPage = ({ amount, cartItems, userToken }) => {
     window.addEventListener("resize", checkScreen);
     return () => window.removeEventListener("resize", checkScreen);
   }, []);
+
+  useEffect(() => {
+    const fetchCartData = async () => {
+      if (propCartItems && propCartItems.length > 0) {
+        setFetchedCartItems(propCartItems);
+        setPageLoading(false);
+        return;
+      }
+      if (location.state?.cartItems && location.state.cartItems.length > 0) {
+        setFetchedCartItems(location.state.cartItems);
+        setPageLoading(false);
+        return;
+      }
+
+      if (userToken && userToken !== "null" && userToken !== "undefined") {
+        try {
+          const res = await api.get("/api/products/getCart");
+          const validItems = (res.data.items || []).filter(item => item && item.product);
+          setFetchedCartItems(validItems);
+        } catch (err) {
+          console.error("Error fetching cart for checkout:", err);
+        }
+      } else {
+        const guestItems = getGuestCart().filter(item => item && item.product);
+        setFetchedCartItems(guestItems);
+      }
+      setPageLoading(false);
+    };
+
+    fetchCartData();
+  }, [propCartItems, userToken, location.state]);
+
+  const cartItems = fetchedCartItems;
+  const amount = propAmount ?? location.state?.amount ?? cartItems.reduce(
+    (acc, item) => acc + (item.product?.price || 0) * item.quantity,
+    0
+  );
 
   const handlePayment = async (e) => {
     e.preventDefault();
@@ -51,9 +94,7 @@ const PaymentPage = ({ amount, cartItems, userToken }) => {
         showToast("success", "Order placed successfully (Cash on Delivery)!");
         navigate("/payment-success");
 
-        if (userToken && userToken !== "null" && userToken !== "undefined") {
-          await api.delete("/api/products/clearCart");
-        } else {
+        if (!userToken || userToken === "null" || userToken === "undefined") {
           clearGuestCart();
         }
       } catch (err) {
@@ -109,9 +150,7 @@ const PaymentPage = ({ amount, cartItems, userToken }) => {
               navigate("/payment-success");
 
               // 5. Clear cart
-              if (userToken && userToken !== "null" && userToken !== "undefined") {
-                await api.delete("/api/products/clearCart");
-              } else {
+              if (!userToken || userToken === "null" || userToken === "undefined") {
                 clearGuestCart();
               }
             } else {
@@ -148,6 +187,19 @@ const PaymentPage = ({ amount, cartItems, userToken }) => {
       setLoading(false);
     }
   };
+
+  if (pageLoading) {
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center gap-4 bg-transparent pt-28 font-sans">
+        <span className="w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
+        <p className="text-sm font-semibold text-gray-500">Loading checkout details...</p>
+      </div>
+    );
+  }
+
+  if (!pageLoading && cartItems.length === 0) {
+    return <Navigate to="/cart" replace />;
+  }
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-slate-50 px-4 pt-28 pb-16 overflow-hidden">
@@ -275,7 +327,7 @@ const PaymentPage = ({ amount, cartItems, userToken }) => {
               {paymentMethod === "Online" ? (
                 <div className="flex items-start gap-2 bg-blue-50/50 border border-blue-100 rounded-2xl p-4 mb-6 text-xs text-blue-700 leading-relaxed transition-all duration-300">
                   <FiInfo className="mt-0.5 flex-shrink-0" />
-                  <span>Payments are processed securely via Razorpay (supporting Cards, UPI, Netbanking).</span>
+                  <span>Payments are processed securely (supporting Cards, UPI, Netbanking).</span>
                 </div>
               ) : (
                 <div className="flex items-start gap-2 bg-orange-50/50 border border-orange-100 rounded-2xl p-4 mb-6 text-xs text-orange-700 leading-relaxed transition-all duration-300">

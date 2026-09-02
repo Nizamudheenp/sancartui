@@ -50,89 +50,99 @@ const Header = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-lg border-b border-gray-100 shadow-sm transition-all duration-300">
-        <div className="max-w-[1200px] mx-auto px-4 md:px-8 flex items-center justify-between h-14 md:h-20">
-          <Link to="/" className="flex items-center gap-2">
-            <img src="/images/sancart-w-full.webp" alt="sancart" className="h-7 md:h-12 w-auto object-contain" />
+      <header className="fixed top-6 left-0 right-0 z-50 px-4 md:px-8 max-w-7xl mx-auto flex items-center justify-between pointer-events-none">
+        {/* Left Side: Floating Logo Pill */}
+        <Link 
+          to="/" 
+          className="pointer-events-auto h-12 px-5 flex items-center justify-center rounded-full border border-white/50 bg-white/45 backdrop-blur-xl shadow-glass hover:scale-105 transition-all duration-300"
+        >
+          <img src="/images/sancart-w-full.webp" alt="sancart" className="h-6 md:h-8 w-auto object-contain" />
+        </Link>
+
+        {/* Center: Desktop Navigation Links Pill */}
+        <nav className="pointer-events-auto hidden md:flex items-center gap-6 h-12 px-8 rounded-full border border-white/50 bg-white/45 backdrop-blur-xl shadow-glass">
+          <Link to="/" className="text-xs font-bold text-gray-700 hover:text-primary-500 hover:scale-105 transform transition-all duration-200">Home</Link>
+          <Link to="/shop" className="text-xs font-bold text-gray-700 hover:text-primary-500 hover:scale-105 transform transition-all duration-200">Shop</Link>
+          <Link to="/about" className="text-xs font-bold text-gray-700 hover:text-primary-500 hover:scale-105 transform transition-all duration-200">About</Link>
+          <Link to="/contact" className="text-xs font-bold text-gray-700 hover:text-primary-500 hover:scale-105 transform transition-all duration-200">Contact</Link>
+        </nav>
+
+        {/* Right Side: Floating Actions (Cart, User, Hamburger) */}
+        <div className="pointer-events-auto flex items-center gap-2">
+          {/* Cart Pill (Icon Only) */}
+          <Link 
+            to="/cart" 
+            className="w-12 h-12 flex items-center justify-center rounded-full border border-white/50 bg-white/45 backdrop-blur-xl shadow-glass text-gray-700 hover:text-primary-500 hover:scale-105 hover:bg-white/60 transition-all duration-300"
+          >
+            <BsCart2 className="text-lg" />
           </Link>
- 
-          <nav className="hidden md:flex items-center gap-8">
-            <Link to="/" className="text-sm font-semibold text-gray-700 hover:text-primary-500 transition-colors">Home</Link>
-            <Link to="/shop" className="text-sm font-semibold text-gray-700 hover:text-primary-500 transition-colors">Shop</Link>
-            <Link to="/about" className="text-sm font-semibold text-gray-700 hover:text-primary-500 transition-colors">About</Link>
-            <Link to="/contact" className="text-sm font-semibold text-gray-700 hover:text-primary-500 transition-colors">Contact</Link>
-          </nav>
- 
-          <div className="flex items-center gap-3 md:gap-4">
-            <Link to="/cart" className="relative p-1.5 md:p-2 text-gray-700 hover:text-primary-500 transition-colors">
-              <BsCart2 className="text-xl md:text-2xl" />
-            </Link>
- 
-            <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={handleUserIconClick}
-                className="flex items-center justify-center p-1.5 md:p-2 rounded-full border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
-              >
-                <BsPersonFill className="text-base md:text-xl" />
-              </button>
- 
-              <div className={`absolute right-0 mt-3 w-56 bg-white border border-gray-100 rounded-2xl shadow-xl p-4 transform transition-all duration-200 origin-top-right ${showUserDropdown ? 'opacity-100 scale-100 visible' : 'opacity-0 scale-95 invisible'}`}>
-                {!isLoggedIn ? (
-                  <div className="flex flex-col gap-3">
-                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Account</p>
-                    <Link to="/login" className="w-full text-center py-2.5 text-sm font-bold rounded-full bg-brand-gradient text-white shadow-md hover:shadow-lg transition-shadow">Sign in</Link>
-                  </div>
-                ) : (
-                  <div className="flex flex-col gap-2">
-                    <p className="text-sm font-semibold text-gray-800 truncate border-b border-gray-100 pb-2">
-                      {userInfo?.name || 'User'}
-                    </p>
-                    <Link to="/myorders" className="text-sm text-gray-600 hover:text-primary-500 py-1.5 transition-colors">My Orders</Link>
- 
-                    {userInfo?.isAdmin && (
-                      <>
-                        <Link to="/admin/dashboard" className="text-sm text-gray-600 hover:text-primary-500 py-1.5 transition-colors">Admin Dashboard</Link>
-                        <Link to="/admin/orders" className="text-sm text-gray-600 hover:text-primary-500 py-1.5 transition-colors">Manage Orders</Link>
-                      </>
-                    )}
- 
-                    <button onClick={handleLogout} className="w-full mt-2 py-2 text-sm font-bold rounded-xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors">Logout</button>
-                  </div>
-                )}
-              </div>
-            </div>
- 
-            <button className="md:hidden p-1.5 text-gray-700 hover:bg-gray-100 rounded-xl" onClick={() => setIsMobileMenuOpen(true)}>
-              <BsList className="text-xl md:text-2xl" />
+
+          {/* User Profile */}
+          <div className="relative animate-fade-in" ref={dropdownRef}>
+            <button
+              onClick={handleUserIconClick}
+              className="w-12 h-12 rounded-full border border-white/50 bg-white/45 backdrop-blur-xl shadow-glass flex items-center justify-center text-gray-700 hover:scale-105 hover:bg-white/60 active:scale-95 transition-all duration-300"
+            >
+              <BsPersonFill className="text-lg" />
             </button>
+
+            <div className={`absolute right-0 mt-3 w-56 bg-white/75 backdrop-blur-2xl border border-white/40 rounded-2xl shadow-glass-hover p-4 transform transition-all duration-300 origin-top-right ${showUserDropdown ? 'opacity-100 scale-100 visible' : 'opacity-0 scale-95 invisible'}`}>
+              {!isLoggedIn ? (
+                <div className="flex flex-col gap-3">
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Account</p>
+                  <Link to="/login" className="w-full text-center py-2.5 text-sm font-bold rounded-full bg-brand-gradient text-white shadow-md hover:shadow-lg transition-all duration-200">Sign in</Link>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm font-semibold text-gray-800 truncate border-b border-gray-100/50 pb-2">
+                    {userInfo?.name || 'User'}
+                  </p>
+                  <Link to="/myorders" className="text-sm text-gray-600 hover:text-primary-500 py-1.5 transition-colors">My Orders</Link>
+
+                  {userInfo?.isAdmin && (
+                    <>
+                      <Link to="/admin/dashboard" className="text-sm text-gray-600 hover:text-primary-500 py-1.5 transition-colors">Admin Dashboard</Link>
+                      <Link to="/admin/orders" className="text-sm text-gray-600 hover:text-primary-500 py-1.5 transition-colors">Manage Orders</Link>
+                    </>
+                  )}
+
+                  <button onClick={handleLogout} className="w-full mt-2 py-2 text-sm font-bold rounded-xl bg-red-500/10 text-red-600 hover:bg-red-500/20 transition-colors">Logout</button>
+                </div>
+              )}
+            </div>
           </div>
+
+          {/* Hamburger Menu Toggle (Mobile Only) */}
+          <button 
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="pointer-events-auto md:hidden w-12 h-12 rounded-full border border-white/50 bg-white/45 backdrop-blur-xl shadow-glass flex items-center justify-center text-gray-800 hover:scale-105 hover:bg-white/60 active:scale-95 transition-all duration-300"
+          >
+            <BsList className="text-xl" />
+          </button>
         </div>
       </header>
 
-      {/* Mobile Menu */}
-      <div className={`fixed inset-0 z-[100] md:hidden transition-all duration-300 ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
-        <div className="absolute inset-0 bg-black/35 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
-        <aside className={`absolute right-0 top-0 bottom-0 w-80 bg-white p-6 shadow-2xl flex flex-col justify-between transform transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      {/* Mobile / Full Navigation Menu */}
+      <div className={`fixed inset-0 z-[100] transition-all duration-500 ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
+        <div className="absolute inset-0 bg-black/15 backdrop-blur-md" onClick={() => setIsMobileMenuOpen(false)} />
+        <aside className={`absolute right-0 top-0 bottom-0 w-80 bg-white/75 backdrop-blur-2xl p-6 border-l border-white/40 shadow-2xl flex flex-col justify-between transform transition-transform duration-500 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
           <div>
-            <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
+            <div className="flex items-center justify-between border-b border-gray-100/50 pb-4 mb-6">
               <img src="/images/sancart-w-full.webp" alt="sancart" className="h-10 w-auto object-contain" />
-              <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-gray-500 hover:bg-gray-100 rounded-xl">
-                <BsXLg className="text-xl" />
+              <button onClick={() => setIsMobileMenuOpen(false)} className="w-10 h-10 rounded-full border border-white/50 bg-white/45 flex items-center justify-center text-gray-500 hover:bg-white/60 transition-all duration-200">
+                <BsXLg className="text-sm" />
               </button>
             </div>
 
-            <nav className="flex flex-col gap-4">
-              <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-semibold text-gray-800 hover:text-primary-500 transition-colors">Home</Link>
-              <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-semibold text-gray-800 hover:text-primary-500 transition-colors">Shop</Link>
-              <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-semibold text-gray-800 hover:text-primary-500 transition-colors">About</Link>
-              <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-semibold text-gray-800 hover:text-primary-500 transition-colors">Contact</Link>
-              <Link to="/cart" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-semibold text-gray-800 hover:text-primary-500 transition-colors flex items-center gap-2">
-                <BsCart2 className="text-xl" /> Cart
-              </Link>
+            <nav className="flex flex-col gap-5">
+              <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-bold text-gray-800 hover:text-primary-500 transition-colors">Home</Link>
+              <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-bold text-gray-800 hover:text-primary-500 transition-colors">Shop</Link>
+              <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-bold text-gray-800 hover:text-primary-500 transition-colors">About</Link>
+              <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-lg font-bold text-gray-800 hover:text-primary-500 transition-colors">Contact</Link>
             </nav>
           </div>
 
-          <div className="border-t border-gray-100 pt-6">
+          <div className="border-t border-gray-100/50 pt-6">
             {!isLoggedIn ? (
               <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="block w-full text-center py-3 rounded-full bg-brand-gradient text-white font-bold shadow-md">Sign in</Link>
             ) : (
@@ -145,7 +155,7 @@ const Header = () => {
                     <Link to="/admin/orders" onClick={() => setIsMobileMenuOpen(false)} className="py-2 text-gray-700 hover:text-primary-500 font-medium transition-colors">Manage Orders</Link>
                   </>
                 )}
-                <button onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} className="w-full mt-2 py-3 rounded-xl bg-red-50 text-red-600 font-bold hover:bg-red-100 transition-colors">Logout</button>
+                <button onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} className="w-full mt-2 py-3 rounded-xl bg-red-500/10 text-red-600 font-bold hover:bg-red-500/20 transition-colors">Logout</button>
               </div>
             )}
           </div>

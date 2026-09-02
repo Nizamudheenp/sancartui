@@ -21,8 +21,14 @@ export default {
         brandbg: '#ffffff',
       },
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'cursive'],
+        sans: ['"Plus Jakarta Sans"', 'Inter', 'ui-sans-serif', 'system-ui'],
+        serif: ['"Playfair Display"', 'Georgia', 'ui-serif', 'system-ui'],
       },
+      boxShadow: {
+        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.08)',
+        'glass-hover': '0 12px 40px 0 rgba(31, 38, 135, 0.15)',
+        'organic': '0 20px 50px -12px rgba(0, 0, 0, 0.05)',
+      }
     },
   },
   plugins: [],

@@ -6,74 +6,67 @@ const Hero = () => {
   const handleClick = () => navigate("/shop");
 
   return (
-    <section className="relative min-h-[90vh] bg-gradient-to-b from-slate-50 via-indigo-50/30 to-[#fffbeb] flex items-center pt-20 md:pt-28 pb-16 overflow-hidden">
-      {/* Decorative Blur Spheres */}
-      <div className="absolute top-1/4 -left-10 w-96 h-96 bg-primary-200/20 rounded-full blur-3xl -z-10 animate-pulse" />
-      <div className="absolute bottom-1/4 -right-10 w-96 h-96 bg-accent-100/30 rounded-full blur-3xl -z-10" />
+    <section className="relative min-h-screen flex flex-col justify-between pt-36 pb-16 overflow-hidden bg-transparent">
+      {/* Premium blurred background portrait representation */}
+      <div className="absolute inset-0 -z-20 bg-cover bg-center bg-no-repeat filter brightness-[0.9]" style={{ backgroundImage: "url('/images/hero.webp')" }} />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-slate-100/30 via-white/5 to-slate-100/30 backdrop-blur-[7px]" />
+      
+      {/* Floating abstract glow elements */}
+      <div className="absolute top-[20%] left-[-15%] w-[450px] h-[450px] rounded-full bg-amber-500/10 blur-[100px] -z-10 animate-pulse" />
+      <div className="absolute bottom-[10%] right-[-15%] w-[450px] h-[450px] rounded-full bg-primary-500/10 blur-[100px] -z-10" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-
-          {/* Left Column: Premium Text Copy */}
-          <div className="lg:col-span-7 flex flex-col justify-center text-center lg:text-left items-center lg:items-start">
-            <span className="inline-flex self-center lg:self-start items-center gap-1.5 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-amber-600 bg-amber-50 rounded-full mb-6">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping" />
-              Hot Trending Now
-            </span>
-
-            <h1 className="text-3xl sm:text-6xl lg:text-7xl font-black text-gray-900 leading-tight tracking-tight">
-              Curated Finds <br />
-              For Your Modern <br />
-              <span className="text-brand-gradient">Lifestyle</span>
-            </h1>
-
-            <p className="mt-6 text-sm sm:text-lg text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
-              Discover handpicked viral accessories, daily essentials, and smart novelties designed to elevate your style. Direct shipping, certified quality.
-            </p>
-
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start w-full sm:w-auto max-w-xs sm:max-w-none">
-              <button
-                onClick={handleClick}
-                className="w-full sm:w-auto px-8 py-4 font-bold rounded-full text-white shadow-xl bg-brand-gradient hover:scale-[1.03] active:scale-[0.98] transform transition-all duration-200"
-              >
-                Shop Now
-              </button>
-              <button
-                onClick={() => navigate("/about")}
-                className="w-full sm:w-auto px-8 py-4 font-semibold rounded-full text-gray-700 bg-white border hover:scale-[1.03] border-gray-200/80 shadow-sm hover:bg-gray-50 active:scale-[0.98] transition-all duration-200"
-              >
-                Discover SanCart
-              </button>
-            </div>
+      {/* Main Content Area */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-grow flex flex-col justify-center items-center relative z-10">
+        
+        {/* Mockup Floating Side Badge (new arrivals capsule + arrow circle) */}
+        <div className="absolute left-4 sm:left-12 lg:left-24 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-1">
+          <div className="bg-white px-3.5 py-1.5 rounded-full shadow-glass border border-white/60 text-[9px] font-black uppercase tracking-widest text-gray-800 rotate-[270deg] origin-center translate-y-[-20px]">
+            New Arrivals
           </div>
-
-          {/* Right Column: Padded Showcase Image Card */}
-          <div className="lg:col-span-5 flex justify-center items-center mt-10 lg:mt-0">
-            <div className="relative p-3 bg-white/70 backdrop-blur-md rounded-[2rem] sm:rounded-[2.5rem] border border-white/50 shadow-2xl hover:shadow-3xl transition-shadow duration-500 max-w-[300px] sm:max-w-md w-full">
-              <div className="overflow-hidden rounded-[1.4rem] sm:rounded-[1.8rem] bg-gray-100 aspect-[4/5] shadow-inner">
-                <img
-                  src="/images/main-bg.webp"
-                  alt="Trending showcase"
-                  className="w-full h-full object-cover transform scale-125 hover:scale-150 transition-transform duration-700"
-                  onError={(e) => {
-                    e.target.src = "/placeholder.jpg";
-                  }}
-                />
-              </div>
-
-              {/* Floating Interactive Badge */}
-              <div className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-gray-100 shadow-xl flex items-center gap-2 sm:gap-3">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary-50 flex items-center justify-center text-primary-500 font-black text-xs sm:text-base">
-                  ★
-                </div>
-                <div>
-                  <h4 className="text-xs sm:text-sm font-bold text-gray-900">4.9/5 Rating</h4>
-                  <p className="text-[9px] sm:text-[10px] text-gray-400 font-semibold">Over 10k Customers</p>
-                </div>
-              </div>
-            </div>
+          <div 
+            onClick={handleClick}
+            className="w-9 h-9 rounded-full bg-gray-950 text-white flex items-center justify-center text-sm font-black shadow-lg cursor-pointer hover:bg-primary-600 hover:scale-105 active:scale-95 transition-all duration-300 translate-y-[20px]"
+          >
+            ↓
           </div>
+        </div>
 
+        {/* Editorial Headline Overlay */}
+        <div className="text-center">
+          <h1 className="text-5xl sm:text-7xl lg:text-9xl font-serif font-light text-gray-900 leading-[1.05] tracking-tight max-w-5xl drop-shadow-sm">
+            Your Finds <br />
+            <span className="font-sans font-extrabold italic text-brand-gradient">in Safe Hands</span>
+          </h1>
+          
+          <p className="mt-8 text-sm sm:text-lg text-gray-800 font-semibold max-w-xl mx-auto drop-shadow-xs">
+            Handpicked trending treasures and premium essentials, shipped straight to your door.
+          </p>
+        </div>
+      </div>
+
+      {/* Bottom Floating Featured Card exactly matching Phone 2 */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10 flex justify-center sm:justify-start">
+        <div 
+          onClick={handleClick}
+          className="cursor-pointer flex items-center gap-4 p-3 rounded-2xl border border-white/60 bg-white/45 backdrop-blur-2xl shadow-glass hover:shadow-glass-hover hover:scale-[1.03] transition-all duration-300 max-w-xs w-full"
+        >
+          <div className="w-14 h-14 rounded-xl bg-white border border-white/40 overflow-hidden shadow-inner flex-shrink-0 flex items-center justify-center">
+            <img 
+              src="/images/hero.webp" 
+              alt="Charlotte Refill container" 
+              className="w-full h-full object-cover scale-110"
+              onError={(e) => {
+                e.target.src = "/placeholder.jpg";
+              }}
+            />
+          </div>
+          <div className="text-start">
+            <h4 className="text-xs font-black text-gray-950 leading-tight">Trending Items</h4>
+            <p className="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Explore the Best</p>
+          </div>
+          <div className="ml-auto w-7 h-7 rounded-full border border-white bg-white flex items-center justify-center text-xs text-gray-800 shadow-sm">
+            →
+          </div>
         </div>
       </div>
     </section>
