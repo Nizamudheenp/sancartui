@@ -74,8 +74,7 @@ const CartPage = () => {
   );
 
   const handleCheckout = () => {
-    const cleanToken = (token === "null" || token === "undefined") ? null : token;
-    navigate("/checkout", { state: { amount: totalPrice, cartItems, token: cleanToken } });
+    navigate("/checkout");
   };
 
   useEffect(() => {
