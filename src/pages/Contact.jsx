@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../utils/api";
 import { showToast } from "../utils/toast";
+import SEO from "../components/SEO";
 import { FiMapPin, FiPhone, FiMail } from "react-icons/fi";
 import {
   FaFacebookF,
@@ -41,6 +42,11 @@ const Contact = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 pt-28">
+      <SEO
+        title="Contact Us"
+        description="Get in touch with Sancart customer support via email, phone hotline, or direct message form."
+        url="/contact"
+      />
       <div className="glass-card rounded-[2.5rem] p-6 sm:p-10 shadow-glass">
         
         {/* Page Header */}

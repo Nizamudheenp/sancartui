@@ -1,5 +1,6 @@
 import React from "react";
 import { FiAward, FiCompass, FiHeart, FiSmile } from "react-icons/fi";
+import SEO from "./SEO";
 
 const About = () => {
   const values = [
@@ -27,6 +28,11 @@ const About = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 pt-28">
+      <SEO
+        title="About Us"
+        description="Learn about Sancart, our vision, brand story, quality promises, and dedication to transparent e-commerce."
+        url="/about"
+      />
       <div className="glass-card rounded-[2.5rem] p-6 sm:p-10 shadow-glass">
         
         {/* Brand Header Section */}
