@@ -42,6 +42,7 @@ const ProductCard = ({ product, onClick }) => {
         "/api/products/addToCart",
         { productId: product.id || product._id, quantity: 1 }
       );
+      window.dispatchEvent(new Event("cartUpdated"));
       showToast("success", "Added to cart!");
     } catch (err) {
       console.error(err);
@@ -60,68 +61,54 @@ const ProductCard = ({ product, onClick }) => {
     >
       <div>
         {/* Image Container with Slider */}
-        <div className="relative w-full border-b border-white/30 rounded-t-[1.95rem] overflow-hidden">
+        <div className="relative w-full border-b border-white/30 rounded-t-[1.7rem] sm:rounded-t-[1.95rem] overflow-hidden">
           <ProductCardImageSlider
             images={product.images}
             alt={product.name}
-            aspectRatio="h-40 sm:h-52"
+            aspectRatio="h-36 sm:h-52"
           />
           {product.brand ? (
-            <span className="absolute top-3 left-3 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-[#1b36e3] bg-white/95 rounded-lg shadow-sm border border-gray-100/50">
+            <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-[#1b36e3] bg-white/95 rounded-lg shadow-sm border border-gray-100/50">
               {product.brand}
             </span>
           ) : (
-            <span className="absolute top-3 left-3 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-amber-600 bg-amber-500/10 border border-amber-500/20 backdrop-blur-md rounded-lg">
+            <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-amber-600 bg-amber-500/10 border border-amber-500/20 backdrop-blur-md rounded-lg">
               Trending
             </span>
           )}
         </div>
 
-        {/* Details Section - Padded inside */}
-        <div className="p-4 sm:p-5 text-start">
-          <span className="text-[9px] font-extrabold text-gray-450 uppercase tracking-widest block mb-1">
+        {/* Details Section - Tight compact padding */}
+        <div className="p-3 sm:p-4 text-start">
+          <span className="text-[8px] sm:text-[9px] font-extrabold text-gray-450 uppercase tracking-widest block mb-0.5">
             {product.category || "Trending Item"}
           </span>
-          <h5 
-            className="text-gray-950 font-black text-xs sm:text-sm leading-snug group-hover:text-primary-500 transition-colors"
-            style={{
-              display: "-webkit-box",
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              height: "2.5rem"
-            }}
-          >
+          <h5 className="text-gray-950 font-extrabold text-xs sm:text-sm leading-snug line-clamp-2 overflow-hidden group-hover:text-primary-500 transition-colors">
             {product.name}
           </h5>
         </div>
       </div>
 
-      {/* Bottom price and action bar - Padded inside, responsive stacking for mobile */}
-      <div className="px-4 sm:px-5 pb-4 sm:pb-5 pt-3 border-t border-white/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="text-start">
-          <span className="text-[8px] font-bold text-gray-400 uppercase tracking-widest block">Price</span>
-          <h4 className="text-sm sm:text-base font-black text-gray-950">₹{product.price}</h4>
-        </div>
+      {/* Bottom price and action bar - Single horizontal line */}
+      <div className="px-3 sm:px-4 pb-3 sm:pb-4 pt-2 border-t border-white/20 flex items-center justify-between gap-2">
+        <h4 className="text-xs sm:text-base font-black text-gray-950 truncate text-start min-w-0">
+          ₹{product.price}
+        </h4>
 
-        {/* Ratings and Cart Action Row - spans full width on mobile, aligns right on desktop */}
-        <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto">
-          {/* Dynamic rating value display */}
-          {product.rating > 0 ? (
-            <div className="flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded-xl text-amber-600 text-[9px] font-black">
+        {/* Ratings and Cart Action Row */}
+        <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+          {product.rating > 0 && (
+            <div className="flex items-center gap-0.5 bg-amber-500/10 border border-amber-500/20 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-xl text-amber-600 text-[8px] sm:text-[9px] font-black">
               <span>{product.rating.toFixed(1)}</span>
               <span>★</span>
             </div>
-          ) : (
-            <div className="flex-shrink-0" />
           )}
 
           <button
             onClick={handleAddToCart}
-            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-white/80 bg-white hover:bg-primary-500 hover:text-white text-gray-800 flex items-center justify-center shadow-md active:scale-90 transform transition-all duration-300"
+            className="w-7 h-7 sm:w-9 sm:h-9 rounded-full border border-white/80 bg-white hover:bg-primary-500 hover:text-white text-gray-800 flex items-center justify-center shadow-md active:scale-90 transform transition-all duration-300"
           >
-            <FiShoppingCart className="text-xs sm:text-sm" />
+            <FiShoppingCart className="text-[11px] sm:text-sm" />
           </button>
         </div>
       </div>

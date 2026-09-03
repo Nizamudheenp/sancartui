@@ -14,10 +14,10 @@ function Home() {
   return (
     <div className="pb-12 pt-6">
       <SEO />
-      
+
       {/* Hero Redesign (Has its own full-screen backdrop) */}
       <Hero />
-      
+
       {/* Trust Badges Floating Glass Pill */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 mt-4">
         <div className="glass-card rounded-[2rem] p-6 shadow-glass">

@@ -81,6 +81,7 @@ const ProductDetails = () => {
         "/api/products/addToCart",
         { productId: product.id || product._id, quantity: 1 }
       );
+      window.dispatchEvent(new Event("cartUpdated"));
       showToast("success", "Added to cart!");
     } catch (err) {
       console.error(err);

@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BsCart2, BsXLg, BsList, BsPersonFill } from "react-icons/bs";
+import api from '../utils/api';
+import { getGuestCart } from '../utils/guestCart';
 
 const Header = () => {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
+  const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
   const dropdownRef = useRef();
 
@@ -20,6 +23,40 @@ const Header = () => {
       setIsLoggedIn(false);
       setUserInfo(null);
     }
+  }, []);
+
+  const fetchCartCount = async () => {
+    const token = localStorage.getItem('token');
+    if (!token || token === 'null' || token === 'undefined') {
+      const guestCart = getGuestCart();
+      const uniqueCount = guestCart.filter(item => item && item.product).length;
+      setCartCount(uniqueCount);
+    } else {
+      try {
+        const res = await api.get('/api/products/getCart');
+        const items = res.data.items || [];
+        const uniqueCount = items.filter(item => item && item.product).length;
+        setCartCount(uniqueCount);
+      } catch (err) {
+        console.error('Error fetching cart count:', err);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchCartCount();
+
+    const handleCartUpdate = () => {
+      fetchCartCount();
+    };
+
+    window.addEventListener('cartUpdated', handleCartUpdate);
+    window.addEventListener('storage', handleCartUpdate);
+
+    return () => {
+      window.removeEventListener('cartUpdated', handleCartUpdate);
+      window.removeEventListener('storage', handleCartUpdate);
+    };
   }, []);
 
   useEffect(() => {
@@ -69,12 +106,18 @@ const Header = () => {
 
         {/* Right Side: Floating Actions (Cart, User, Hamburger) */}
         <div className="pointer-events-auto flex items-center gap-2">
-          {/* Cart Pill (Icon Only) */}
+          {/* Cart Pill (Icon + Red Count Badge) */}
           <Link 
             to="/cart" 
-            className="w-12 h-12 flex items-center justify-center rounded-full border border-white/50 bg-white/45 backdrop-blur-xl shadow-glass text-gray-700 hover:text-primary-500 hover:scale-105 hover:bg-white/60 transition-all duration-300"
+            className="relative w-12 h-12 flex items-center justify-center rounded-full border border-white/50 bg-white/45 backdrop-blur-xl shadow-glass text-gray-700 hover:text-primary-500 hover:scale-105 hover:bg-white/60 transition-all duration-300"
+            aria-label="Shopping Cart"
           >
             <BsCart2 className="text-lg" />
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[20px] h-5 px-1.5 bg-red-500 text-white text-[10px] font-black rounded-full shadow-md animate-scale-in border-2 border-white">
+                {cartCount > 99 ? '99+' : cartCount}
+              </span>
+            )}
           </Link>
 
           {/* User Profile */}

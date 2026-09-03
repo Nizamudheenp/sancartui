@@ -44,6 +44,7 @@ const CartPage = () => {
       );
       const validItems = (res.data.items || []).filter(item => item && item.product);
       setCartItems(validItems);
+      window.dispatchEvent(new Event("cartUpdated"));
     } catch (err) {
       console.error("Error updating quantity:", err);
       showToast("error", "Error updating quantity");
@@ -61,6 +62,7 @@ const CartPage = () => {
       const res = await api.delete(`/api/products/removeFromCart/${productId}`);
       const validItems = (res.data.items || []).filter(item => item && item.product);
       setCartItems(validItems);
+      window.dispatchEvent(new Event("cartUpdated"));
       showToast("success", "Item removed from cart");
     } catch (err) {
       console.error("Error removing item:", err);
