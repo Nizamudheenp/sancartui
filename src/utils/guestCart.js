@@ -11,6 +11,9 @@ export const getGuestCart = () => {
 export const saveGuestCart = (cart) => {
   try {
     localStorage.setItem("guest_cart", JSON.stringify(cart));
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event("cartUpdated"));
+    }
   } catch (err) {
     console.error("Error saving guest cart:", err);
   }
@@ -63,6 +66,9 @@ export const removeFromGuestCart = (productId) => {
 export const clearGuestCart = () => {
   try {
     localStorage.removeItem("guest_cart");
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event("cartUpdated"));
+    }
   } catch (err) {
     console.error("Error clearing guest cart:", err);
   }

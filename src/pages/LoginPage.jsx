@@ -60,6 +60,7 @@ function LoginPage() {
           );
           localStorage.removeItem("guest_cart");
         }
+        window.dispatchEvent(new Event("cartUpdated"));
       } catch (syncErr) {
         console.error("Error syncing cart on login:", syncErr);
       }

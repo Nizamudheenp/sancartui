@@ -44,6 +44,7 @@ const CartPage = () => {
       );
       const validItems = (res.data.items || []).filter(item => item && item.product);
       setCartItems(validItems);
+      window.dispatchEvent(new Event("cartUpdated"));
     } catch (err) {
       console.error("Error updating quantity:", err);
       showToast("error", "Error updating quantity");
@@ -61,6 +62,7 @@ const CartPage = () => {
       const res = await api.delete(`/api/products/removeFromCart/${productId}`);
       const validItems = (res.data.items || []).filter(item => item && item.product);
       setCartItems(validItems);
+      window.dispatchEvent(new Event("cartUpdated"));
       showToast("success", "Item removed from cart");
     } catch (err) {
       console.error("Error removing item:", err);
@@ -125,11 +127,14 @@ const CartPage = () => {
             <div className="lg:col-span-8 space-y-4">
               {cartItems.map((item) => (
                 <div
-                  key={item.product.id}
-                  className="flex flex-col sm:flex-row items-center gap-6 p-4 bg-white/45 backdrop-blur-md border border-white/55 rounded-3xl shadow-sm hover:shadow-md transition duration-300"
+                  key={item.product.id || item.product._id}
+                  className="flex flex-row items-center gap-3 sm:gap-5 p-3 sm:p-4 bg-white/45 backdrop-blur-md border border-white/55 rounded-2xl sm:rounded-3xl shadow-sm hover:shadow-md transition duration-300"
                 >
-                  {/* Image Frame */}
-                  <div className="flex-shrink-0 w-28 h-28 bg-white border border-white/40 rounded-2xl flex items-center justify-center p-3 overflow-hidden">
+                  {/* Image Frame - Clickable to Product Details */}
+                  <div
+                    onClick={() => navigate(`/product/${item.product.id || item.product._id}`)}
+                    className="flex-shrink-0 w-16 h-16 sm:w-24 sm:h-24 bg-white border border-white/40 rounded-xl sm:rounded-2xl flex items-center justify-center p-1.5 sm:p-2 overflow-hidden cursor-pointer hover:scale-105 transition-transform"
+                  >
                     <img
                       src={item.product.images?.[0] || "/placeholder.svg"}
                       alt={item.product.name}
@@ -141,47 +146,52 @@ const CartPage = () => {
                   </div>
 
                   {/* Details */}
-                  <div className="flex-1 text-start space-y-2 w-full">
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
+                  <div className="flex-1 text-start min-w-0 space-y-1 sm:space-y-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <div
+                        onClick={() => navigate(`/product/${item.product.id || item.product._id}`)}
+                        className="cursor-pointer hover:text-primary-500 transition-colors min-w-0"
+                      >
                         {item.product.brand && (
-                          <span className="text-[10px] font-extrabold text-primary-600 uppercase tracking-wide">
+                          <span className="text-[9px] sm:text-[10px] font-extrabold text-primary-600 uppercase tracking-wide block leading-none mb-0.5">
                             {item.product.brand}
                           </span>
                         )}
-                        <h4 className="text-sm sm:text-base font-extrabold text-gray-955 leading-snug line-clamp-1">
+                        <h4 className="text-xs sm:text-base font-extrabold text-gray-955 leading-snug line-clamp-1 truncate">
                           {item.product.name}
                         </h4>
                       </div>
                       <button
-                        onClick={() => handleRemove(item.product.id)}
-                        className="p-2 text-red-500 hover:bg-red-50/50 rounded-xl transition duration-150"
+                        onClick={() => handleRemove(item.product.id || item.product._id)}
+                        className="p-1.5 text-red-500 hover:bg-red-50/50 rounded-lg transition duration-150 flex-shrink-0"
                         aria-label="Remove item"
                       >
-                        <FiTrash2 className="text-lg" />
+                        <FiTrash2 className="text-sm sm:text-lg" />
                       </button>
                     </div>
 
-                    <div className="flex items-center justify-between pt-1">
-                      <p className="text-gray-955 font-black text-base">₹{item.product.price}</p>
+                    <div className="flex items-center justify-between pt-0.5 sm:pt-1">
+                      <p className="text-gray-955 font-black text-xs sm:text-base">
+                        ₹{item.product.price}
+                      </p>
 
                       {/* Quantity controls */}
-                      <div className="flex items-center border border-white/60 rounded-full px-2 py-1 bg-white/40 backdrop-blur-sm">
+                      <div className="flex items-center border border-white/60 rounded-full px-1.5 sm:px-2 py-0.5 bg-white/40 backdrop-blur-sm">
                         <button
-                          onClick={() => handleQuantityChange(item.product.id, item.quantity - 1)}
+                          onClick={() => handleQuantityChange(item.product.id || item.product._id, item.quantity - 1)}
                           disabled={item.quantity <= 1}
-                          className="w-7 h-7 flex items-center justify-center rounded-full text-gray-700 hover:bg-white/60 disabled:opacity-30 disabled:cursor-not-allowed transition"
+                          className="w-5 h-5 sm:w-7 sm:h-7 flex items-center justify-center rounded-full text-gray-700 hover:bg-white/60 disabled:opacity-30 disabled:cursor-not-allowed transition"
                         >
-                          <FiMinus className="text-xs" />
+                          <FiMinus className="text-[10px] sm:text-xs" />
                         </button>
-                        <span className="w-10 text-center text-xs font-black text-gray-800">
+                        <span className="w-6 sm:w-10 text-center text-[11px] sm:text-xs font-black text-gray-800">
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => handleQuantityChange(item.product.id, item.quantity + 1)}
-                          className="w-7 h-7 flex items-center justify-center rounded-full text-gray-700 hover:bg-white/60 transition"
+                          onClick={() => handleQuantityChange(item.product.id || item.product._id, item.quantity + 1)}
+                          className="w-5 h-5 sm:w-7 sm:h-7 flex items-center justify-center rounded-full text-gray-700 hover:bg-white/60 transition"
                         >
-                          <FiPlus className="text-xs" />
+                          <FiPlus className="text-[10px] sm:text-xs" />
                         </button>
                       </div>
                     </div>

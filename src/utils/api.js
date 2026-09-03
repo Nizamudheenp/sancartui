@@ -9,6 +9,10 @@ export const setupResponseInterceptor = (navigate, showToast) =>{
     api.interceptors.response.use(
         (response)=> response,
         (error) => {
+            if (error.response && error.response?.status === 429) {
+                const limitMessage = error.response?.data?.error || error.response?.data?.message || "Too many requests. Please try again later.";
+                showToast("error", limitMessage);
+            }
             if(error.response && (error.response?.status === 401 || error.response?.status === 403)){
                 if(localStorage.getItem('token')){
                     localStorage.removeItem("token");

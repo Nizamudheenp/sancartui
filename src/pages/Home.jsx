@@ -14,10 +14,10 @@ function Home() {
   return (
     <div className="pb-12 pt-6">
       <SEO />
-      
+
       {/* Hero Redesign (Has its own full-screen backdrop) */}
       <Hero />
-      
+
       {/* Trust Badges Floating Glass Pill */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 mt-4">
         <div className="glass-card rounded-[2rem] p-6 shadow-glass">
@@ -25,12 +25,8 @@ function Home() {
         </div>
       </div>
 
-      {/* Trending Products Glass Panel */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-        <div className="glass-card rounded-[2.5rem] p-3 sm:p-10 shadow-glass">
-          <ProductCollection title="Trending Products" tag="Trending Product" limit={8} />
-        </div>
-      </div>
+      {/* Trending Products */}
+      <ProductCollection title="Trending Products" tag="Trending Product" limit={8} />
 
       {/* Category Showcase Glass Panel */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
@@ -39,24 +35,16 @@ function Home() {
         </div>
       </div>
 
-      {/* Featured Products Glass Panel */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-        <div className="glass-card rounded-[2.5rem] p-3 sm:p-10 shadow-glass">
-          <ProductCollection title="Featured Products" tag="Featured" limit={8} />
-        </div>
-      </div>
+      {/* Featured Products */}
+      <ProductCollection title="Featured Products" tag="Featured" limit={8} />
 
-      {/* Main Banner (Borders and card styling are now directly on the Banner component) */}
+      {/* Main Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
         <Banner />
       </div>
 
-      {/* Trending Collections Glass Panel */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-        <div className="glass-card rounded-[2.5rem] p-3 sm:p-10 shadow-glass">
-          <ProductCollection title="Trending Collections" tag="New Arrival" limit={8} />
-        </div>
-      </div>
+      {/* Trending Collections */}
+      <ProductCollection title="Trending Collections" tag="New Arrival" limit={8} />
 
       {/* Small Banners Row 1 (2-column grid inside) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
