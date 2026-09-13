@@ -325,7 +325,18 @@ const ProductDetails = () => {
                   className="border border-white/50 rounded-2xl p-5 bg-white/40 backdrop-blur-md shadow-sm"
                 >
                   <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
-                    <strong className="text-gray-955 font-extrabold text-sm">{rev.name || "Customer"}</strong>
+                    <div>
+                      <strong className="text-gray-955 font-extrabold text-sm block">{rev.name || "Customer"}</strong>
+                      {rev.createdAt && (
+                        <span className="text-[10px] text-gray-400 font-semibold">
+                          {new Date(rev.createdAt).toLocaleDateString('en-IN', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric'
+                          })}
+                        </span>
+                      )}
+                    </div>
                     <div className="flex gap-0.5">{renderStars(rev.rating)}</div>
                   </div>
                   <p className="text-gray-600 text-xs font-semibold leading-relaxed">{rev.comment}</p>

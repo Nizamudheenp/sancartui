@@ -5,11 +5,10 @@ import { showToast } from "../utils/toast";
 import SEO from "../components/SEO";
 import { FiMapPin, FiPhone, FiMail } from "react-icons/fi";
 import {
-  FaFacebookF,
+  FaFacebook,
   FaWhatsapp,
-  FaTwitter,
-  FaYoutube,
-  FaPinterest,
+  FaInstagram,
+  FaEnvelope,
 } from "react-icons/fa";
 
 const Contact = () => {
@@ -98,12 +97,19 @@ const Contact = () => {
 
             <div className="pt-6">
               <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Follow Our Updates</h4>
-              <div className="flex gap-4 text-primary-600 text-xl">
-                <FaFacebookF className="hover:text-primary-500 hover:scale-110 transition cursor-pointer" />
-                <FaWhatsapp className="hover:text-primary-500 hover:scale-110 transition cursor-pointer" />
-                <FaTwitter className="hover:text-primary-500 hover:scale-110 transition cursor-pointer" />
-                <FaYoutube className="hover:text-primary-500 hover:scale-110 transition cursor-pointer" />
-                <FaPinterest className="hover:text-primary-500 hover:scale-110 transition cursor-pointer" />
+              <div className="flex gap-2.5">
+                <a href="https://www.facebook.com/profile.php?id=61588835427230" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-xl bg-white/40 border border-white/60 hover:bg-blue-600 hover:text-white flex items-center justify-center text-slate-600 hover:scale-110 hover:border-transparent transition-all duration-300">
+                  <FaFacebook className="text-sm" />
+                </a>
+                <a href="https://wa.me/916235320612" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-xl bg-white/40 border border-white/60 hover:bg-green-600 hover:text-white flex items-center justify-center text-slate-600 hover:scale-110 hover:border-transparent transition-all duration-300">
+                  <FaWhatsapp className="text-sm" />
+                </a>
+                <a href="https://www.instagram.com/san__cart/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-xl bg-white/40 border border-white/60 hover:bg-pink-600 hover:text-white flex items-center justify-center text-slate-600 hover:scale-110 hover:border-transparent transition-all duration-300">
+                  <FaInstagram className="text-sm" />
+                </a>
+                <a href="mailto:sancartofficial@gmail.com" className="w-9 h-9 rounded-xl bg-white/40 border border-white/60 hover:bg-red-500 hover:text-white flex items-center justify-center text-slate-600 hover:scale-110 hover:border-transparent transition-all duration-300">
+                  <FaEnvelope className="text-sm" />
+                </a>
               </div>
             </div>
           </div>

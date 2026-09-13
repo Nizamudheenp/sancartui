@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import SEO from "../components/SEO";
 import { Link } from "react-router-dom";
-import { FiChevronDown, FiHelpCircle, FiMail, FiPhone, FiCompass } from "react-icons/fi";
+import { FiChevronDown, FiHelpCircle, FiMail, FiCompass } from "react-icons/fi";
+import { FaWhatsapp } from "react-icons/fa";
 
 const Help = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -125,9 +126,9 @@ const Help = () => {
                 href="https://wa.me/916235320612"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center p-4 bg-white/40 border border-white/50 rounded-2xl hover:shadow-md hover:bg-white/60 transition text-gray-700 hover:text-primary-600"
+                className="flex flex-col items-center justify-center p-4 bg-white/40 border border-white/50 rounded-2xl hover:shadow-md hover:bg-white/60 transition text-gray-700 hover:text-green-600 group"
               >
-                <FiPhone className="text-xl mb-2 text-primary-600" />
+                <FaWhatsapp className="text-xl mb-2 text-green-600 group-hover:scale-110 transition-transform" />
                 <span className="text-[10px] font-black uppercase tracking-wider">WhatsApp Us</span>
               </a>
               <Link 
