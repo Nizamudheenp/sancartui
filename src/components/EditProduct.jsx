@@ -8,16 +8,27 @@ const CATEGORY_OPTIONS = [
   { value: 'lifestyle', label: 'Creative Living' },
   { value: 'fitness', label: 'Smart Health & Fitness' },
   { value: 'kitchen', label: 'Innovative Kitchen' },
-  { value: 'accessories', label: 'Hot Accessories' }
+  { value: 'accessories', label: 'Hot Accessories' },
+  { value: 'fashion', label: 'Fashion & Apparel' },
+  { value: 'beauty', label: 'Beauty & Personal Care' },
+  { value: 'electronics', label: 'Smart Electronics' },
+  { value: 'home', label: 'Home & Decor' },
+  { value: 'footwear', label: 'Footwear & Shoes' },
+  { value: 'gaming', label: 'Gaming & Toys' },
+  { value: 'sports', label: 'Outdoor & Sports' },
 ];
 
 const TAG_OPTIONS = [
+  { value: 'Trending', label: 'Trending (Hot Seller)' },
+  { value: 'Featured', label: 'Featured (Main Grid)' },
+  { value: 'Best Seller', label: 'Best Seller (Most Ordered)' },
   { value: 'New Arrival', label: 'New Arrival (Latest Drops)' },
   { value: 'Special Price', label: 'Special Price (Sale Discount)' },
-  { value: 'Top Brand', label: 'Top Brand (Premium Label)' },
-  { value: 'Best Seller', label: 'Best Seller (Most Ordered)' },
-  { value: 'Featured', label: 'Featured Product (Main Grid)' },
-  { value: 'Trending Product', label: 'Trending Product (Hot Seller)' },
+  { value: 'Hot Drop', label: 'Hot Drop (Limited Edition)' },
+  { value: 'Top Rated', label: 'Top Rated (Customer Choice)' },
+  { value: 'Limited Offer', label: 'Limited Offer (Flash Deal)' },
+  { value: 'Must Have', label: 'Must Have (Viral Product)' },
+  { value: 'Premium', label: 'Premium Quality' },
 ];
 
 const EditProduct = () => {
@@ -30,7 +41,6 @@ const EditProduct = () => {
     size: '',
     isReadyToShip: true,
     category: '',
-    brand: '',
     tags: [],
   });
   const [existingImages, setExistingImages] = useState([]);
@@ -58,7 +68,6 @@ const EditProduct = () => {
         size: data.size || '',
         isReadyToShip: data.isReadyToShip !== undefined ? data.isReadyToShip : true,
         category: data.category || 'gadgets',
-        brand: data.brand || '',
         tags: data.tags || [],
       });
       setExistingImages(data.images || []);
@@ -109,11 +118,14 @@ const EditProduct = () => {
     formData.append('weight', product.weight);
     formData.append('size', product.size);
     formData.append('isReadyToShip', product.isReadyToShip);
-    formData.append('brand', product.brand);
     formData.append('category', product.category);
     formData.append('existingImages', JSON.stringify(existingImages));
 
-    (product.tags || []).forEach((tag) => formData.append('tags[]', tag));
+    if (product.tags && product.tags.length > 0) {
+      product.tags.forEach((tag) => formData.append('tags[]', tag));
+    } else {
+      formData.append('tags', '');
+    }
     newFiles.forEach((file) => formData.append('images', file));
 
     setSubmitting(true);
@@ -186,8 +198,8 @@ const EditProduct = () => {
               />
             </div>
 
-            {/* Price, MRP & Brand Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Price & MRP Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Selling Price (₹)</label>
                 <input
@@ -208,17 +220,6 @@ const EditProduct = () => {
                   value={product.mrp}
                   onChange={handleInputChange}
                   placeholder="e.g. 4999"
-                  className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Brand</label>
-                <input
-                  type="text"
-                  name="brand"
-                  value={product.brand}
-                  onChange={handleInputChange}
                   className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold"
                 />
               </div>
@@ -376,9 +377,8 @@ const EditProduct = () => {
             <button
               type="submit"
               disabled={submitting}
-              className={`w-full py-4 mt-4 rounded-full font-bold text-white shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 text-sm ${
-                submitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-brand-gradient'
-              }`}
+              className={`w-full py-4 mt-4 rounded-full font-bold text-white shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 text-sm ${submitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-brand-gradient'
+                }`}
             >
               {submitting ? 'Updating Product...' : 'Update Product'}
             </button>

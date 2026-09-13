@@ -35,7 +35,6 @@ export const addToGuestCart = (product, quantity = 1) => {
         name: product.name,
         price: product.price,
         images: product.images,
-        brand: product.brand,
         stock: product.stock,
       },
       quantity,

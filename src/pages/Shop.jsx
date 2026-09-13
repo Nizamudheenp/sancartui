@@ -16,7 +16,14 @@ const CATEGORIES = [
   { value: 'lifestyle', label: 'Creative Living' },
   { value: 'fitness', label: 'Smart Fitness' },
   { value: 'kitchen', label: 'Innovative Kitchen' },
-  { value: 'accessories', label: 'Hot Accessories' }
+  { value: 'accessories', label: 'Hot Accessories' },
+  { value: 'fashion', label: 'Fashion & Apparel' },
+  { value: 'beauty', label: 'Beauty & Personal Care' },
+  { value: 'electronics', label: 'Smart Electronics' },
+  { value: 'home', label: 'Home & Decor' },
+  { value: 'footwear', label: 'Footwear & Shoes' },
+  { value: 'gaming', label: 'Gaming & Toys' },
+  { value: 'sports', label: 'Outdoor & Sports' },
 ];
 
 const SORTS = [
@@ -28,6 +35,12 @@ const SORTS = [
 
 const ProductCard = ({ product, onClick }) => {
   const navigate = useNavigate();
+
+  const displayTag = React.useMemo(() => {
+    if (!product.tags || product.tags.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * product.tags.length);
+    return product.tags[randomIndex];
+  }, [product.tags, product.id, product._id]);
 
   const handleAddToCart = async (e) => {
     e.stopPropagation();
@@ -67,9 +80,9 @@ const ProductCard = ({ product, onClick }) => {
             alt={product.name}
             aspectRatio="h-36 sm:h-52"
           />
-          {product.brand ? (
-            <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-[#1b36e3] bg-white/95 rounded-lg shadow-sm border border-gray-100/50">
-              {product.brand}
+          {displayTag ? (
+            <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-primary-600 bg-white/95 rounded-lg shadow-sm border border-gray-100/50">
+              {displayTag}
             </span>
           ) : (
             <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-amber-600 bg-amber-500/10 border border-amber-500/20 backdrop-blur-md rounded-lg">
@@ -216,7 +229,7 @@ const Shop = () => {
 
       {/* Advanced Control Row */}
       <div className="bg-white border border-gray-100 rounded-3xl p-4 md:p-6 mb-10 shadow-sm flex flex-col gap-4 md:gap-6">
-        
+
         {/* Row 1: Search and Desktop Sorting */}
         <div className="flex flex-col lg:flex-row gap-4 justify-between items-stretch lg:items-center">
           <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-lg flex items-center">
@@ -288,11 +301,10 @@ const Shop = () => {
               <button
                 key={c.value}
                 onClick={() => updateParam("category", c.value)}
-                className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${
-                  categoryFilter === c.value
-                    ? "bg-brand-gradient text-white shadow-md"
-                    : "bg-gray-50 hover:bg-gray-100 text-gray-600"
-                }`}
+                className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${categoryFilter === c.value
+                  ? "bg-brand-gradient text-white shadow-md"
+                  : "bg-gray-50 hover:bg-gray-100 text-gray-600"
+                  }`}
               >
                 {c.label}
               </button>
@@ -355,11 +367,10 @@ const Shop = () => {
               <button
                 disabled={pageFilter === 1}
                 onClick={() => updateParam("page", pageFilter - 1)}
-                className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all ${
-                  pageFilter === 1
-                    ? "bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed"
-                    : "bg-white text-gray-600 border-gray-200 hover:bg-slate-50"
-                }`}
+                className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all ${pageFilter === 1
+                  ? "bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed"
+                  : "bg-white text-gray-600 border-gray-200 hover:bg-slate-50"
+                  }`}
               >
                 <FiChevronLeft className="text-lg" />
               </button>
@@ -371,11 +382,10 @@ const Shop = () => {
               <button
                 disabled={pageFilter === totalPages}
                 onClick={() => updateParam("page", pageFilter + 1)}
-                className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all ${
-                  pageFilter === totalPages
-                    ? "bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed"
-                    : "bg-white text-gray-600 border-gray-200 hover:bg-slate-50"
-                }`}
+                className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all ${pageFilter === totalPages
+                  ? "bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed"
+                  : "bg-white text-gray-600 border-gray-200 hover:bg-slate-50"
+                  }`}
               >
                 <FiChevronRight className="text-lg" />
               </button>

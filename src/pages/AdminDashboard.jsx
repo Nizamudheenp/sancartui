@@ -71,8 +71,7 @@ const AdminDashboard = () => {
   const filteredProducts = products.filter((product) => {
     const matchesSearch =
       product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.brand?.toLowerCase().includes(searchTerm.toLowerCase());
+      product.description?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = !selectedCategory || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -85,7 +84,6 @@ const AdminDashboard = () => {
   // Dashboard Stats Calculations
   const totalProducts = products.length;
   const categoriesCount = categoriesList.length;
-  const brandsCount = new Set(products.map((p) => p.brand).filter(Boolean)).size;
 
   if (loading) {
     return (
@@ -122,7 +120,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Catalog Stats Panel */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10 text-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-10 text-start">
           <div className="bg-white/40 backdrop-blur-md border border-white/50 p-6 rounded-3xl shadow-sm flex items-center gap-4">
             <div className="w-12 h-12 bg-primary-500/10 rounded-2xl flex items-center justify-center text-primary-600 text-xl flex-shrink-0">
               <FiDatabase />
@@ -133,20 +131,6 @@ const AdminDashboard = () => {
               </p>
               <p className="text-2xl font-black text-gray-955 mt-0.5">
                 {totalProducts}
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-white/40 backdrop-blur-md border border-white/50 p-6 rounded-3xl shadow-sm flex items-center gap-4">
-            <div className="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-600 text-xl flex-shrink-0">
-              <FiTag />
-            </div>
-            <div>
-              <p className="text-xs font-extrabold text-gray-400 uppercase tracking-wider">
-                Unique Brands
-              </p>
-              <p className="text-2xl font-black text-gray-955 mt-0.5">
-                {brandsCount}
               </p>
             </div>
           </div>
@@ -175,7 +159,7 @@ const AdminDashboard = () => {
             </span>
             <input
               type="text"
-              placeholder="Search products by name, description, brand..."
+              placeholder="Search products by name, description, category..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-11 pr-4 py-2.5 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold placeholder-gray-400"
@@ -241,11 +225,6 @@ const AdminDashboard = () => {
                         {product.category && (
                           <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[9px] sm:text-[10px] font-extrabold text-primary-600 uppercase tracking-tight bg-primary-500/10 rounded-md">
                             <FiFolder size={9} /> {product.category}
-                          </span>
-                        )}
-                        {product.brand && (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[9px] sm:text-[10px] font-extrabold text-primary-600 uppercase tracking-tight bg-primary-500/10 rounded-md truncate max-w-[90px]">
-                            <FiTag size={9} /> {product.brand}
                           </span>
                         )}
                       </div>

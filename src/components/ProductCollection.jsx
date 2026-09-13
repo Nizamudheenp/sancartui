@@ -12,6 +12,12 @@ import ProductCardImageSlider from './ProductCardImageSlider';
 const ProductCard = ({ product, onClick }) => {
   const navigate = useNavigate();
 
+  const displayTag = React.useMemo(() => {
+    if (!product.tags || product.tags.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * product.tags.length);
+    return product.tags[randomIndex];
+  }, [product.tags, product.id, product._id]);
+
   const renderStars = () => {
     const stars = [];
     const fullStars = Math.floor(product.rating || 0);
@@ -64,9 +70,9 @@ const ProductCard = ({ product, onClick }) => {
             alt={product.name}
             aspectRatio="h-36 sm:h-52"
           />
-          {product.brand ? (
-            <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-[#1b36e3] bg-white/95 rounded-lg shadow-sm border border-gray-100/50">
-              {product.brand}
+          {displayTag ? (
+            <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-primary-600 bg-white/95 rounded-lg shadow-sm border border-gray-100/50">
+              {displayTag}
             </span>
           ) : (
             <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-amber-600 bg-amber-500/10 border border-amber-500/20 backdrop-blur-md rounded-lg">

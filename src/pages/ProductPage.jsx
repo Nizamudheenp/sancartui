@@ -157,7 +157,7 @@ const ProductDetails = () => {
     "description": product.description || `Buy ${product.name} at Sancart.`,
     "brand": {
       "@type": "Brand",
-      "name": product.brand || 'Sancart'
+      "name": "Sancart"
     },
     "offers": {
       "@type": "Offer",
@@ -208,11 +208,6 @@ const ProductDetails = () => {
         <div className="glass-card rounded-[2.5rem] p-6 sm:p-10 shadow-glass flex flex-col space-y-6 text-start w-full">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-3">
-              {product.brand && (
-                <span className="inline-block px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-primary-600 bg-primary-500/10 rounded-lg">
-                  {product.brand}
-                </span>
-              )}
               {product.category && (
                 <span className="inline-block px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-primary-600 bg-primary-500/10 rounded-lg">
                   {product.category}

@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FiCpu, FiCompass, FiActivity, FiCoffee, FiStar } from "react-icons/fi";
+import { FiCpu, FiCompass, FiActivity, FiCoffee, FiStar, FiShoppingBag, FiTv, FiHome, FiSmile, FiShield, FiTrendingUp } from "react-icons/fi";
 
 const CategoryShowcase = () => {
   const navigate = useNavigate();
@@ -27,9 +27,29 @@ const CategoryShowcase = () => {
       link: "/shop?category=kitchen",
     },
     {
-      name: "Essentials",
+      name: "Fashion",
+      icon: <FiShoppingBag />,
+      link: "/shop?category=fashion",
+    },
+    {
+      name: "Beauty",
+      icon: <FiSmile />,
+      link: "/shop?category=beauty",
+    },
+    {
+      name: "Electronics",
+      icon: <FiTv />,
+      link: "/shop?category=electronics",
+    },
+    {
+      name: "Home",
+      icon: <FiHome />,
+      link: "/shop?category=home",
+    },
+    {
+      name: "Accessories",
       icon: <FiStar />,
-      link: "/shop?category=essentials",
+      link: "/shop?category=accessories",
     },
   ];
 

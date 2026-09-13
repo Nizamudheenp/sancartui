@@ -8,16 +8,27 @@ const CATEGORY_OPTIONS = [
   { value: 'lifestyle', label: 'Creative Living' },
   { value: 'fitness', label: 'Smart Health & Fitness' },
   { value: 'kitchen', label: 'Innovative Kitchen' },
-  { value: 'accessories', label: 'Hot Accessories' }
+  { value: 'accessories', label: 'Hot Accessories' },
+  { value: 'fashion', label: 'Fashion & Apparel' },
+  { value: 'beauty', label: 'Beauty & Personal Care' },
+  { value: 'electronics', label: 'Smart Electronics' },
+  { value: 'home', label: 'Home & Decor' },
+  { value: 'footwear', label: 'Footwear & Shoes' },
+  { value: 'gaming', label: 'Gaming & Toys' },
+  { value: 'sports', label: 'Outdoor & Sports' },
 ];
 
 const TAG_OPTIONS = [
+  { value: 'Trending', label: 'Trending (Hot Seller)' },
+  { value: 'Featured', label: 'Featured (Main Grid)' },
+  { value: 'Best Seller', label: 'Best Seller (Most Ordered)' },
   { value: 'New Arrival', label: 'New Arrival (Latest Drops)' },
   { value: 'Special Price', label: 'Special Price (Sale Discount)' },
-  { value: 'Top Brand', label: 'Top Brand (Premium Label)' },
-  { value: 'Best Seller', label: 'Best Seller (Most Ordered)' },
-  { value: 'Featured', label: 'Featured Product (Main Grid)' },
-  { value: 'Trending Product', label: 'Trending Product (Hot Seller)' },
+  { value: 'Hot Drop', label: 'Hot Drop (Limited Edition)' },
+  { value: 'Top Rated', label: 'Top Rated (Customer Choice)' },
+  { value: 'Limited Offer', label: 'Limited Offer (Flash Deal)' },
+  { value: 'Must Have', label: 'Must Have (Viral Product)' },
+  { value: 'Premium', label: 'Premium Quality' },
 ];
 
 const AddProduct = () => {
@@ -29,7 +40,6 @@ const AddProduct = () => {
   const [size, setSize] = useState('');
   const [isReadyToShip, setIsReadyToShip] = useState(true);
   const [category, setCategory] = useState('gadgets');
-  const [brand, setBrand] = useState('');
   const [tags, setTags] = useState([]);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -63,9 +73,12 @@ const AddProduct = () => {
     formData.append('weight', weight);
     formData.append('size', size);
     formData.append('isReadyToShip', isReadyToShip);
-    formData.append('brand', brand);
     formData.append('category', category);
-    tags.forEach(tag => formData.append('tags[]', tag));
+    if (tags && tags.length > 0) {
+      tags.forEach(tag => formData.append('tags[]', tag));
+    } else {
+      formData.append('tags', '');
+    }
 
     const token = localStorage.getItem('token');
     setLoading(true);
@@ -131,8 +144,8 @@ const AddProduct = () => {
             />
           </div>
 
-          {/* Price, MRP & Brand Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* Price & MRP Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Selling Price (₹)</label>
               <input
@@ -152,17 +165,6 @@ const AddProduct = () => {
                 placeholder="4999"
                 value={mrp}
                 onChange={(e) => setMrp(e.target.value)}
-                className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold placeholder-gray-400"
-              />
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Brand</label>
-              <input
-                type="text"
-                placeholder="Brand Name"
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
                 className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold placeholder-gray-400"
               />
             </div>
@@ -292,9 +294,8 @@ const AddProduct = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-4 mt-4 rounded-full font-bold text-white shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 text-sm ${
-              loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-brand-gradient'
-            }`}
+            className={`w-full py-4 mt-4 rounded-full font-bold text-white shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 text-sm ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-brand-gradient'
+              }`}
           >
             {loading ? 'Adding Product...' : 'Add Product to Catalog'}
           </button>

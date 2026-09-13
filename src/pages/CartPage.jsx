@@ -152,11 +152,6 @@ const CartPage = () => {
                         onClick={() => navigate(`/product/${item.product.id || item.product._id}`)}
                         className="cursor-pointer hover:text-primary-500 transition-colors min-w-0"
                       >
-                        {item.product.brand && (
-                          <span className="text-[9px] sm:text-[10px] font-extrabold text-primary-600 uppercase tracking-wide block leading-none mb-0.5">
-                            {item.product.brand}
-                          </span>
-                        )}
                         <h4 className="text-xs sm:text-base font-extrabold text-gray-955 leading-snug line-clamp-1 truncate">
                           {item.product.name}
                         </h4>

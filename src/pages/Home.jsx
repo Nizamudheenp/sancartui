@@ -26,7 +26,7 @@ function Home() {
       </div>
 
       {/* Trending Products */}
-      <ProductCollection title="Trending Products" tag="Trending Product" limit={8} />
+      <ProductCollection title="Trending Products" tag="Trending" limit={8} />
 
       {/* Category Showcase Glass Panel */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
@@ -35,16 +35,16 @@ function Home() {
         </div>
       </div>
 
-      {/* Featured Products */}
-      <ProductCollection title="Featured Products" tag="Featured" limit={8} />
+      {/* Best Sellers */}
+      <ProductCollection title="Best Sellers" tag="Best Seller" limit={8} />
 
       {/* Main Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
         <Banner />
       </div>
 
-      {/* Trending Collections */}
-      <ProductCollection title="Trending Collections" tag="New Arrival" limit={8} />
+      {/* Featured Products */}
+      <ProductCollection title="Featured Products" tag="Featured" limit={8} />
 
       {/* Small Banners Row 1 (2-column grid inside) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">

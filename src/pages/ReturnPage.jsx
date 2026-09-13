@@ -339,14 +339,9 @@ const ReturnPage = () => {
                               />
                             </div>
                             <div className="text-left">
-                              <h4 className="text-sm font-extrabold text-gray-950 line-clamp-1">
+                              <h4 className="text-sm font-extrabold text-gray-955 line-clamp-1">
                                 {productDetails.name || "Product Item"}
                               </h4>
-                              {productDetails.brand && (
-                                <p className="text-[10px] text-gray-400 uppercase font-bold mt-0.5">
-                                  {productDetails.brand}
-                                </p>
-                              )}
                               <p className="text-xs text-primary-600 font-black mt-1">
                                 ₹{productDetails.price || selectedOrder.totalAmount}
                               </p>
