@@ -4,6 +4,7 @@ import api from "../utils/api";
 import { showToast } from "../utils/toast";
 import { addToGuestCart } from "../utils/guestCart";
 import { FaStar, FaRegStar, FaStarHalfAlt } from "react-icons/fa";
+import { FiTruck } from "react-icons/fi";
 import SEO from "../components/SEO";
 import { Helmet } from "react-helmet-async";
 import ProductCollection from "../components/ProductCollection";
@@ -220,6 +221,11 @@ const ProductDetails = () => {
               <span className="inline-block px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-600 bg-emerald-500/10 rounded-lg">
                 In Stock
               </span>
+              {product.isReadyToShip && (
+                <span className="inline-flex items-center gap-1 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-500/15 rounded-lg border border-emerald-500/20">
+                  <FiTruck size={14} /> Available &amp; Ready to Ship
+                </span>
+              )}
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-gray-955 leading-tight tracking-tight">
               {product.name}
@@ -234,10 +240,20 @@ const ProductDetails = () => {
           </div>
 
           <div className="border-t border-b border-white/30 py-4">
-            <div className="flex items-baseline gap-3">
+            <div className="flex flex-wrap items-baseline gap-3">
               <span className="text-3xl sm:text-4xl font-black text-gray-955">
                 ₹{product.price}
               </span>
+              {product.mrp && Number(product.mrp) > Number(product.price) && (
+                <>
+                  <span className="text-lg sm:text-xl font-bold text-gray-400 line-through">
+                    ₹{product.mrp}
+                  </span>
+                  <span className="text-xs font-black text-amber-600 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full">
+                    {Math.round(((Number(product.mrp) - Number(product.price)) / Number(product.mrp)) * 100)}% OFF
+                  </span>
+                </>
+              )}
               <span className="text-xs font-extrabold text-emerald-600 bg-emerald-500/10 px-2.5 py-1 rounded-full">
                 Free Delivery
               </span>

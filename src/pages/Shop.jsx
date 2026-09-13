@@ -89,11 +89,18 @@ const ProductCard = ({ product, onClick }) => {
         </div>
       </div>
 
-      {/* Bottom price and action bar - Single horizontal line */}
+      {/* Bottom price and action bar */}
       <div className="px-3 sm:px-4 pb-3 sm:pb-4 pt-2 border-t border-white/20 flex items-center justify-between gap-2">
-        <h4 className="text-xs sm:text-base font-black text-gray-950 truncate text-start min-w-0">
-          ₹{product.price}
-        </h4>
+        <div className="flex items-baseline gap-1.5 min-w-0 flex-wrap text-start">
+          <h4 className="text-xs sm:text-base font-black text-gray-955 truncate">
+            ₹{product.price}
+          </h4>
+          {product.mrp && Number(product.mrp) > Number(product.price) && (
+            <span className="text-[10px] sm:text-xs font-bold text-gray-400 line-through">
+              ₹{product.mrp}
+            </span>
+          )}
+        </div>
 
         {/* Ratings and Cart Action Row */}
         <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">

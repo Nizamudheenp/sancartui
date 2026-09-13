@@ -25,6 +25,10 @@ const EditProduct = () => {
     name: '',
     description: '',
     price: '',
+    mrp: '',
+    weight: '',
+    size: '',
+    isReadyToShip: true,
     category: '',
     brand: '',
     tags: [],
@@ -49,6 +53,10 @@ const EditProduct = () => {
         name: data.name || '',
         description: data.description || '',
         price: data.price || '',
+        mrp: data.mrp || '',
+        weight: data.weight || '',
+        size: data.size || '',
+        isReadyToShip: data.isReadyToShip !== undefined ? data.isReadyToShip : true,
         category: data.category || 'gadgets',
         brand: data.brand || '',
         tags: data.tags || [],
@@ -63,8 +71,11 @@ const EditProduct = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProduct((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setProduct((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
   };
 
   const handleNewFileSelect = (e) => {
@@ -94,6 +105,10 @@ const EditProduct = () => {
     formData.append('name', product.name);
     formData.append('description', product.description);
     formData.append('price', product.price);
+    formData.append('mrp', product.mrp);
+    formData.append('weight', product.weight);
+    formData.append('size', product.size);
+    formData.append('isReadyToShip', product.isReadyToShip);
     formData.append('brand', product.brand);
     formData.append('category', product.category);
     formData.append('existingImages', JSON.stringify(existingImages));
@@ -171,16 +186,28 @@ const EditProduct = () => {
               />
             </div>
 
-            {/* Price & Brand Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Price, MRP & Brand Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="space-y-1.5">
-                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Price (₹)</label>
+                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Selling Price (₹)</label>
                 <input
                   type="number"
                   name="price"
                   value={product.price}
                   onChange={handleInputChange}
                   required
+                  className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Original MRP (₹)</label>
+                <input
+                  type="number"
+                  name="mrp"
+                  value={product.mrp}
+                  onChange={handleInputChange}
+                  placeholder="e.g. 4999"
                   className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold"
                 />
               </div>
@@ -195,6 +222,51 @@ const EditProduct = () => {
                   className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold"
                 />
               </div>
+            </div>
+
+            {/* Weight & Size Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Weight (Admin Only)</label>
+                <input
+                  type="text"
+                  name="weight"
+                  value={product.weight}
+                  onChange={handleInputChange}
+                  placeholder="e.g. 500g, 1.2 kg"
+                  className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Size (Admin Only)</label>
+                <input
+                  type="text"
+                  name="size"
+                  value={product.size}
+                  onChange={handleInputChange}
+                  placeholder="e.g. Medium, 15x20 cm"
+                  className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold"
+                />
+              </div>
+            </div>
+
+            {/* Available & Ready to Ship Toggle */}
+            <div className="p-4 border border-white/60 bg-white/40 rounded-2xl flex items-center justify-between gap-4">
+              <div>
+                <span className="block text-xs font-black text-gray-800 uppercase tracking-wider">Available &amp; Ready to Ship</span>
+                <span className="text-[11px] text-gray-500 font-semibold">Enable to show "Available &amp; Ready to Ship" badge on product page</span>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                <input
+                  type="checkbox"
+                  name="isReadyToShip"
+                  checked={!!product.isReadyToShip}
+                  onChange={handleInputChange}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+              </label>
             </div>
 
             {/* Category Selection */}

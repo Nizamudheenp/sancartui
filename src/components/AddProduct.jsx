@@ -24,6 +24,10 @@ const AddProduct = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
+  const [mrp, setMrp] = useState('');
+  const [weight, setWeight] = useState('');
+  const [size, setSize] = useState('');
+  const [isReadyToShip, setIsReadyToShip] = useState(true);
   const [category, setCategory] = useState('gadgets');
   const [brand, setBrand] = useState('');
   const [tags, setTags] = useState([]);
@@ -55,6 +59,10 @@ const AddProduct = () => {
     formData.append('name', name);
     formData.append('description', description);
     formData.append('price', price);
+    formData.append('mrp', mrp);
+    formData.append('weight', weight);
+    formData.append('size', size);
+    formData.append('isReadyToShip', isReadyToShip);
     formData.append('brand', brand);
     formData.append('category', category);
     tags.forEach(tag => formData.append('tags[]', tag));
@@ -123,16 +131,27 @@ const AddProduct = () => {
             />
           </div>
 
-          {/* Price & Brand Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Price, MRP & Brand Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-1.5">
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Price (₹)</label>
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Selling Price (₹)</label>
               <input
                 type="number"
                 placeholder="2999"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 required
+                className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold placeholder-gray-400"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Original MRP (₹)</label>
+              <input
+                type="number"
+                placeholder="4999"
+                value={mrp}
+                onChange={(e) => setMrp(e.target.value)}
                 className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold placeholder-gray-400"
               />
             </div>
@@ -147,6 +166,48 @@ const AddProduct = () => {
                 className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold placeholder-gray-400"
               />
             </div>
+          </div>
+
+          {/* Weight & Size Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Weight (Admin Only)</label>
+              <input
+                type="text"
+                placeholder="e.g. 500g, 1.2 kg"
+                value={weight}
+                onChange={(e) => setWeight(e.target.value)}
+                className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold placeholder-gray-400"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-xs font-black text-gray-400 uppercase tracking-widest">Size (Admin Only)</label>
+              <input
+                type="text"
+                placeholder="e.g. Medium, 15x20 cm"
+                value={size}
+                onChange={(e) => setSize(e.target.value)}
+                className="w-full px-4 py-3 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold placeholder-gray-400"
+              />
+            </div>
+          </div>
+
+          {/* Available & Ready to Ship Toggle */}
+          <div className="p-4 border border-white/60 bg-white/40 rounded-2xl flex items-center justify-between gap-4">
+            <div>
+              <span className="block text-xs font-black text-gray-800 uppercase tracking-wider">Available &amp; Ready to Ship</span>
+              <span className="text-[11px] text-gray-500 font-semibold">Enable to show "Available &amp; Ready to Ship" badge on product page</span>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
+              <input
+                type="checkbox"
+                checked={isReadyToShip}
+                onChange={(e) => setIsReadyToShip(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+            </label>
           </div>
 
           {/* Category Selection */}
