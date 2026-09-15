@@ -30,7 +30,7 @@ function Home() {
 
       {/* Category Showcase Glass Panel */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-        <div className="glass-card rounded-[2.5rem] p-3 sm:p-10 shadow-glass">
+        <div className="glass-card rounded-[2.5rem] p-3 sm:p-5 lg:p-6 xl:p-8 shadow-glass">
           <CategoryShowcase />
         </div>
       </div>

@@ -273,7 +273,7 @@ const AddProduct = () => {
                     const objectUrl = URL.createObjectURL(file);
                     return (
                       <div key={idx} className="relative w-20 h-20 rounded-2xl border border-white/60 bg-white overflow-hidden p-1 shadow-sm group">
-                        <img src={objectUrl} alt={`Preview ${idx}`} className="w-full h-full object-cover rounded-xl" />
+                        <img src={objectUrl} alt={`Preview ${idx}`} className="w-full h-full object-fill rounded-xl" />
                         <button
                           type="button"
                           onClick={() => removeImage(idx)}

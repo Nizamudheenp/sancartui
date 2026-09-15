@@ -335,7 +335,7 @@ const ReturnPage = () => {
                               <img
                                 src={productDetails.images?.[0] || "/placeholder.svg"}
                                 alt={productDetails.name}
-                                className="max-w-full max-h-full object-contain"
+                                className="w-full h-full object-fill"
                               />
                             </div>
                             <div className="text-left">

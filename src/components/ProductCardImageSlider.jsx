@@ -29,7 +29,7 @@ const ProductCardImageSlider = ({ images = [], alt = "Product Image", aspectRati
       <img
         src={imageList[currentIndex]}
         alt={`${alt} - Image ${currentIndex + 1}`}
-        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+        className="w-full h-full object-fill transform group-hover:scale-105 transition-transform duration-500"
         onError={(e) => {
           e.target.src = "/placeholder.jpg";
         }}
@@ -59,9 +59,8 @@ const ProductCardImageSlider = ({ images = [], alt = "Product Image", aspectRati
               <button
                 key={idx}
                 onClick={(e) => handleDotClick(e, idx)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  currentIndex === idx ? "w-4 bg-white" : "w-1.5 bg-white/60 hover:bg-white"
-                }`}
+                className={`h-1.5 rounded-full transition-all duration-300 ${currentIndex === idx ? "w-4 bg-white" : "w-1.5 bg-white/60 hover:bg-white"
+                  }`}
                 title={`Go to image ${idx + 1}`}
               />
             ))}

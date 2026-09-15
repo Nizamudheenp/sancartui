@@ -319,7 +319,7 @@ const EditProduct = () => {
                 <div className="flex flex-wrap gap-3 p-4 border border-white/60 bg-white/30 rounded-2xl">
                   {existingImages.map((imgUrl, idx) => (
                     <div key={idx} className="relative w-20 h-20 border border-white/60 bg-white rounded-2xl overflow-hidden p-1 shadow-sm group">
-                      <img src={imgUrl} alt={`Existing ${idx}`} className="w-full h-full object-cover rounded-xl" />
+                      <img src={imgUrl} alt={`Existing ${idx}`} className="w-full h-full object-fill rounded-xl" />
                       <button
                         type="button"
                         onClick={() => removeExistingImage(idx)}
@@ -356,7 +356,7 @@ const EditProduct = () => {
                       const objectUrl = URL.createObjectURL(file);
                       return (
                         <div key={idx} className="relative w-20 h-20 rounded-2xl border border-white/60 bg-white overflow-hidden p-1 shadow-sm group">
-                          <img src={objectUrl} alt={`New upload ${idx}`} className="w-full h-full object-cover rounded-xl" />
+                          <img src={objectUrl} alt={`New upload ${idx}`} className="w-full h-full object-fill rounded-xl" />
                           <button
                             type="button"
                             onClick={() => removeNewFile(idx)}

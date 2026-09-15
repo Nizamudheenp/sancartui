@@ -295,7 +295,7 @@ const AdminOrders = () => {
                                     <img
                                       src={p.product?.images?.[0] || "/placeholder.svg"}
                                       alt={p.product?.name}
-                                      className="max-w-full max-h-full object-contain"
+                                      className="w-full h-full object-fill"
                                       onError={(e) => {
                                         e.target.src = "/placeholder.svg";
                                       }}
