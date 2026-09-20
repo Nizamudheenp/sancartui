@@ -1,18 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
-import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
-import { AiFillStar, AiOutlineStar, AiTwotoneStar } from 'react-icons/ai';
-import { FiShoppingCart, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { showToast } from '../utils/toast';
+import { getRecentlyViewedProducts } from '../utils/recentlyViewed';
+import { FiChevronLeft, FiChevronRight, FiShoppingCart } from 'react-icons/fi';
+import ProductCardImageSlider from './ProductCardImageSlider';
 import { addToGuestCart } from '../utils/guestCart';
+import { showToast } from '../utils/toast';
+import api from '../utils/api';
 import { motion } from 'framer-motion';
 
-import ProductCardImageSlider from './ProductCardImageSlider';
-import { ProductSkeletonGrid } from './ProductSkeletonCard';
-
-const ProductCard = ({ product, onClick }) => {
-  const navigate = useNavigate();
-
+const RecentProductCard = ({ product, onClick }) => {
   const displayTag = React.useMemo(() => {
     if (!product.tags || product.tags.length === 0) return null;
     const randomIndex = Math.floor(Math.random() * product.tags.length);
@@ -63,15 +59,15 @@ const ProductCard = ({ product, onClick }) => {
             </span>
           ) : (
             <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-amber-600 bg-amber-500/10 border border-amber-500/20 backdrop-blur-md rounded-lg">
-              Trending
+              Recent
             </span>
           )}
         </div>
 
-        {/* Details Section - Tight compact padding */}
+        {/* Details Section */}
         <div className="p-3 sm:p-4 text-start">
           <span className="text-[8px] sm:text-[9px] font-extrabold text-gray-450 uppercase tracking-widest block mb-0.5">
-            {product.category || "Trending Item"}
+            {product.category || "Recently Viewed"}
           </span>
           <h5 className="text-gray-950 font-extrabold text-xs sm:text-sm leading-snug line-clamp-2 overflow-hidden group-hover:text-primary-500 transition-colors">
             {product.name}
@@ -92,11 +88,10 @@ const ProductCard = ({ product, onClick }) => {
           )}
         </div>
 
-        {/* Ratings and Cart Action Row */}
         <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
           {product.rating > 0 && (
             <div className="flex items-center gap-0.5 bg-amber-500/10 border border-amber-500/20 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-xl text-amber-600 text-[8px] sm:text-[9px] font-black">
-              <span>{product.rating.toFixed(1)}</span>
+              <span>{Number(product.rating).toFixed(1)}</span>
               <span>★</span>
             </div>
           )}
@@ -113,35 +108,18 @@ const ProductCard = ({ product, onClick }) => {
   );
 };
 
-const ProductCollection = ({ title, tag, category, search, limit, excludeId, horizontal = false, containerClassName = "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12" }) => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+const RecentlyViewed = ({ excludeId, containerClassName = "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12" }) => {
+  const [recentProducts, setRecentProducts] = useState([]);
   const navigate = useNavigate();
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      try {
-        const queryParams = new URLSearchParams();
-        if (tag) queryParams.append('tag', tag);
-        if (category) queryParams.append('category', category);
-        if (search) queryParams.append('search', search);
-        if (limit) queryParams.append('limit', limit);
-        if (excludeId) queryParams.append('excludeId', excludeId);
-
-        const res = await api.get(
-          `/api/products/getproducts?${queryParams.toString()}`
-        );
-        setProducts(res.data.products || res.data || []);
-      } catch (err) {
-        console.error('Error fetching products:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProducts();
-  }, [tag, category, search, limit, excludeId]);
+    let items = getRecentlyViewedProducts();
+    if (excludeId) {
+      items = items.filter(item => (item.id || item._id) !== excludeId);
+    }
+    setRecentProducts(items);
+  }, [excludeId]);
 
   const scrollLeft = () => {
     if (scrollRef.current) {
@@ -155,9 +133,7 @@ const ProductCollection = ({ title, tag, category, search, limit, excludeId, hor
     }
   };
 
-  if (!loading && !products.length) return null;
-
-  const skeletonCount = limit || 4;
+  if (!recentProducts || recentProducts.length === 0) return null;
 
   return (
     <div className={containerClassName}>
@@ -165,28 +141,15 @@ const ProductCollection = ({ title, tag, category, search, limit, excludeId, hor
         <section className="max-w-[1300px] mx-auto px-0 py-2 sm:py-4">
           <div className="flex items-center justify-between mb-8 sm:mb-10 flex-wrap gap-4">
             <div className="max-w-xl text-start">
-              <motion.h2
-                className="text-2xl md:text-4xl font-extrabold text-gray-950 tracking-tight"
-                initial={{ opacity: 0, y: -20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-              >
-                {title}
-              </motion.h2>
-              <motion.p
-                className="text-gray-500 mt-2 text-xs sm:text-lg font-semibold"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-              >
-                Curated and handpicked trending catalog items.
-              </motion.p>
+              <h2 className="text-2xl md:text-4xl font-extrabold text-gray-950 tracking-tight">
+                Recently Viewed
+              </h2>
+              <p className="text-gray-500 mt-2 text-xs sm:text-lg font-semibold">
+                Pick up right where you left off.
+              </p>
             </div>
 
-            {/* Scroll buttons for horizontal mode */}
-            {horizontal && products.length > 0 && !loading && (
+            {recentProducts.length > 0 && (
               <div className="flex items-center gap-2">
                 <button
                   onClick={scrollLeft}
@@ -206,43 +169,23 @@ const ProductCollection = ({ title, tag, category, search, limit, excludeId, hor
             )}
           </div>
 
-          {loading ? (
-            <ProductSkeletonGrid count={skeletonCount} horizontal={horizontal} />
-          ) : horizontal ? (
-            <div
-              ref={scrollRef}
-              className="flex gap-3 sm:gap-6 overflow-x-auto pb-4 pt-2 scrollbar-none snap-x snap-mandatory scroll-smooth"
-            >
-              {products.map((product) => (
-                <div key={product.id || product._id} className="w-[200px] sm:w-[260px] flex-shrink-0 snap-start">
-                  <ProductCard
-                    product={product}
-                    onClick={() => navigate(`/product/${product.id || product._id}`)}
-                  />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <motion.div
-              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              {products.map((product) => (
-                <ProductCard
-                  key={product.id || product._id}
+          <div
+            ref={scrollRef}
+            className="flex gap-3 sm:gap-6 overflow-x-auto pb-4 pt-2 scrollbar-none snap-x snap-mandatory scroll-smooth"
+          >
+            {recentProducts.map((product) => (
+              <div key={product.id || product._id} className="w-[200px] sm:w-[260px] flex-shrink-0 snap-start">
+                <RecentProductCard
                   product={product}
                   onClick={() => navigate(`/product/${product.id || product._id}`)}
                 />
-              ))}
-            </motion.div>
-          )}
+              </div>
+            ))}
+          </div>
         </section>
       </div>
     </div>
   );
 };
 
-export default ProductCollection;
+export default RecentlyViewed;

@@ -1,8 +1,8 @@
 import React from 'react';
 
-export const ProductSkeletonCard = () => {
+export const ProductSkeletonCard = ({ isHorizontal = false }) => {
   return (
-    <div className="flex flex-col justify-between overflow-hidden rounded-[2rem] border border-white/50 bg-white/20 backdrop-blur-md shadow-glass animate-pulse">
+    <div className={`flex flex-col justify-between overflow-hidden rounded-[2rem] border border-white/50 bg-white/20 backdrop-blur-md shadow-glass animate-pulse ${isHorizontal ? 'w-[200px] sm:w-[250px] flex-shrink-0 snap-start' : 'w-full'}`}>
       <div>
         {/* Skeleton Image */}
         <div className="w-full h-36 sm:h-52 bg-gray-200/60 rounded-t-[1.7rem] sm:rounded-t-[1.95rem]" />
@@ -26,12 +26,17 @@ export const ProductSkeletonCard = () => {
 
 export const ProductSkeletonGrid = ({
   count = 8,
-  className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8"
+  horizontal = false,
+  className = ""
 }) => {
+  const containerClass = horizontal
+    ? "flex gap-3 sm:gap-6 overflow-x-auto pb-4 pt-2 scrollbar-none snap-x snap-mandatory"
+    : className || "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8";
+
   return (
-    <div className={className}>
+    <div className={containerClass}>
       {Array.from({ length: count }).map((_, idx) => (
-        <ProductSkeletonCard key={idx} />
+        <ProductSkeletonCard key={idx} isHorizontal={horizontal} />
       ))}
     </div>
   );

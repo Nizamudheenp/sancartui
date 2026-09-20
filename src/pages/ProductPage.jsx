@@ -9,6 +9,8 @@ import SEO from "../components/SEO";
 import { Helmet } from "react-helmet-async";
 import ProductCollection from "../components/ProductCollection";
 import ProductCardImageSlider from "../components/ProductCardImageSlider";
+import { saveRecentlyViewedProduct } from "../utils/recentlyViewed";
+import RecentlyViewed from "../components/RecentlyViewed";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -38,6 +40,7 @@ const ProductDetails = () => {
       try {
         const res = await api.get(`/api/products/getaproduct/${id}`);
         setProduct(res.data);
+        saveRecentlyViewedProduct(res.data);
       } catch (err) {
         console.error("Error fetching product:", err);
       } finally {
@@ -358,17 +361,25 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      {/* Recommended Products */}
+      {/* Related Products */}
       {product.category && (
         <div className="border-t border-white/30 pt-12 text-start">
           <ProductCollection
-            title="You May Also Like"
-            tag="Recommendations"
+            title="Related Products"
             category={product.category}
-            limit={4}
+            excludeId={product.id || product._id}
+            limit={10}
+            horizontal={true}
+            containerClassName="w-full mb-12"
           />
         </div>
       )}
+
+      {/* Recently Viewed Products */}
+      <RecentlyViewed
+        excludeId={product.id || product._id}
+        containerClassName="w-full mb-12"
+      />
     </div>
   );
 };

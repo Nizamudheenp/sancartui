@@ -50,7 +50,7 @@ function App() {
     setupResponseInterceptor(navigate, showToast);
   }, [navigate]);
 
-  const shouldShowFooter = ['/', '/about', '/contact', '/shop', '/privacy', '/terms', '/help', '/myorders'].includes(location.pathname);
+  const shouldShowFooter = ['/', '/about', '/contact', '/shop', '/privacy', '/terms', '/help', '/myorders', '/returns'].includes(location.pathname) || location.pathname.startsWith('/product/');
   return (
     <>
       <ScrollToTop />

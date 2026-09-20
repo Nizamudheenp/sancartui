@@ -8,6 +8,7 @@ import ProductCollection from '../components/ProductCollection'
 import TrustBadges from '../components/TrustBadges'
 import CategoryShowcase from '../components/CategoryShowcase'
 import Testimonials from '../components/Testimonials'
+import RecentlyViewed from '../components/RecentlyViewed'
 import SEO from '../components/SEO'
 
 function Home() {
@@ -55,6 +56,9 @@ function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
         <SmallBanner2 />
       </div>
+
+      {/* Recently Viewed Products */}
+      <RecentlyViewed />
 
       {/* Testimonials Glass Panel */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">

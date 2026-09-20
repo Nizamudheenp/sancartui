@@ -71,7 +71,7 @@ const Contact = () => {
               </div>
               <div>
                 <h4 className="font-extrabold text-gray-950 text-base">Office Address</h4>
-                <p className="text-sm text-gray-600 mt-1 font-semibold">Wayanad, Kerala, India</p>
+                <p className="text-sm text-gray-600 mt-1 font-semibold">sancart 4th mile, Wayanad, Kerala, India</p>
               </div>
             </div>
 
