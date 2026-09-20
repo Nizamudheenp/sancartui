@@ -16,6 +16,7 @@ import {
 } from "react-icons/fi";
 
 import ProductCardImageSlider from '../components/ProductCardImageSlider';
+import { ProductSkeletonGrid } from '../components/ProductSkeletonCard';
 
 const AdminDashboard = () => {
   const [products, setProducts] = useState([]);
@@ -87,9 +88,12 @@ const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 gap-4">
-        <span className="w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-sm font-semibold text-gray-500">Loading catalog items...</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 pt-28">
+        <div className="mb-8 space-y-2">
+          <div className="h-8 w-48 bg-gray-200/80 rounded-lg animate-pulse" />
+          <div className="h-4 w-72 bg-gray-200/60 rounded-lg animate-pulse" />
+        </div>
+        <ProductSkeletonGrid count={8} />
       </div>
     );
   }

@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 
 import SEO from '../components/SEO';
 import ProductCardImageSlider from '../components/ProductCardImageSlider';
+import { ProductSkeletonGrid } from '../components/ProductSkeletonCard';
 
 const CATEGORIES = [
   { value: 'all', label: 'All Products' },
@@ -334,10 +335,7 @@ const Shop = () => {
 
       {/* Product Display and Pagination */}
       {loading ? (
-        <div className="min-h-[40vh] flex flex-col items-center justify-center gap-4">
-          <span className="w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm font-semibold text-gray-500">Loading products...</p>
-        </div>
+        <ProductSkeletonGrid count={12} />
       ) : products.length === 0 ? (
         <div className="min-h-[30vh] border border-dashed border-gray-200 rounded-3xl flex flex-col items-center justify-center p-8 bg-white">
           <p className="text-gray-500 font-medium">No products match your filter search.</p>

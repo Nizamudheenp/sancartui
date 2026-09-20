@@ -8,6 +8,7 @@ import { addToGuestCart } from '../utils/guestCart';
 import { motion } from 'framer-motion';
 
 import ProductCardImageSlider from './ProductCardImageSlider';
+import { ProductSkeletonGrid } from './ProductSkeletonCard';
 
 const ProductCard = ({ product, onClick }) => {
   const navigate = useNavigate();
@@ -128,10 +129,12 @@ const ProductCard = ({ product, onClick }) => {
 
 const ProductCollection = ({ title, tag, category, search, limit }) => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       try {
         const queryParams = new URLSearchParams();
         if (tag) queryParams.append('tag', tag);
@@ -142,15 +145,19 @@ const ProductCollection = ({ title, tag, category, search, limit }) => {
         const res = await api.get(
           `/api/products/getproducts?${queryParams.toString()}`
         );
-        setProducts(res.data.products || res.data);
+        setProducts(res.data.products || res.data || []);
       } catch (err) {
         console.error('Error fetching products:', err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProducts();
   }, [tag, category, search, limit]);
 
-  if (!products.length) return null;
+  if (!loading && !products.length) return null;
+
+  const skeletonCount = limit || 4;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
@@ -177,21 +184,25 @@ const ProductCollection = ({ title, tag, category, search, limit }) => {
             </motion.p>
           </div>
 
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            {products.map((product) => (
-              <ProductCard
-                key={product.id || product._id}
-                product={product}
-                onClick={() => navigate(`/product/${product.id || product._id}`)}
-              />
-            ))}
-          </motion.div>
+          {loading ? (
+            <ProductSkeletonGrid count={skeletonCount} />
+          ) : (
+            <motion.div
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              {products.map((product) => (
+                <ProductCard
+                  key={product.id || product._id}
+                  product={product}
+                  onClick={() => navigate(`/product/${product.id || product._id}`)}
+                />
+              ))}
+            </motion.div>
+          )}
         </section>
       </div>
     </div>
