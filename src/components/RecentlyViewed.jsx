@@ -54,11 +54,11 @@ const RecentProductCard = ({ product, onClick }) => {
             aspectRatio="h-36 sm:h-52"
           />
           {displayTag ? (
-            <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-primary-600 bg-white/95 rounded-lg shadow-sm border border-gray-100/50">
+            <span className="absolute top-2.5 left-2.5 z-10 px-2.5 py-0.5 text-[8.5px] font-black uppercase tracking-widest text-amber-400 bg-slate-950/85 backdrop-blur-md rounded-full shadow-md border border-white/20">
               {displayTag}
             </span>
           ) : (
-            <span className="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-widest text-amber-600 bg-amber-500/10 border border-amber-500/20 backdrop-blur-md rounded-lg">
+            <span className="absolute top-2.5 left-2.5 z-10 px-2.5 py-0.5 text-[8.5px] font-black uppercase tracking-widest text-amber-400 bg-slate-950/85 backdrop-blur-md rounded-full shadow-md border border-white/20">
               Recent
             </span>
           )}
