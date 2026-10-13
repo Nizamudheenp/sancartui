@@ -10,6 +10,7 @@ import ScrollToTop from './components/ScrollToTop';
 import ErrorBoundary from './components/ErrorBoundary';
 import { setupResponseInterceptor } from './utils/api';
 import { showToast } from './utils/toast';
+import { NotificationProvider } from './context/NotificationContext';
 
 
 // Lazy Load Page Components
@@ -52,7 +53,7 @@ function App() {
 
   const shouldShowFooter = ['/', '/about', '/contact', '/shop', '/privacy', '/terms', '/help', '/myorders', '/returns'].includes(location.pathname) || location.pathname.startsWith('/product/');
   return (
-    <>
+    <NotificationProvider>
       <ScrollToTop />
       <Header />
 
@@ -130,7 +131,7 @@ function App() {
       />
 
 
-    </>
+    </NotificationProvider>
   )
 }
 

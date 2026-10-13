@@ -45,6 +45,7 @@ function LoginPage() {
       const user = response.data.user;
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('token', token);
+      window.dispatchEvent(new Event('authChange'));
 
       // Sync guest cart
       try {
