@@ -185,7 +185,6 @@ export const NotificationProvider = ({ children }) => {
 
       socket.on('new_notification', (data) => {
         playNotificationSound();
-        showToast('info', `${data.title}: ${data.message}`);
 
         setNotifications((prev) => {
           const exists = prev.some((n) => String(n.id || n._id) === String(data.id || data._id));
