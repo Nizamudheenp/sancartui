@@ -14,6 +14,7 @@ import {
   BsCheckCircle,
   BsTrash,
   BsX,
+  BsXCircle,
 } from 'react-icons/bs';
 import api from '../utils/api';
 import { getGuestCart } from '../utils/guestCart';
@@ -189,6 +190,8 @@ const Header = () => {
         return <BsArrowReturnLeft className="text-orange-500 text-base" />;
       case 'USER_ORDER_STATUS':
         return <BsCheckCircle className="text-green-500 text-base" />;
+      case 'ADMIN_ORDER_CANCELLED':
+        return <BsXCircle className="text-red-500 text-base" />;
       default:
         return <BsBell className="text-primary-500 text-base" />;
     }
