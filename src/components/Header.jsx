@@ -277,7 +277,7 @@ const Header = () => {
 
             {/* Notification Dropdown Panel */}
             <div
-              className={`absolute right-0 mt-3 w-80 md:w-96 bg-white/95 backdrop-blur-2xl border border-white/40 rounded-2xl shadow-glass-hover p-4 transform transition-all duration-300 origin-top-right z-50 ${
+              className={`fixed left-3 right-3 top-20 max-w-sm sm:max-w-md mx-auto md:absolute md:inset-auto md:top-full md:right-0 md:mt-3 md:w-96 md:max-w-none bg-white/95 backdrop-blur-2xl border border-white/40 rounded-2xl shadow-glass-hover p-4 transform transition-all duration-300 origin-top md:origin-top-right z-50 ${
                 showNotifications
                   ? 'opacity-100 scale-100 visible'
                   : 'opacity-0 scale-95 invisible'
