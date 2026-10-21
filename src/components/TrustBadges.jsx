@@ -1,6 +1,7 @@
 import React from "react";
 import { FiTruck, FiShield, FiRotateCcw, FiHeadphones } from "react-icons/fi";
 
+
 const TrustBadges = () => {
   const badges = [
     {
