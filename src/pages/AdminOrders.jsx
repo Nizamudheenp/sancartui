@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../utils/api";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { showToast } from "../utils/toast";
 import {
   FiUser,
@@ -13,6 +13,16 @@ import {
   FiTrendingUp,
   FiLayers,
   FiXCircle,
+  FiMapPin,
+  FiEye,
+  FiCopy,
+  FiSearch,
+  FiCalendar,
+  FiCreditCard,
+  FiX,
+  FiCheck,
+  FiPrinter,
+  FiMail,
 } from "react-icons/fi";
 
 const AdminOrders = () => {
@@ -21,6 +31,14 @@ const AdminOrders = () => {
   const [activeTab, setActiveTab] = useState("orders");
   const [returns, setReturns] = useState([]);
   const [loadingReturns, setLoadingReturns] = useState(false);
+
+  // Search & Filter state
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+
+  // Order Details Modal state
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [copiedAddress, setCopiedAddress] = useState(false);
 
   const fetchOrders = async () => {
     try {
@@ -58,11 +76,16 @@ const AdminOrders = () => {
 
       setOrders((prev) =>
         prev.map((order) =>
-          (order.id === orderIdentifier || order._id === orderIdentifier)
+          order.id === orderIdentifier || order._id === orderIdentifier
             ? { ...order, status: res.data?.status || newStatus }
             : order
         )
       );
+
+      if (selectedOrder && (selectedOrder.id === orderIdentifier || selectedOrder._id === orderIdentifier)) {
+        setSelectedOrder((prev) => ({ ...prev, status: res.data?.status || newStatus }));
+      }
+
       showToast("success", `Order status updated to ${newStatus}`);
     } catch (err) {
       console.error("Failed to update status:", err);
@@ -82,6 +105,14 @@ const AdminOrders = () => {
       console.error("Failed to update return status:", err);
       showToast("error", "Failed to update status");
     }
+  };
+
+  const handleCopyAddress = (address) => {
+    if (!address) return;
+    navigator.clipboard.writeText(address);
+    setCopiedAddress(true);
+    showToast("success", "Shipping address copied to clipboard!");
+    setTimeout(() => setCopiedAddress(false), 2000);
   };
 
   useEffect(() => {
@@ -131,6 +162,23 @@ const AdminOrders = () => {
     }
   };
 
+  // Filter orders based on search query and status filter
+  const filteredOrders = orders.filter((order) => {
+    const q = searchQuery.toLowerCase().trim();
+    const matchesSearch =
+      !q ||
+      (order.id && order.id.toLowerCase().includes(q)) ||
+      (order.user?.name && order.user.name.toLowerCase().includes(q)) ||
+      (order.user?.email && order.user.email.toLowerCase().includes(q)) ||
+      (order.guestEmail && order.guestEmail.toLowerCase().includes(q)) ||
+      (order.shippingAddress && order.shippingAddress.toLowerCase().includes(q));
+
+    const matchesStatus =
+      statusFilter === "all" || order.status?.toLowerCase() === statusFilter.toLowerCase();
+
+    return matchesSearch && matchesStatus;
+  });
+
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 gap-4">
@@ -156,7 +204,7 @@ const AdminOrders = () => {
             Manage Orders
           </h2>
           <p className="text-gray-500 text-sm font-semibold mt-1">
-            Track customer purchases, update delivery status, and review business transactions
+            Track customer purchases, review shipping addresses, update delivery status, and review business transactions
           </p>
         </div>
 
@@ -230,253 +278,592 @@ const AdminOrders = () => {
         </div>
 
         {activeTab === "orders" ? (
-          orders.length === 0 ? (
-            <div className="glass-card rounded-[2.5rem] p-12 text-center max-w-lg mx-auto shadow-glass">
-              <div className="w-16 h-16 rounded-full bg-white/40 border border-white/50 flex items-center justify-center mx-auto mb-6 text-2xl text-gray-400 shadow-sm">
-                <FiPackage />
+          <div>
+            {/* Search & Status Filters Bar */}
+            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 mb-6">
+              {/* Search Box */}
+              <div className="relative flex-1 max-w-md">
+                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+                <input
+                  type="text"
+                  placeholder="Search by Order ID, Customer, Email, Address..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-11 pr-4 py-2.5 bg-white/70 backdrop-blur-md border border-white/60 rounded-2xl text-xs font-semibold text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500 shadow-sm transition"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs"
+                  >
+                    Clear
+                  </button>
+                )}
               </div>
-              <h3 className="text-lg font-extrabold text-gray-955 mb-2">No orders found</h3>
-              <p className="text-xs sm:text-sm text-gray-500 font-semibold">
-                There are currently no customer orders logged in the database.
-              </p>
-            </div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="glass-card rounded-[2.5rem] shadow-glass overflow-hidden"
-            >
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-100 text-sm text-start">
-                  <thead className="bg-slate-50/70 text-gray-500 font-bold">
-                    <tr>
-                      <th className="px-6 py-4 text-left font-bold tracking-wider">User</th>
-                      <th className="px-6 py-4 text-left font-bold tracking-wider">Products Info</th>
-                      <th className="px-6 py-4 text-left font-bold tracking-wider">Total Amount</th>
-                      <th className="px-6 py-4 text-left font-bold tracking-wider">Status</th>
-                      <th className="px-6 py-4 text-left font-bold tracking-wider">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {orders.map((order, index) => {
-                      const badge = getStatusBadge(order.status);
-                      return (
-                        <tr
-                          key={order.id || order._id || `order-${index}`}
-                          className="hover:bg-slate-50/50 transition duration-150"
-                        >
-                          {/* User Details */}
-                          <td className="px-6 py-5 whitespace-nowrap">
-                            <div className="flex items-center gap-3">
-                              <div className="w-9 h-9 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">
-                                {order.user?.name ? order.user.name.charAt(0).toUpperCase() : <FiUser />}
-                              </div>
-                              <div className="text-start">
-                                <p className="font-bold text-gray-800 text-sm">
-                                  {order.user?.name || "Anonymous User"}
-                                </p>
-                                <p className="text-[10px] text-gray-400 font-medium tracking-tight">
-                                  ID: {(order.id && order.id.startsWith("SAN")) ? order.id : `#${(order.id || '').substring(Math.max(0, (order.id || '').length - 8)).toUpperCase()}`}
-                                </p>
-                              </div>
-                            </div>
-                          </td>
 
-                          {/* Products */}
-                          <td className="px-6 py-5">
-                            <div className="space-y-2 text-start">
-                              {order.products.map((p, index) => (
-                                <div
-                                  key={`${p.product?.id || "no-id"}-${index}`}
-                                  className="flex items-center gap-2"
-                                >
-                                  <div className="w-8 h-8 border border-gray-100 bg-white rounded-lg flex items-center justify-center p-1 overflow-hidden flex-shrink-0">
-                                    <img
-                                      src={p.product?.images?.[0] || "/placeholder.svg"}
-                                      alt={p.product?.name}
-                                      className="w-full h-full object-fill"
-                                      onError={(e) => {
-                                        e.target.src = "/placeholder.svg";
-                                      }}
-                                    />
-                                  </div>
-                                  <span className="text-xs font-semibold text-gray-700 truncate max-w-[200px]">
-                                    {p.product?.name || "Product Item"}
-                                  </span>
-                                  <span className="text-[10px] text-gray-400 font-bold bg-slate-100/80 px-1.5 py-0.5 rounded-md">
-                                    ×{p.quantity}
-                                  </span>
+              {/* Status Filter Badges */}
+              <div className="flex flex-wrap items-center gap-1.5">
+                {["all", "processing", "paid", "shipped", "delivered", "cancelled", "refunded"].map((status) => (
+                  <button
+                    key={status}
+                    onClick={() => setStatusFilter(status)}
+                    className={`px-3.5 py-1.5 text-xs font-bold rounded-xl capitalize transition-all ${
+                      statusFilter === status
+                        ? "bg-brand-gradient text-white shadow-md shadow-primary-500/20"
+                        : "bg-white/50 border border-white/60 text-gray-600 hover:bg-white"
+                    }`}
+                  >
+                    {status}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {filteredOrders.length === 0 ? (
+              <div className="glass-card rounded-[2.5rem] p-12 text-center max-w-lg mx-auto shadow-glass">
+                <div className="w-16 h-16 rounded-full bg-white/40 border border-white/50 flex items-center justify-center mx-auto mb-6 text-2xl text-gray-400 shadow-sm">
+                  <FiPackage />
+                </div>
+                <h3 className="text-lg font-extrabold text-gray-955 mb-2">No matching orders</h3>
+                <p className="text-xs sm:text-sm text-gray-500 font-semibold">
+                  {searchQuery || statusFilter !== "all"
+                    ? "No orders match your filter criteria. Try clearing search or filters."
+                    : "There are currently no customer orders logged in the database."}
+                </p>
+              </div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="glass-card rounded-[2.5rem] shadow-glass overflow-hidden"
+              >
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-100 text-sm text-start">
+                    <thead className="bg-slate-50/70 text-gray-500 font-bold">
+                      <tr>
+                        <th className="px-6 py-4 text-left font-bold tracking-wider">Order ID</th>
+                        <th className="px-6 py-4 text-left font-bold tracking-wider">Customer</th>
+                        <th className="px-6 py-4 text-left font-bold tracking-wider">Products Info</th>
+                        <th className="px-6 py-4 text-left font-bold tracking-wider">Total</th>
+                        <th className="px-6 py-4 text-left font-bold tracking-wider">Status</th>
+                        <th className="px-6 py-4 text-center font-bold tracking-wider">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {filteredOrders.map((order, index) => {
+                        const badge = getStatusBadge(order.status);
+                        const formattedId =
+                          order.id && order.id.startsWith("SAN")
+                            ? order.id
+                            : `#${(order.id || "").substring(Math.max(0, (order.id || "").length - 8)).toUpperCase()}`;
+
+                        return (
+                          <tr
+                            key={order.id || order._id || `order-${index}`}
+                            className="hover:bg-slate-50/50 transition duration-150"
+                          >
+                            {/* Column 1: Order ID */}
+                            <td className="px-6 py-5 whitespace-nowrap text-start">
+                              <span className="font-mono font-extrabold text-xs text-primary-600 bg-primary-50 px-2.5 py-1 rounded-lg border border-primary-100/60 inline-block">
+                                {formattedId}
+                              </span>
+                            </td>
+
+                            {/* Column 2: Customer Name & Date */}
+                            <td className="px-6 py-5 whitespace-nowrap">
+                              <div className="flex items-center gap-2.5">
+                                <div className="w-8 h-8 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs flex-shrink-0">
+                                  {order.user?.name ? order.user.name.charAt(0).toUpperCase() : <FiUser />}
                                 </div>
-                              ))}
-                            </div>
-                          </td>
+                                <div className="text-start">
+                                  <p className="font-bold text-gray-850 text-sm leading-tight">
+                                    {order.user?.name || "Guest Buyer"}
+                                  </p>
+                                  {order.createdAt && (
+                                    <p className="text-[11px] text-gray-400 font-medium mt-0.5">
+                                      {new Date(order.createdAt).toLocaleDateString("en-IN", {
+                                        day: "numeric",
+                                        month: "short",
+                                        year: "numeric",
+                                      })}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                            </td>
 
-                          {/* Total Amount */}
-                          <td className="px-6 py-5 whitespace-nowrap text-start">
-                            <div className="flex items-center font-black text-gray-900 text-sm">
-                              ₹{order.totalAmount.toFixed(2)}
-                            </div>
-                          </td>
+                            {/* Products */}
+                            <td className="px-6 py-5">
+                              <div className="space-y-2 text-start">
+                                {order.products.map((p, pIdx) => (
+                                  <div
+                                    key={`${p.product?.id || "no-id"}-${pIdx}`}
+                                    className="flex items-center gap-2"
+                                  >
+                                    <div className="w-8 h-8 border border-gray-100 bg-white rounded-lg flex items-center justify-center p-1 overflow-hidden flex-shrink-0">
+                                      <img
+                                        src={p.product?.images?.[0] || "/placeholder.svg"}
+                                        alt={p.product?.name}
+                                        className="w-full h-full object-fill"
+                                        onError={(e) => {
+                                          e.target.src = "/placeholder.svg";
+                                        }}
+                                      />
+                                    </div>
+                                    <span className="text-xs font-semibold text-gray-700 truncate max-w-[150px]">
+                                      {p.product?.name || "Product Item"}
+                                    </span>
+                                    <span className="text-[10px] text-gray-400 font-bold bg-slate-100/80 px-1.5 py-0.5 rounded-md">
+                                      ×{p.quantity}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            </td>
 
-                          {/* Status Badge */}
-                          <td className="px-6 py-5 whitespace-nowrap text-start">
-                            <div
-                              className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold border rounded-full ${badge.bg}`}
-                            >
-                              {badge.icon}
-                              <span className="capitalize">{order.status}</span>
-                            </div>
-                          </td>
+                            {/* Total Amount */}
+                            <td className="px-6 py-5 whitespace-nowrap text-start">
+                              <div className="flex items-center font-black text-gray-900 text-sm">
+                                ₹{order.totalAmount.toFixed(2)}
+                              </div>
+                            </td>
 
-                          {/* Change Status Action */}
-                          <td className="px-6 py-5 whitespace-nowrap text-start">
-                            <div className="relative inline-block w-40">
-                              <select
-                                value={order.status}
-                                onChange={(e) => updateStatus(order.id || order._id, e.target.value)}
-                                className="w-full text-xs font-bold text-gray-700 bg-white border border-gray-200 hover:border-gray-300 rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 cursor-pointer transition"
+                            {/* Status Badge */}
+                            <td className="px-6 py-5 whitespace-nowrap text-start">
+                              <div
+                                className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold border rounded-full ${badge.bg}`}
                               >
-                                <option value="paid">Paid</option>
-                                <option value="processing">Processing</option>
-                                <option value="shipped">Shipped</option>
-                                <option value="delivered">Delivered</option>
-                                <option value="cancelled">Cancelled</option>
-                                <option value="refunded">Refunded</option>
-                              </select>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </motion.div>
-          )
+                                {badge.icon}
+                                <span className="capitalize">{order.status}</span>
+                              </div>
+                            </td>
+
+                            {/* Actions: View Details + Status Dropdown */}
+                            <td className="px-6 py-5 whitespace-nowrap text-center">
+                              <div className="flex items-center justify-center gap-2">
+                                <button
+                                  onClick={() => setSelectedOrder(order)}
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-gray-700 bg-white border border-gray-200 hover:border-primary-500 hover:text-primary-600 rounded-xl transition shadow-sm"
+                                  title="View Full Order & Address Details"
+                                >
+                                  <FiEye className="text-sm" />
+                                  <span>Details</span>
+                                </button>
+                                <select
+                                  value={order.status}
+                                  onChange={(e) => updateStatus(order.id || order._id, e.target.value)}
+                                  className="text-xs font-bold text-gray-700 bg-white border border-gray-200 hover:border-gray-300 rounded-xl px-2.5 py-1.5 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 cursor-pointer transition shadow-sm"
+                                >
+                                  <option value="paid">Paid</option>
+                                  <option value="processing">Processing</option>
+                                  <option value="shipped">Shipped</option>
+                                  <option value="delivered">Delivered</option>
+                                  <option value="cancelled">Cancelled</option>
+                                  <option value="refunded">Refunded</option>
+                                </select>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </motion.div>
+            )}
+          </div>
+        ) : loadingReturns ? (
+          <div className="min-h-[30vh] flex items-center justify-center">
+            <div className="w-6 h-6 border-4 border-slate-950 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : returns.length === 0 ? (
+          <div className="bg-white border border-gray-100 rounded-3xl p-12 text-center max-w-lg mx-auto shadow-sm">
+            <div className="w-16 h-16 rounded-full bg-slate-50 border border-gray-100 flex items-center justify-center mx-auto mb-6 text-2xl text-gray-400">
+              <FiPackage />
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">No return requests</h3>
+            <p className="text-sm text-gray-500">
+              There are currently no product return requests submitted.
+            </p>
+          </div>
         ) : (
-          loadingReturns ? (
-            <div className="min-h-[30vh] flex items-center justify-center">
-              <div className="w-6 h-6 border-4 border-slate-950 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-          ) : returns.length === 0 ? (
-            <div className="bg-white border border-gray-100 rounded-3xl p-12 text-center max-w-lg mx-auto shadow-sm">
-              <div className="w-16 h-16 rounded-full bg-slate-50 border border-gray-100 flex items-center justify-center mx-auto mb-6 text-2xl text-gray-400">
-                <FiPackage />
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">No return requests</h3>
-              <p className="text-sm text-gray-500">
-                There are currently no product return requests submitted.
-              </p>
-            </div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden"
-            >
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-100 text-sm text-start">
-                  <thead className="bg-slate-50/70 text-gray-500 font-bold">
-                    <tr>
-                      <th className="px-6 py-4 text-left font-bold tracking-wider">User</th>
-                      <th className="px-6 py-4 text-left font-bold tracking-wider">Product Info</th>
-                      <th className="px-6 py-4 text-left font-bold tracking-wider">Reason & Details</th>
-                      <th className="px-6 py-4 text-left font-bold tracking-wider">Return Option</th>
-                      <th className="px-6 py-4 text-left font-bold tracking-wider">Photos</th>
-                      <th className="px-6 py-4 text-left font-bold tracking-wider">Status</th>
-                      <th className="px-6 py-4 text-left font-bold tracking-wider">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {returns.map((ret, index) => {
-                      const isPending = ret.status === "pending";
-                      return (
-                        <tr key={ret._id || ret.id || `ret-${index}`} className="hover:bg-slate-50/50 transition duration-150">
-                          <td className="px-6 py-5 whitespace-nowrap">
-                            <div className="text-start">
-                              <p className="font-bold text-gray-800 text-sm">{ret.userId?.name || "Anonymous"}</p>
-                              <p className="text-xs text-gray-400">{ret.userId?.email || "No Email"}</p>
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden"
+          >
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-100 text-sm text-start">
+                <thead className="bg-slate-50/70 text-gray-500 font-bold">
+                  <tr>
+                    <th className="px-6 py-4 text-left font-bold tracking-wider">User</th>
+                    <th className="px-6 py-4 text-left font-bold tracking-wider">Product Info</th>
+                    <th className="px-6 py-4 text-left font-bold tracking-wider">Reason & Details</th>
+                    <th className="px-6 py-4 text-left font-bold tracking-wider">Return Option</th>
+                    <th className="px-6 py-4 text-left font-bold tracking-wider">Photos</th>
+                    <th className="px-6 py-4 text-left font-bold tracking-wider">Status</th>
+                    <th className="px-6 py-4 text-left font-bold tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {returns.map((ret, index) => {
+                    const isPending = ret.status === "pending";
+                    return (
+                      <tr
+                        key={ret._id || ret.id || `ret-${index}`}
+                        className="hover:bg-slate-50/50 transition duration-150"
+                      >
+                        <td className="px-6 py-5 whitespace-nowrap">
+                          <div className="text-start">
+                            <p className="font-bold text-gray-800 text-sm">{ret.userId?.name || "Anonymous"}</p>
+                            <p className="text-xs text-gray-400">{ret.userId?.email || "No Email"}</p>
+                          </div>
+                        </td>
+                        <td className="px-6 py-5 whitespace-nowrap">
+                          <div className="flex items-center gap-3 text-start">
+                            <div className="w-10 h-10 border border-gray-100 bg-white rounded-lg flex items-center justify-center p-1 overflow-hidden flex-shrink-0">
+                              <img
+                                src={ret.productId?.images?.[0] || "/placeholder.svg"}
+                                alt={ret.productId?.name}
+                                className="max-w-full max-h-full object-contain"
+                              />
                             </div>
-                          </td>
-                          <td className="px-6 py-5 whitespace-nowrap">
-                            <div className="flex items-center gap-3 text-start">
-                              <div className="w-10 h-10 border border-gray-100 bg-white rounded-lg flex items-center justify-center p-1 overflow-hidden flex-shrink-0">
-                                <img
-                                  src={ret.productId?.images?.[0] || "/placeholder.svg"}
-                                  alt={ret.productId?.name}
-                                  className="max-w-full max-h-full object-contain"
-                                />
-                              </div>
-                              <div>
-                                <p className="font-bold text-gray-850 text-xs truncate max-w-[150px]">{ret.productId?.name || "Unknown Product"}</p>
-                                <p className="text-[10px] text-gray-400">Price: ₹{ret.productId?.price || "N/A"}</p>
-                              </div>
+                            <div>
+                              <p className="font-bold text-gray-850 text-xs truncate max-w-[150px]">
+                                {ret.productId?.name || "Unknown Product"}
+                              </p>
+                              <p className="text-[10px] text-gray-400">Price: ₹{ret.productId?.price || "N/A"}</p>
                             </div>
-                          </td>
-                          <td className="px-6 py-5 text-start">
-                            <p className="font-bold text-gray-800 text-xs">{ret.reason}</p>
-                            {ret.details && <p className="text-[10px] text-gray-500 mt-1 max-w-[200px] leading-relaxed line-clamp-2">{ret.details}</p>}
-                          </td>
-                          <td className="px-6 py-5 text-start">
-                            <span className={`inline-block px-2.5 py-0.5 text-[10px] font-bold rounded-md ${
-                              ret.returnOption === "Refund" ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-700"
-                            }`}>
-                              {ret.returnOption}
-                            </span>
-                          </td>
-                          <td className="px-6 py-5">
-                            <div className="flex gap-1.5 flex-wrap max-w-[150px]">
-                              {ret.images && ret.images.map((img, idx) => (
-                                <a key={idx} href={img} target="_blank" rel="noopener noreferrer" className="w-8 h-8 border border-gray-100 rounded-lg overflow-hidden flex items-center justify-center p-0.5 bg-gray-50 hover:opacity-85 transition">
-                                  <img src={img} alt="return proof" className="max-w-full max-h-full object-contain" />
+                          </div>
+                        </td>
+                        <td className="px-6 py-5 text-start">
+                          <p className="font-bold text-gray-800 text-xs">{ret.reason}</p>
+                          {ret.details && (
+                            <p className="text-[10px] text-gray-500 mt-1 max-w-[200px] leading-relaxed line-clamp-2">
+                              {ret.details}
+                            </p>
+                          )}
+                        </td>
+                        <td className="px-6 py-5 text-start">
+                          <span
+                            className={`inline-block px-2.5 py-0.5 text-[10px] font-bold rounded-md ${
+                              ret.returnOption === "Refund"
+                                ? "bg-amber-50 text-amber-700"
+                                : "bg-blue-50 text-blue-700"
+                            }`}
+                          >
+                            {ret.returnOption}
+                          </span>
+                        </td>
+                        <td className="px-6 py-5">
+                          <div className="flex gap-1.5 flex-wrap max-w-[150px]">
+                            {ret.images &&
+                              ret.images.map((img, idx) => (
+                                <a
+                                  key={idx}
+                                  href={img}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="w-8 h-8 border border-gray-100 rounded-lg overflow-hidden flex items-center justify-center p-0.5 bg-gray-50 hover:opacity-85 transition"
+                                >
+                                  <img
+                                    src={img}
+                                    alt="return proof"
+                                    className="max-w-full max-h-full object-contain"
+                                  />
                                 </a>
                               ))}
-                              {(!ret.images || ret.images.length === 0) && <span className="text-[10px] text-gray-400 italic">No Photos</span>}
-                            </div>
-                          </td>
-                          <td className="px-6 py-5 text-start">
-                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold border rounded-full ${
+                            {(!ret.images || ret.images.length === 0) && (
+                              <span className="text-[10px] text-gray-400 italic">No Photos</span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-6 py-5 text-start">
+                          <span
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold border rounded-full ${
                               ret.status === "approved"
                                 ? "bg-emerald-50 text-emerald-700 border-emerald-100"
                                 : ret.status === "rejected"
                                 ? "bg-red-50 text-red-700 border-red-100"
                                 : "bg-amber-50 text-amber-700 border-amber-100 animate-pulse"
-                            }`}>
-                              {ret.status}
-                            </span>
-                          </td>
-                          <td className="px-6 py-5 whitespace-nowrap text-start">
-                            {isPending ? (
-                              <div className="flex gap-2">
-                                <button
-                                  onClick={() => handleUpdateReturnStatus(ret._id || ret.id, "approved")}
-                                  className="px-3 py-1.5 text-[10px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition active:scale-95"
-                                >
-                                  Approve
-                                </button>
-                                <button
-                                  onClick={() => handleUpdateReturnStatus(ret._id || ret.id, "rejected")}
-                                  className="px-3 py-1.5 text-[10px] font-bold text-white bg-red-600 hover:bg-red-755 rounded-lg transition active:scale-95"
-                                >
-                                  Reject
-                                </button>
-                              </div>
-                            ) : (
-                              <span className="text-[10px] text-gray-400 italic">Processed</span>
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </motion.div>
-          )
+                            }`}
+                          >
+                            {ret.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-5 whitespace-nowrap text-start">
+                          {isPending ? (
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => handleUpdateReturnStatus(ret._id || ret.id, "approved")}
+                                className="px-3 py-1.5 text-[10px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition active:scale-95"
+                              >
+                                Approve
+                              </button>
+                              <button
+                                onClick={() => handleUpdateReturnStatus(ret._id || ret.id, "rejected")}
+                                className="px-3 py-1.5 text-[10px] font-bold text-white bg-red-600 hover:bg-red-755 rounded-lg transition active:scale-95"
+                              >
+                                Reject
+                              </button>
+                            </div>
+                          ) : (
+                            <span className="text-[10px] text-gray-400 italic">Processed</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </motion.div>
         )}
       </div>
+
+      {/* FULL ORDER DETAILS MODAL */}
+      <AnimatePresence>
+        {selectedOrder && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              onClick={() => setSelectedOrder(null)}
+              className="fixed inset-0 bg-slate-950/40"
+            />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 10 }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
+              className="relative w-full max-w-lg sm:max-w-xl bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden z-10 my-3 text-start"
+            >
+              <div className="px-6 pt-5 pb-3 border-b border-gray-100 flex items-center justify-between">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-sm font-extrabold text-gray-900 font-mono">
+                      {selectedOrder.id && selectedOrder.id.startsWith("SAN")
+                        ? selectedOrder.id
+                        : `#${(selectedOrder.id || "").substring(Math.max(0, (selectedOrder.id || "").length - 8)).toUpperCase()}`}
+                    </h3>
+                    <span
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold border rounded-full capitalize ${
+                        getStatusBadge(selectedOrder.status).bg
+                      }`}
+                    >
+                      {selectedOrder.status}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-gray-400 mt-0.5 flex items-center gap-1 font-medium">
+                    <FiCalendar className="text-[10px]" />
+                    {selectedOrder.createdAt
+                      ? new Date(selectedOrder.createdAt).toLocaleString("en-IN", {
+                          dateStyle: "medium",
+                          timeStyle: "short",
+                        })
+                      : "Date not recorded"}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() => window.print()}
+                    className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-50 rounded-lg border border-gray-200 transition"
+                    title="Print Invoice / Packing Slip"
+                  >
+                    <FiPrinter className="text-sm" />
+                  </button>
+                  <button
+                    onClick={() => setSelectedOrder(null)}
+                    className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-50 rounded-lg border border-gray-200 transition"
+                  >
+                    <FiX className="text-sm" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Modal Body */}
+              <div className="p-5 space-y-3 max-h-[72vh] overflow-y-auto">
+                {/* 1. Order Status Control Card */}
+                <div className="bg-slate-50/70 border border-slate-200/60 rounded-2xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-primary-500/10 text-primary-600 flex items-center justify-center text-base flex-shrink-0">
+                      <FiTruck />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-gray-900">
+                        Order Lifecycle Status
+                      </p>
+                      <p className="text-[10px] text-gray-400 font-medium">
+                        Update customer shipment & delivery progression
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <select
+                      value={selectedOrder.status}
+                      onChange={(e) => updateStatus(selectedOrder.id || selectedOrder._id, e.target.value)}
+                      className="text-xs font-bold text-gray-700 bg-white border border-gray-200 hover:border-primary-500 rounded-xl px-2.5 py-1.5 outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 cursor-pointer shadow-2xs transition"
+                    >
+                      <option value="paid">Paid</option>
+                      <option value="processing">Processing</option>
+                      <option value="shipped">Shipped</option>
+                      <option value="delivered">Delivered</option>
+                      <option value="cancelled">Cancelled</option>
+                      <option value="refunded">Refunded</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* 2. Customer & Payment Details Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {/* Customer Information Card */}
+                  <div className="bg-slate-50/70 border border-slate-200/60 rounded-2xl p-3.5">
+                    <p className="text-[10px] font-extrabold text-gray-400 uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                      <FiUser className="text-primary-600" /> Customer Info
+                    </p>
+                    <p className="font-bold text-gray-900 text-xs sm:text-sm">
+                      {selectedOrder.user?.name || "Guest Buyer"}
+                    </p>
+                    <p className="text-xs text-gray-600 mt-1 flex items-center gap-1">
+                      <FiMail className="text-gray-400 flex-shrink-0 text-[11px]" />
+                      <a
+                        href={`mailto:${selectedOrder.user?.email || selectedOrder.guestEmail}`}
+                        className="hover:underline text-primary-600 font-medium truncate max-w-[170px]"
+                      >
+                        {selectedOrder.user?.email || selectedOrder.guestEmail || "No Email Provided"}
+                      </a>
+                    </p>
+                    <span className="inline-block mt-2 text-[9px] font-bold px-2 py-0.5 bg-blue-50 text-blue-700 rounded-md">
+                      {selectedOrder.user ? "Registered Account" : "Guest Checkout"}
+                    </span>
+                  </div>
+
+                  {/* Payment Details Card */}
+                  <div className="bg-slate-50/70 border border-slate-200/60 rounded-2xl p-3.5">
+                    <p className="text-[10px] font-extrabold text-gray-400 uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                      <FiCreditCard className="text-emerald-600" /> Payment Details
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] text-gray-500 font-medium">Method:</span>
+                      <span
+                        className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded ${
+                          selectedOrder.paymentMethod === "COD"
+                            ? "bg-amber-100 text-amber-800"
+                            : "bg-emerald-100 text-emerald-800"
+                        }`}
+                      >
+                        {selectedOrder.paymentMethod || "Online"}
+                      </span>
+                    </div>
+                    {selectedOrder.paymentId && selectedOrder.paymentId !== "COD" && (
+                      <div className="flex items-center justify-between mt-1">
+                        <span className="text-[11px] text-gray-500 font-medium">Payment ID:</span>
+                        <span className="text-[10px] font-mono text-gray-700 font-semibold truncate max-w-[130px]">
+                          {selectedOrder.paymentId}
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between mt-2 pt-1.5 border-t border-gray-200/60">
+                      <span className="text-[11px] font-bold text-gray-700">Total Paid:</span>
+                      <span className="text-sm font-black text-gray-900">
+                        ₹{selectedOrder.totalAmount?.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. Full Shipping Address Card */}
+                <div className="bg-slate-50/70 border border-slate-200/60 rounded-2xl p-3.5">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <p className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider flex items-center gap-1">
+                      <FiMapPin className="text-rose-500 text-xs" /> Shipping & Delivery Address
+                    </p>
+                    <button
+                      onClick={() => handleCopyAddress(selectedOrder.shippingAddress)}
+                      className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 rounded-lg shadow-2xs transition"
+                      title="Copy address to paste into courier software"
+                    >
+                      {copiedAddress ? (
+                        <>
+                          <FiCheck className="text-emerald-600" /> Copied!
+                        </>
+                      ) : (
+                        <>
+                          <FiCopy /> Copy
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  <div className="bg-white border border-gray-200/60 rounded-xl p-2.5">
+                    <p className="text-xs font-medium text-gray-800 leading-relaxed whitespace-pre-line">
+                      {selectedOrder.shippingAddress || "No shipping address specified."}
+                    </p>
+                  </div>
+                </div>
+
+                {/* 4. Ordered Products Table */}
+                <div className="bg-slate-50/70 border border-slate-200/60 rounded-2xl p-3.5">
+                  <p className="text-[10px] font-extrabold text-gray-400 uppercase tracking-wider mb-2">
+                    Order Items ({selectedOrder.products?.length || 0})
+                  </p>
+                  <div className="space-y-1.5">
+                    {selectedOrder.products?.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="p-2.5 bg-white border border-gray-200/60 rounded-xl flex items-center justify-between gap-2.5 shadow-2xs"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-9 h-9 rounded-lg border border-gray-100 bg-white flex items-center justify-center p-1 overflow-hidden flex-shrink-0">
+                            <img
+                              src={item.product?.images?.[0] || "/placeholder.svg"}
+                              alt={item.product?.name}
+                              className="w-full h-full object-fill"
+                              onError={(e) => {
+                                e.target.src = "/placeholder.svg";
+                              }}
+                            />
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-gray-900 line-clamp-1">
+                              {item.product?.name || "Product Item"}
+                            </p>
+                            <p className="text-[10px] text-gray-400 mt-0.5">
+                              ₹{(item.product?.price || 0).toFixed(2)} × {item.quantity}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="text-right flex-shrink-0">
+                          <p className="text-xs font-extrabold text-gray-900">
+                            ₹{((item.product?.price || 0) * item.quantity).toFixed(2)}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Footer - Seamless, clean standard */}
+              <div className="px-6 py-3.5 border-t border-gray-100 flex items-center justify-end">
+                <button
+                  onClick={() => setSelectedOrder(null)}
+                  className="px-6 py-2 bg-brand-gradient hover:opacity-95 text-white text-xs font-extrabold rounded-xl shadow-md shadow-primary-500/20 active:scale-95 transition"
+                >
+                  Done
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
