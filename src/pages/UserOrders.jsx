@@ -196,6 +196,18 @@ const UserOrders = () => {
     }
   };
 
+  const formatAddressSummary = (address) => {
+    if (!address) return "No shipping address provided.";
+    const parts = [];
+    if (address.fullName) parts.push(address.fullName);
+    if (address.street) parts.push(address.street);
+    if (address.landmark) parts.push(address.landmark);
+    const cityStatePin = [address.city, address.state].filter(Boolean).join(", ") + (address.pincode ? ` - ${address.pincode}` : "");
+    if (cityStatePin) parts.push(cityStatePin);
+    if (address.phone) parts.push(`(Ph: +91 ${address.phone})`);
+    return parts.join(", ");
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -415,7 +427,7 @@ const UserOrders = () => {
                       <div className="flex items-start gap-2 text-xs text-gray-500 font-semibold">
                         <FiMapPin className="text-gray-400 mt-0.5 flex-shrink-0" />
                         <p className="line-clamp-2 leading-relaxed">
-                          {order.shippingAddress || "No shipping address provided."}
+                          {formatAddressSummary(order.shippingAddress)}
                         </p>
                       </div>
 

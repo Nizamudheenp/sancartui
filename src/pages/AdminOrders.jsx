@@ -23,6 +23,7 @@ import {
   FiCheck,
   FiPrinter,
   FiMail,
+  FiPhone,
 } from "react-icons/fi";
 
 const AdminOrders = () => {
@@ -107,11 +108,24 @@ const AdminOrders = () => {
     }
   };
 
+  const formatAddressForCourier = (address) => {
+    if (!address) return "";
+    const lines = [];
+    if (address.fullName) lines.push(`Recipient: ${address.fullName}`);
+    if (address.phone) lines.push(`Phone: +91 ${address.phone}`);
+    const streetPart = [address.street, address.landmark].filter(Boolean).join(", ");
+    if (streetPart) lines.push(`Address: ${streetPart}`);
+    const cityStatePin = [address.city, address.state].filter(Boolean).join(", ") + (address.pincode ? ` - ${address.pincode}` : "");
+    if (cityStatePin.trim()) lines.push(cityStatePin);
+    return lines.join("\n");
+  };
+
   const handleCopyAddress = (address) => {
     if (!address) return;
-    navigator.clipboard.writeText(address);
+    const textToCopy = formatAddressForCourier(address);
+    navigator.clipboard.writeText(textToCopy);
     setCopiedAddress(true);
-    showToast("success", "Shipping address copied to clipboard!");
+    showToast("success", "Courier-formatted address copied to clipboard!");
     setTimeout(() => setCopiedAddress(false), 2000);
   };
 
@@ -193,8 +207,8 @@ const AdminOrders = () => {
   const pendingOrders = orders.filter((o) => o.status === "processing").length;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 pt-28 text-slate-800 font-sans">
-      <div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 pt-28 text-slate-800 font-sans print:p-0 print:m-0 print:max-w-none">
+      <div className={selectedOrder ? "print:hidden" : ""}>
         {/* Page Header */}
         <div className="text-start mb-8">
           <span className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary-600 bg-primary-500/10 rounded-lg mb-3">
@@ -257,21 +271,19 @@ const AdminOrders = () => {
         <div className="flex gap-4 mb-6 border-b border-white/30 pb-4 text-start">
           <button
             onClick={() => setActiveTab("orders")}
-            className={`px-6 py-3 text-xs font-bold rounded-2xl transition-all ${
-              activeTab === "orders"
-                ? "bg-brand-gradient text-white shadow-md"
-                : "bg-white/40 border border-white/50 hover:bg-white text-gray-700"
-            }`}
+            className={`px-6 py-3 text-xs font-bold rounded-2xl transition-all ${activeTab === "orders"
+              ? "bg-brand-gradient text-white shadow-md"
+              : "bg-white/40 border border-white/50 hover:bg-white text-gray-700"
+              }`}
           >
             All Orders ({orders.length})
           </button>
           <button
             onClick={() => setActiveTab("returns")}
-            className={`px-6 py-3 text-xs font-bold rounded-2xl transition-all ${
-              activeTab === "returns"
-                ? "bg-brand-gradient text-white shadow-md"
-                : "bg-white/40 border border-white/50 hover:bg-white text-gray-700"
-            }`}
+            className={`px-6 py-3 text-xs font-bold rounded-2xl transition-all ${activeTab === "returns"
+              ? "bg-brand-gradient text-white shadow-md"
+              : "bg-white/40 border border-white/50 hover:bg-white text-gray-700"
+              }`}
           >
             Return Requests ({returns.length})
           </button>
@@ -307,11 +319,10 @@ const AdminOrders = () => {
                   <button
                     key={status}
                     onClick={() => setStatusFilter(status)}
-                    className={`px-3.5 py-1.5 text-xs font-bold rounded-xl capitalize transition-all ${
-                      statusFilter === status
-                        ? "bg-brand-gradient text-white shadow-md shadow-primary-500/20"
-                        : "bg-white/50 border border-white/60 text-gray-600 hover:bg-white"
-                    }`}
+                    className={`px-3.5 py-1.5 text-xs font-bold rounded-xl capitalize transition-all ${statusFilter === status
+                      ? "bg-brand-gradient text-white shadow-md shadow-primary-500/20"
+                      : "bg-white/50 border border-white/60 text-gray-600 hover:bg-white"
+                      }`}
                   >
                     {status}
                   </button>
@@ -548,11 +559,10 @@ const AdminOrders = () => {
                         </td>
                         <td className="px-6 py-5 text-start">
                           <span
-                            className={`inline-block px-2.5 py-0.5 text-[10px] font-bold rounded-md ${
-                              ret.returnOption === "Refund"
-                                ? "bg-amber-50 text-amber-700"
-                                : "bg-blue-50 text-blue-700"
-                            }`}
+                            className={`inline-block px-2.5 py-0.5 text-[10px] font-bold rounded-md ${ret.returnOption === "Refund"
+                              ? "bg-amber-50 text-amber-700"
+                              : "bg-blue-50 text-blue-700"
+                              }`}
                           >
                             {ret.returnOption}
                           </span>
@@ -582,13 +592,12 @@ const AdminOrders = () => {
                         </td>
                         <td className="px-6 py-5 text-start">
                           <span
-                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold border rounded-full ${
-                              ret.status === "approved"
-                                ? "bg-emerald-50 text-emerald-700 border-emerald-100"
-                                : ret.status === "rejected"
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold border rounded-full ${ret.status === "approved"
+                              ? "bg-emerald-50 text-emerald-700 border-emerald-100"
+                              : ret.status === "rejected"
                                 ? "bg-red-50 text-red-700 border-red-100"
                                 : "bg-amber-50 text-amber-700 border-amber-100 animate-pulse"
-                            }`}
+                              }`}
                           >
                             {ret.status}
                           </span>
@@ -626,14 +635,14 @@ const AdminOrders = () => {
       {/* FULL ORDER DETAILS MODAL */}
       <AnimatePresence>
         {selectedOrder && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto print:static print:p-0 print:m-0 print:overflow-visible print:block print:inset-auto">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
               onClick={() => setSelectedOrder(null)}
-              className="fixed inset-0 bg-slate-950/40"
+              className="fixed inset-0 bg-slate-950/40 no-print"
             />
 
             <motion.div
@@ -641,9 +650,27 @@ const AdminOrders = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 10 }}
               transition={{ duration: 0.15, ease: "easeOut" }}
-              className="relative w-full max-w-lg sm:max-w-xl bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden z-10 my-3 text-start"
+              className="relative w-full max-w-lg sm:max-w-xl bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden z-10 my-3 text-start print:shadow-none print:border-none print:p-0 print:max-w-none print:m-0 print:static"
             >
-              <div className="px-6 pt-5 pb-3 border-b border-gray-100 flex items-center justify-between">
+              {/* Print-Only Packing Slip Header */}
+              <div className="hidden print:flex items-center justify-between pb-3 mb-4 border-b-2 border-gray-900">
+                <div>
+                  <h1 className="text-2xl font-black text-gray-900 tracking-tight">SANCART</h1>
+                  <p className="text-[11px] text-gray-500 font-semibold uppercase tracking-wider">Official Order Packing Slip</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-mono font-black text-gray-900">{selectedOrder.id}</p>
+                  <p className="text-[11px] text-gray-500 font-medium">
+                    {selectedOrder.createdAt
+                      ? new Date(selectedOrder.createdAt).toLocaleDateString("en-IN", {
+                        dateStyle: "medium",
+                      })
+                      : "Date N/A"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="px-6 pt-5 pb-3 border-b border-gray-100 flex items-center justify-between print:px-0 print:pt-0">
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="text-sm font-extrabold text-gray-900 font-mono">
@@ -652,9 +679,8 @@ const AdminOrders = () => {
                         : `#${(selectedOrder.id || "").substring(Math.max(0, (selectedOrder.id || "").length - 8)).toUpperCase()}`}
                     </h3>
                     <span
-                      className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold border rounded-full capitalize ${
-                        getStatusBadge(selectedOrder.status).bg
-                      }`}
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold border rounded-full capitalize ${getStatusBadge(selectedOrder.status).bg
+                        }`}
                     >
                       {selectedOrder.status}
                     </span>
@@ -663,14 +689,14 @@ const AdminOrders = () => {
                     <FiCalendar className="text-[10px]" />
                     {selectedOrder.createdAt
                       ? new Date(selectedOrder.createdAt).toLocaleString("en-IN", {
-                          dateStyle: "medium",
-                          timeStyle: "short",
-                        })
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })
                       : "Date not recorded"}
                   </p>
                 </div>
 
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5 no-print">
                   <button
                     onClick={() => window.print()}
                     className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-50 rounded-lg border border-gray-200 transition"
@@ -688,9 +714,9 @@ const AdminOrders = () => {
               </div>
 
               {/* Modal Body */}
-              <div className="p-5 space-y-3 max-h-[72vh] overflow-y-auto">
-                {/* 1. Order Status Control Card */}
-                <div className="bg-slate-50/70 border border-slate-200/60 rounded-2xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+              <div className="p-5 space-y-3 max-h-[72vh] overflow-y-auto print:max-h-none print:overflow-visible print:p-0">
+                {/* 1. Order Status Control Card (Admin only, hidden on print) */}
+                <div className="bg-slate-50/70 border border-slate-200/60 rounded-2xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 no-print">
                   <div className="flex items-center gap-2.5">
                     <div className="w-8 h-8 rounded-xl bg-primary-500/10 text-primary-600 flex items-center justify-center text-base flex-shrink-0">
                       <FiTruck />
@@ -740,6 +766,17 @@ const AdminOrders = () => {
                         {selectedOrder.user?.email || selectedOrder.guestEmail || "No Email Provided"}
                       </a>
                     </p>
+                    {(selectedOrder.customerPhone || selectedOrder.shippingAddress?.phone) && (
+                      <p className="text-xs text-gray-600 mt-1 flex items-center gap-1">
+                        <FiPhone className="text-gray-400 flex-shrink-0 text-[11px]" />
+                        <a
+                          href={`tel:${selectedOrder.customerPhone || selectedOrder.shippingAddress?.phone}`}
+                          className="hover:underline text-primary-600 font-medium font-mono text-xs"
+                        >
+                          +91 {selectedOrder.customerPhone || selectedOrder.shippingAddress?.phone}
+                        </a>
+                      </p>
+                    )}
                     <span className="inline-block mt-2 text-[9px] font-bold px-2 py-0.5 bg-blue-50 text-blue-700 rounded-md">
                       {selectedOrder.user ? "Registered Account" : "Guest Checkout"}
                     </span>
@@ -753,11 +790,10 @@ const AdminOrders = () => {
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] text-gray-500 font-medium">Method:</span>
                       <span
-                        className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded ${
-                          selectedOrder.paymentMethod === "COD"
-                            ? "bg-amber-100 text-amber-800"
-                            : "bg-emerald-100 text-emerald-800"
-                        }`}
+                        className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded ${selectedOrder.paymentMethod === "COD"
+                          ? "bg-amber-100 text-amber-800"
+                          : "bg-emerald-100 text-emerald-800"
+                          }`}
                       >
                         {selectedOrder.paymentMethod || "Online"}
                       </span>
@@ -781,14 +817,14 @@ const AdminOrders = () => {
 
                 {/* 3. Full Shipping Address Card */}
                 <div className="bg-slate-50/70 border border-slate-200/60 rounded-2xl p-3.5">
-                  <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center justify-between mb-2">
                     <p className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider flex items-center gap-1">
-                      <FiMapPin className="text-rose-500 text-xs" /> Shipping & Delivery Address
+                      <FiMapPin className="text-rose-500 text-xs" /> Courier Shipping Address
                     </p>
                     <button
                       onClick={() => handleCopyAddress(selectedOrder.shippingAddress)}
-                      className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 rounded-lg shadow-2xs transition"
-                      title="Copy address to paste into courier software"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 rounded-lg shadow-2xs transition no-print"
+                      title="Copy courier-formatted address for Delhivery / BlueDart / DTDC"
                     >
                       {copiedAddress ? (
                         <>
@@ -796,15 +832,49 @@ const AdminOrders = () => {
                         </>
                       ) : (
                         <>
-                          <FiCopy /> Copy
+                          <FiCopy /> Copy for Courier
                         </>
                       )}
                     </button>
                   </div>
-                  <div className="bg-white border border-gray-200/60 rounded-xl p-2.5">
-                    <p className="text-xs font-medium text-gray-800 leading-relaxed whitespace-pre-line">
-                      {selectedOrder.shippingAddress || "No shipping address specified."}
-                    </p>
+                  <div className="bg-white border border-gray-200/60 rounded-xl p-3">
+                    {selectedOrder.shippingAddress ? (
+                      <div className="space-y-1.5 text-xs text-gray-800">
+                        <div className="flex flex-wrap items-center justify-between gap-2 pb-1.5 border-b border-gray-100">
+                          <span className="font-extrabold text-gray-900 text-xs sm:text-sm">
+                            {selectedOrder.shippingAddress.fullName || "Recipient Name Not Provided"}
+                          </span>
+                          {selectedOrder.shippingAddress.phone && (
+                            <a
+                              href={`tel:${selectedOrder.shippingAddress.phone}`}
+                              className="inline-flex items-center gap-1 text-[11px] font-bold text-primary-600 bg-primary-50 hover:bg-primary-100 px-2.5 py-0.5 rounded-full transition"
+                            >
+                              <FiPhone className="text-[10px]" /> +91 {selectedOrder.shippingAddress.phone}
+                            </a>
+                          )}
+                        </div>
+                        <p className="font-medium text-gray-700 leading-snug">
+                          {selectedOrder.shippingAddress.street}
+                        </p>
+                        {selectedOrder.shippingAddress.landmark && (
+                          <p className="text-[11px] text-gray-500 font-medium">
+                            <span className="font-semibold text-gray-600">Landmark:</span> {selectedOrder.shippingAddress.landmark}
+                          </p>
+                        )}
+                        <div className="flex items-center gap-2 pt-1">
+                          <span className="font-bold text-gray-900">
+                            {selectedOrder.shippingAddress.city}, {selectedOrder.shippingAddress.state}
+                          </span>
+                          {selectedOrder.shippingAddress.pincode && (
+                            <span className="px-2 py-0.5 bg-slate-100 text-slate-700 rounded-md font-mono text-[11px] font-bold">
+                              PIN: {selectedOrder.shippingAddress.pincode}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="text-xs text-gray-400 italic">No delivery address provided.</p>
+                    )}
                   </div>
                 </div>
 
@@ -851,8 +921,8 @@ const AdminOrders = () => {
                 </div>
               </div>
 
-              {/* Modal Footer - Seamless, clean standard */}
-              <div className="px-6 py-3.5 border-t border-gray-100 flex items-center justify-end">
+              {/* Modal Footer - Seamless, clean standard (hidden on print) */}
+              <div className="px-6 py-3.5 border-t border-gray-100 flex items-center justify-end no-print">
                 <button
                   onClick={() => setSelectedOrder(null)}
                   className="px-6 py-2 bg-brand-gradient hover:opacity-95 text-white text-xs font-extrabold rounded-xl shadow-md shadow-primary-500/20 active:scale-95 transition"

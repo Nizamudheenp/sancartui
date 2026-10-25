@@ -5,7 +5,7 @@ import { saveOrderToBackend } from "../utils/saveOrder";
 import { getGuestCart, clearGuestCart } from "../utils/guestCart";
 import { showToast } from "../utils/toast";
 import { motion } from "framer-motion";
-import { FiMapPin, FiArrowRight, FiShoppingBag, FiInfo, FiMail, FiCreditCard } from "react-icons/fi";
+import { FiMapPin, FiArrowRight, FiShoppingBag, FiInfo, FiMail, FiCreditCard, FiUser, FiPhone } from "react-icons/fi";
 
 const PaymentPage = ({ amount: propAmount, cartItems: propCartItems, userToken: propToken }) => {
   const location = useLocation();
@@ -17,9 +17,23 @@ const PaymentPage = ({ amount: propAmount, cartItems: propCartItems, userToken: 
   const [pageLoading, setPageLoading] = useState(true);
   const [fetchedCartItems, setFetchedCartItems] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
-  const [shippingAddress, setShippingAddress] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("Online");
+
+  // Structured address for courier shipping (Delhivery, BlueDart, DTDC, India Post)
+  const [addressForm, setAddressForm] = useState({
+    fullName: "",
+    phone: "",
+    street: "",
+    landmark: "",
+    city: "",
+    state: "",
+    pincode: "",
+  });
+
+  const handleAddressChange = (field, value) => {
+    setAddressForm((prev) => ({ ...prev, [field]: value }));
+  };
 
   useEffect(() => {
     const checkScreen = () => setIsMobile(window.innerWidth <= 768);
@@ -68,14 +82,51 @@ const PaymentPage = ({ amount: propAmount, cartItems: propCartItems, userToken: 
   const handlePayment = async (e) => {
     e.preventDefault();
 
-    if (!shippingAddress) {
-      showToast('error', 'Please provide a shipping address');
+    if ((!userToken || userToken === "null" || userToken === "undefined") && !guestEmail.trim()) {
+      showToast('error', 'Please provide an email address for order notifications');
       return;
     }
-    if ((!userToken || userToken === "null" || userToken === "undefined") && !guestEmail) {
-      showToast('error', 'Please provide an email address');
+
+    if (!addressForm.fullName.trim()) {
+      showToast('error', 'Please enter recipient name');
       return;
     }
+
+    const cleanPhone = addressForm.phone.trim().replace(/\D/g, '');
+    if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
+      showToast('error', 'Please enter a valid 10-digit mobile number for courier delivery (e.g. 9876543210)');
+      return;
+    }
+
+    if (!addressForm.street.trim()) {
+      showToast('error', 'Please enter house / flat and street address');
+      return;
+    }
+
+    if (!addressForm.city.trim()) {
+      showToast('error', 'Please enter city / town');
+      return;
+    }
+
+    if (!addressForm.state.trim()) {
+      showToast('error', 'Please enter state');
+      return;
+    }
+
+    if (!/^\d{6}$/.test(addressForm.pincode.trim())) {
+      showToast('error', 'Please enter a valid 6-digit postal PIN code');
+      return;
+    }
+
+    const structuredAddress = {
+      fullName: addressForm.fullName.trim(),
+      phone: cleanPhone,
+      street: addressForm.street.trim(),
+      landmark: addressForm.landmark.trim(),
+      city: addressForm.city.trim(),
+      state: addressForm.state.trim(),
+      pincode: addressForm.pincode.trim(),
+    };
 
     setLoading(true);
 
@@ -84,7 +135,7 @@ const PaymentPage = ({ amount: propAmount, cartItems: propCartItems, userToken: 
         await saveOrderToBackend({
           cartItems,
           amount,
-          userAddress: shippingAddress,
+          userAddress: structuredAddress,
           paymentId: "COD",
           paymentMethod: "COD",
           userToken,
@@ -99,7 +150,7 @@ const PaymentPage = ({ amount: propAmount, cartItems: propCartItems, userToken: 
         }
       } catch (err) {
         console.error("Failed to place COD order", err);
-        showToast("error", "Failed to place COD order");
+        showToast("error", err.response?.data?.message || "Failed to place COD order");
       } finally {
         setLoading(false);
       }
@@ -140,7 +191,7 @@ const PaymentPage = ({ amount: propAmount, cartItems: propCartItems, userToken: 
               await saveOrderToBackend({
                 cartItems,
                 amount,
-                userAddress: shippingAddress,
+                userAddress: structuredAddress,
                 paymentId: response.razorpay_payment_id,
                 userToken,
                 guestEmail: userToken ? undefined : guestEmail,
@@ -164,6 +215,8 @@ const PaymentPage = ({ amount: propAmount, cartItems: propCartItems, userToken: 
           }
         },
         prefill: {
+          name: addressForm.fullName.trim(),
+          contact: cleanPhone,
           email: guestEmail || "",
         },
         theme: {
@@ -262,18 +315,130 @@ const PaymentPage = ({ amount: propAmount, cartItems: propCartItems, userToken: 
             )}
 
             {/* Shipping Address field */}
-            <div className="space-y-2 mb-6">
-              <label className="flex items-center gap-1.5 text-xs font-bold text-gray-400 uppercase tracking-wide">
-                <FiMapPin /> Shipping Address
-              </label>
-              <textarea
-                required
-                value={shippingAddress}
-                onChange={(e) => setShippingAddress(e.target.value)}
-                rows="4"
-                placeholder="Enter your full shipping address..."
-                className="w-full border border-gray-200 rounded-2xl p-3.5 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 focus:outline-none transition-all text-sm text-gray-800 placeholder-gray-400"
-              />
+            <div className="space-y-4 mb-6">
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-1.5 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  <FiMapPin className="text-primary-500" /> Shipping & Courier Delivery Address
+                </label>
+                <span className="text-[10px] font-semibold text-primary-600 bg-primary-50 px-2 py-0.5 rounded-full">
+                  Courier Delivery
+                </span>
+              </div>
+
+              {/* Recipient Name & Phone Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-gray-700">
+                    Recipient Full Name <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <FiUser className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+                    <input
+                      type="text"
+                      required
+                      value={addressForm.fullName}
+                      onChange={(e) => handleAddressChange("fullName", e.target.value)}
+                      placeholder="e.g. Rahul Sharma"
+                      className="w-full border border-gray-200 rounded-xl pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-gray-700">
+                    10-Digit Mobile Number <span className="text-red-500">*</span>
+                  </label>
+                  <div className="flex rounded-xl border border-gray-200 overflow-hidden focus-within:ring-2 focus-within:ring-primary-500/20 focus-within:border-primary-500 transition">
+                    <span className="inline-flex items-center px-3 bg-gray-50 border-r border-gray-200 text-xs font-bold text-gray-500">
+                      +91
+                    </span>
+                    <input
+                      type="tel"
+                      required
+                      maxLength={10}
+                      value={addressForm.phone}
+                      onChange={(e) => handleAddressChange("phone", e.target.value.replace(/\D/g, ""))}
+                      placeholder="9876543210"
+                      className="w-full pl-3 pr-3.5 py-2.5 text-xs sm:text-sm text-gray-800 placeholder-gray-400 outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Street / Building Address */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold text-gray-700">
+                  House / Flat No., Apartment & Street <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={addressForm.street}
+                  onChange={(e) => handleAddressChange("street", e.target.value)}
+                  placeholder="e.g. Flat 402, Sunshine Apts, 12th Main Road"
+                  className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition"
+                />
+              </div>
+
+              {/* Landmark (Optional) */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold text-gray-700">
+                  Landmark <span className="text-gray-400 text-[10px] font-normal">(Optional - helps delivery agent)</span>
+                </label>
+                <input
+                  type="text"
+                  value={addressForm.landmark}
+                  onChange={(e) => handleAddressChange("landmark", e.target.value)}
+                  placeholder="e.g. Near City Hospital or Opposite Metro Gate"
+                  className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition"
+                />
+              </div>
+
+              {/* City, State, PIN Code 3-column Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-gray-700">
+                    City / Town <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={addressForm.city}
+                    onChange={(e) => handleAddressChange("city", e.target.value)}
+                    placeholder="e.g. Bengaluru"
+                    className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-gray-700">
+                    State <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={addressForm.state}
+                    onChange={(e) => handleAddressChange("state", e.target.value)}
+                    placeholder="e.g. Karnataka"
+                    className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-gray-700">
+                    PIN Code <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    maxLength={6}
+                    value={addressForm.pincode}
+                    onChange={(e) => handleAddressChange("pincode", e.target.value.replace(/\D/g, ""))}
+                    placeholder="560001"
+                    className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition font-mono"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Payment Method Selector */}
