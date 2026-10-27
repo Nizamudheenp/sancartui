@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import api from "../utils/api";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { showToast } from "../utils/toast";
 import {
-  FiShoppingBag,
   FiClock,
   FiCheckCircle,
   FiTruck,

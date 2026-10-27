@@ -5,7 +5,7 @@ import { saveOrderToBackend } from "../utils/saveOrder";
 import { getGuestCart, clearGuestCart } from "../utils/guestCart";
 import { showToast } from "../utils/toast";
 import { motion } from "framer-motion";
-import { FiMapPin, FiArrowRight, FiShoppingBag, FiInfo, FiMail, FiCreditCard, FiUser, FiPhone } from "react-icons/fi";
+import { FiMapPin, FiArrowRight, FiShoppingBag, FiInfo, FiMail, FiCreditCard, FiUser } from "react-icons/fi";
 
 const PaymentPage = ({ amount: propAmount, cartItems: propCartItems, userToken: propToken }) => {
   const location = useLocation();
@@ -158,10 +158,16 @@ const PaymentPage = ({ amount: propAmount, cartItems: propCartItems, userToken: 
     }
 
     try {
-      // 1. Create Razorpay order on backend
+      // 1. Create Razorpay order on backend with products for server-side verification
       const orderRes = await api.post(
         "/api/orders/create-razorpay-order",
-        { amount }
+        {
+          amount,
+          products: (cartItems || []).map((item) => ({
+            productId: item.product.id || item.product._id,
+            quantity: item.quantity,
+          })),
+        }
       );
       const { orderId, currency, amount: orderAmount } = orderRes.data;
 

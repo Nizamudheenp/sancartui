@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../utils/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { showToast } from "../utils/toast";
+import SearchBar from "../components/SearchBar";
 import {
   FiUser,
   FiPackage,
@@ -9,14 +10,10 @@ import {
   FiClock,
   FiTruck,
   FiAlertCircle,
-  FiDollarSign,
   FiTrendingUp,
   FiLayers,
-  FiXCircle,
   FiMapPin,
-  FiEye,
   FiCopy,
-  FiSearch,
   FiCalendar,
   FiCreditCard,
   FiX,
@@ -24,6 +21,8 @@ import {
   FiPrinter,
   FiMail,
   FiPhone,
+  FiFilter,
+  FiChevronDown,
 } from "react-icons/fi";
 
 const AdminOrders = () => {
@@ -294,27 +293,16 @@ const AdminOrders = () => {
             {/* Search & Status Filters Bar */}
             <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 mb-6">
               {/* Search Box */}
-              <div className="relative flex-1 max-w-md">
-                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
-                <input
-                  type="text"
-                  placeholder="Search by Order ID, Customer, Email, Address..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-11 pr-4 py-2.5 bg-white/70 backdrop-blur-md border border-white/60 rounded-2xl text-xs font-semibold text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500 shadow-sm transition"
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs"
-                  >
-                    Clear
-                  </button>
-                )}
-              </div>
+              <SearchBar
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onClear={() => setSearchQuery("")}
+                placeholder="Search by Order ID, Customer, Email, Address..."
+                className="max-w-md"
+              />
 
-              {/* Status Filter Badges */}
-              <div className="flex flex-wrap items-center gap-1.5">
+              {/* Desktop Status Filter Badges */}
+              <div className="hidden md:flex flex-wrap items-center gap-1.5">
                 {["all", "processing", "paid", "shipped", "delivered", "cancelled", "refunded"].map((status) => (
                   <button
                     key={status}
@@ -327,6 +315,29 @@ const AdminOrders = () => {
                     {status}
                   </button>
                 ))}
+              </div>
+
+              {/* Mobile Status Filter Dropdown (Matches Shop Page Responsiveness) */}
+              <div className="flex md:hidden w-full items-center">
+                <div className="relative w-full">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 pointer-events-none text-xs">
+                    <FiFilter />
+                  </span>
+                  <select
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                    className="w-full pl-9 pr-8 py-2.5 bg-white/70 backdrop-blur-md border border-white/60 rounded-2xl text-xs font-bold text-gray-700 capitalize focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500 shadow-sm transition appearance-none cursor-pointer"
+                  >
+                    <option value="all">All Statuses ({orders.length})</option>
+                    <option value="processing">Processing</option>
+                    <option value="paid">Paid</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
+                    <option value="refunded">Refunded</option>
+                  </select>
+                  <FiChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs" />
+                </div>
               </div>
             </div>
 

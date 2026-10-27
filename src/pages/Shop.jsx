@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import api from "../utils/api";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { AiFillStar, AiOutlineStar, AiTwotoneStar } from 'react-icons/ai';
-import { FiShoppingCart, FiSearch, FiSliders, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiShoppingCart, FiSliders, FiChevronLeft, FiChevronRight, FiChevronDown, FiFilter } from 'react-icons/fi';
 import { showToast } from '../utils/toast';
 import { addToGuestCart } from '../utils/guestCart';
 import { motion } from 'framer-motion';
 
 import SEO from '../components/SEO';
+import SearchBar from '../components/SearchBar';
 import ProductCardImageSlider from '../components/ProductCardImageSlider';
 import { ProductSkeletonGrid } from '../components/ProductSkeletonCard';
 
@@ -79,7 +79,7 @@ const ProductCard = ({ product, onClick }) => {
           <ProductCardImageSlider
             images={product.images}
             alt={product.name}
-            aspectRatio="h-36 sm:h-52"
+            aspectRatio="h-36 sm:h-44"
           />
           {displayTag ? (
             <span className="absolute top-2.5 left-2.5 z-10 px-2.5 py-0.5 text-[8.5px] font-black uppercase tracking-widest text-amber-400 bg-slate-950/85 backdrop-blur-md rounded-full shadow-md border border-white/20">
@@ -154,6 +154,7 @@ const Shop = () => {
 
   // Local state for search input to prevent firing request on every keystroke
   const [searchInput, setSearchInput] = useState(searchFilter);
+  const hasActiveFilters = categoryFilter !== "all" || searchFilter !== "" || sortFilter !== "newest";
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -166,7 +167,7 @@ const Shop = () => {
             search: searchFilter,
             sort: sortFilter,
             page: pageFilter,
-            limit: 12
+            limit: 15
           }
         }
       );
@@ -185,6 +186,16 @@ const Shop = () => {
   useEffect(() => {
     setSearchInput(searchFilter);
   }, [searchFilter]);
+
+  // Debounce search input so user gets instant search results as they type without needing a search button
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchInput !== searchFilter) {
+        updateParam("search", searchInput);
+      }
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
   useEffect(() => {
     fetchProducts();
@@ -229,75 +240,81 @@ const Shop = () => {
       </div>
 
       {/* Advanced Control Row */}
-      <div className="bg-white border border-gray-100 rounded-3xl p-4 md:p-6 mb-10 shadow-sm flex flex-col gap-4 md:gap-6">
+      <div className="bg-white/40 backdrop-blur-md border border-white/50 rounded-3xl p-4 md:p-6 mb-10 shadow-sm flex flex-col gap-4 md:gap-6">
 
         {/* Row 1: Search and Desktop Sorting */}
         <div className="flex flex-col lg:flex-row gap-4 justify-between items-stretch lg:items-center">
-          <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-lg flex items-center">
-            <input
-              type="text"
-              placeholder="Search products by name..."
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full pl-11 pr-24 py-3.5 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-[#1b36e3]/20 focus:border-[#1b36e3] focus:outline-none transition-all text-sm text-gray-800 placeholder-gray-400"
-            />
-            <FiSearch className="absolute left-4 text-gray-400 text-lg" />
-            <button
-              type="submit"
-              className="absolute right-2 px-4 py-2 text-xs font-bold text-white bg-brand-gradient rounded-xl transition-all"
-            >
-              Search
-            </button>
-          </form>
+          {/* Reusable SearchBar Component */}
+          <SearchBar
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            onClear={() => {
+              setSearchInput("");
+              updateParam("search", "");
+            }}
+            onSubmit={handleSearchSubmit}
+            placeholder="Search products by name, description..."
+            className="max-w-lg"
+          />
 
           {/* Desktop Only Sort By */}
           <div className="hidden lg:flex items-center gap-3">
             <span className="text-xs font-bold text-gray-400 uppercase tracking-wide flex items-center gap-1.5 whitespace-nowrap">
               <FiSliders /> Sort By:
             </span>
-            <select
-              value={sortFilter}
-              onChange={(e) => updateParam("sort", e.target.value)}
-              className="border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#1b36e3]/20"
-            >
-              {SORTS.map((s) => (
-                <option key={s.value} value={s.value}>{s.label}</option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                value={sortFilter}
+                onChange={(e) => updateParam("sort", e.target.value)}
+                className="pl-3.5 pr-8 py-2 bg-white/70 backdrop-blur-md border border-white/60 rounded-xl text-xs font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500 shadow-sm transition appearance-none cursor-pointer"
+              >
+                {SORTS.map((s) => (
+                  <option key={s.value} value={s.value}>{s.label}</option>
+                ))}
+              </select>
+              <FiChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs" />
+            </div>
           </div>
         </div>
 
         {/* Mobile/Tablet Only: Category and Sort Dropdowns side-by-side */}
-        <div className="flex lg:hidden gap-3 w-full border-t border-gray-50 pt-4">
-          <div className="flex-1">
+        <div className="flex lg:hidden gap-3 w-full border-t border-white/40 pt-4">
+          <div className="relative flex-1">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 pointer-events-none text-xs">
+              <FiFilter />
+            </span>
             <select
               value={categoryFilter}
               onChange={(e) => updateParam("category", e.target.value)}
-              className="w-full border border-gray-200 rounded-xl px-3 py-3 text-xs font-semibold text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#1b36e3]/20"
+              className="w-full pl-8 pr-8 py-2.5 bg-white/70 backdrop-blur-md border border-white/60 rounded-2xl text-xs font-bold text-gray-700 capitalize focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500 shadow-sm transition appearance-none cursor-pointer"
             >
               {CATEGORIES.map((c) => (
                 <option key={c.value} value={c.value}>{c.value === 'all' ? 'All Categories' : c.label}</option>
               ))}
             </select>
+            <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs" />
           </div>
 
-          <div className="flex-1">
+          <div className="relative flex-1">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 pointer-events-none text-xs">
+              <FiSliders />
+            </span>
             <select
               value={sortFilter}
               onChange={(e) => updateParam("sort", e.target.value)}
-              className="w-full border border-gray-200 rounded-xl px-3 py-3 text-xs font-semibold text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-[#1b36e3]/20"
+              className="w-full pl-8 pr-8 py-2.5 bg-white/70 backdrop-blur-md border border-white/60 rounded-2xl text-xs font-bold text-gray-700 capitalize focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500 shadow-sm transition appearance-none cursor-pointer"
             >
               {SORTS.map((s) => (
                 <option key={s.value} value={s.value}>{s.label}</option>
               ))}
             </select>
+            <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs" />
           </div>
         </div>
 
         {/* Desktop Only: Categories Tabs and Clear Filters */}
         <div className="hidden lg:flex border-t border-gray-50 pt-4 flex-row gap-4 items-center justify-between">
           <div className="flex flex-wrap gap-2 items-center">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wide mr-2">Categories:</span>
             {CATEGORIES.map((c) => (
               <button
                 key={c.value}
@@ -312,10 +329,10 @@ const Shop = () => {
             ))}
           </div>
 
-          {(categoryFilter !== "all" || searchFilter !== "") && (
+          {hasActiveFilters && (
             <button
               onClick={handleClearFilters}
-              className="px-4 py-2 text-xs font-bold text-red-500 hover:text-red-600 bg-red-50 rounded-xl transition-all text-center"
+              className="px-4 py-2 text-xs font-bold text-rose-500 hover:text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-xl transition-all border border-rose-100/80 active:scale-95 whitespace-nowrap shrink-0"
             >
               Clear Filters
             </button>
@@ -323,10 +340,10 @@ const Shop = () => {
         </div>
 
         {/* Mobile/Tablet Only: Clear Filters button (if active) */}
-        {(categoryFilter !== "all" || searchFilter !== "") && (
+        {hasActiveFilters && (
           <button
             onClick={handleClearFilters}
-            className="lg:hidden w-full bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold py-3 rounded-xl transition-colors text-center"
+            className="lg:hidden w-full bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold py-2.5 rounded-xl transition-colors text-center border border-rose-100/80 active:scale-98 whitespace-nowrap"
           >
             Clear Filters
           </button>
@@ -335,7 +352,7 @@ const Shop = () => {
 
       {/* Product Display and Pagination */}
       {loading ? (
-        <ProductSkeletonGrid count={12} />
+        <ProductSkeletonGrid count={15} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5" />
       ) : products.length === 0 ? (
         <div className="min-h-[30vh] border border-dashed border-gray-200 rounded-3xl flex flex-col items-center justify-center p-8 bg-white">
           <p className="text-gray-500 font-medium">No products match your filter search.</p>
@@ -348,8 +365,8 @@ const Shop = () => {
         </div>
       ) : (
         <div>
-          {/* Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+          {/* Grid: 2 cols on mobile, 3 on sm, 4 on md, 5 on desktop matching Admin Dashboard */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5">
             {products.map((product) => (
               <ProductCard
                 key={product.id}

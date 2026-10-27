@@ -7,14 +7,13 @@ import {
   FiPlus,
   FiEdit,
   FiTrash2,
-  FiTag,
   FiFolder,
   FiDatabase,
-  FiImage,
-  FiSearch,
   FiFilter,
+  FiChevronDown,
 } from "react-icons/fi";
 
+import SearchBar from '../components/SearchBar';
 import ProductCardImageSlider from '../components/ProductCardImageSlider';
 import { ProductSkeletonGrid } from '../components/ProductSkeletonCard';
 
@@ -155,30 +154,24 @@ const AdminDashboard = () => {
         </div>
 
         {/* Filter & Search Bar Panel */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8 bg-white/40 backdrop-blur-md border border-white/50 p-4 rounded-3xl shadow-sm">
-          {/* Search bar */}
-          <div className="relative flex-1">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
-              <FiSearch size={18} />
-            </span>
-            <input
-              type="text"
-              placeholder="Search products by name, description, category..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-11 pr-4 py-2.5 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none transition text-sm text-gray-800 font-semibold placeholder-gray-400"
-            />
-          </div>
+        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+          {/* Reusable SearchBar Component */}
+          <SearchBar
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onClear={() => setSearchTerm("")}
+            placeholder="Search products by name, description, category..."
+          />
 
-          {/* Category filter */}
-          <div className="relative w-full sm:w-60">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 pointer-events-none">
-              <FiFilter size={16} />
+          {/* Category filter matching Admin Orders UI */}
+          <div className="relative w-full sm:w-64">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 pointer-events-none text-xs">
+              <FiFilter />
             </span>
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 border border-white/60 bg-white/50 rounded-2xl focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500 focus:outline-none text-xs font-bold text-gray-700 cursor-pointer transition appearance-none"
+              className="w-full pl-9 pr-8 py-2.5 bg-white/70 backdrop-blur-md border border-white/60 rounded-2xl text-xs font-bold text-gray-700 capitalize focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500 shadow-sm transition appearance-none cursor-pointer"
             >
               <option value="">All Categories</option>
               {categoriesList.map((cat, idx) => (
@@ -187,6 +180,7 @@ const AdminDashboard = () => {
                 </option>
               ))}
             </select>
+            <FiChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs" />
           </div>
         </div>
 
